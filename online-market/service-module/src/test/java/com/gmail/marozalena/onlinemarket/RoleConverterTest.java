@@ -1,9 +1,9 @@
 package com.gmail.marozalena.onlinemarket;
 
-import com.gmail.marozalena.onlinemarket.converter.RoleConverter;
-import com.gmail.marozalena.onlinemarket.converter.impl.RoleConverterImpl;
-import com.gmail.marozalena.onlinemarket.model.Role;
-import com.gmail.marozalena.onlinemarket.model.RoleDTO;
+import com.gmail.marozalena.onlinemarket.service.converter.RoleConverter;
+import com.gmail.marozalena.onlinemarket.service.converter.impl.RoleConverterImpl;
+import com.gmail.marozalena.onlinemarket.repository.model.Role;
+import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
