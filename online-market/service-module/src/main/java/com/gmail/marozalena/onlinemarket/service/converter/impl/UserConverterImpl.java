@@ -17,6 +17,9 @@ public class UserConverterImpl implements UserConverter {
 
     @Override
     public User fromUserDTO(UserDTO userDTO) {
+        if(userDTO == null){
+            return null;
+        }
         User user = new User();
         user.setId(userDTO.getId());
         user.setSurname(userDTO.getSurname());
@@ -30,6 +33,9 @@ public class UserConverterImpl implements UserConverter {
 
     @Override
     public UserDTO toUserDTO(User user) {
+        if(user == null){
+            return null;
+        }
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setSurname(user.getSurname());

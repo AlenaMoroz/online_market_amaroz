@@ -1,7 +1,7 @@
 package com.gmail.marozalena.onlinemarket.service.converter.impl;
 
-import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
 import com.gmail.marozalena.onlinemarket.repository.model.Review;
+import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,9 @@ public class ReviewConverterImpl implements ReviewConverter {
 
     @Override
     public Review fromReviewDTO(ReviewDTO reviewDTO) {
+        if (reviewDTO == null) {
+            return null;
+        }
         Review review = new Review();
         review.setId(reviewDTO.getId());
         review.setUser(userConverter.fromUserDTO(reviewDTO.getUser()));
@@ -28,6 +31,9 @@ public class ReviewConverterImpl implements ReviewConverter {
 
     @Override
     public ReviewDTO toReviewDTO(Review review) {
+        if (review == null) {
+            return null;
+        }
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(review.getId());
         reviewDTO.setUser(userConverter.toUserDTO(review.getUser()));

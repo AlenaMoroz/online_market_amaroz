@@ -8,6 +8,9 @@ public class RoleConverterImpl implements RoleConverter {
 
     @Override
     public Role fromRoleDTO(RoleDTO roleDTO) {
+        if (roleDTO == null){
+            return null;
+        }
         Role role = new Role();
         role.setId(roleDTO.getId());
         role.setName(roleDTO.getName());
@@ -16,6 +19,9 @@ public class RoleConverterImpl implements RoleConverter {
 
     @Override
     public RoleDTO toRoleDTO(Role role) {
+        if(role == null){
+            return null;
+        }
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setId(role.getId());
         roleDTO.setName(role.getName());

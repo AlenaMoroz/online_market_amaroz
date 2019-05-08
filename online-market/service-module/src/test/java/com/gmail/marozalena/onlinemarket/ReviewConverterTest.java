@@ -28,8 +28,6 @@ public class ReviewConverterTest {
     public void shouldConvertReviewDTOWithIdToReview(){
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(2L);
-        reviewDTO.setUser(new UserDTO());
-        reviewDTO.getUser().setRole(new RoleDTO());
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
         Assert.assertEquals(reviewDTO.getId(), review.getId());
     }
@@ -47,8 +45,6 @@ public class ReviewConverterTest {
     public void shouldConvertReviewDTOWithReviewToReview(){
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setReview("TestReview");
-        reviewDTO.setUser(new UserDTO());
-        reviewDTO.getUser().setRole(new RoleDTO());
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
         Assert.assertEquals(reviewDTO.getReview(), review.getReview());
     }
@@ -56,8 +52,6 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewDTOWithDateToReview(){
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setUser(new UserDTO());
-        reviewDTO.getUser().setRole(new RoleDTO());
         reviewDTO.setDate(new Timestamp(new Date().getTime()));
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
         Assert.assertEquals(reviewDTO.getDate(), review.getDate());
@@ -66,8 +60,6 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewDTOWithShowedToReview(){
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setUser(new UserDTO());
-        reviewDTO.getUser().setRole(new RoleDTO());
         reviewDTO.setShowed(true);
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
         Assert.assertEquals(reviewDTO.isShowed(), review.isShowed());
@@ -77,8 +69,6 @@ public class ReviewConverterTest {
     public void shouldConvertReviewWithIdToReviewDTO(){
         Review review = new Review();
         review.setId(2L);
-        review.setUser(new User());
-        review.getUser().setRole(new Role());
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
         Assert.assertEquals(review.getId(), reviewDTO.getId());
     }
@@ -95,8 +85,6 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewWithReviewToReviewDTO(){
         Review review = new Review();
-        review.setUser(new User());
-        review.getUser().setRole(new Role());
         review.setReview("TestReview");
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
         Assert.assertEquals(review.getReview(), reviewDTO.getReview());
@@ -105,8 +93,6 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewWithDateToReviewDTO(){
         Review review = new Review();
-        review.setUser(new User());
-        review.getUser().setRole(new Role());
         review.setDate(new Timestamp(new Date().getTime()));
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
         Assert.assertEquals(review.getDate(), reviewDTO.getDate());
@@ -115,8 +101,6 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewWithShowedToReviewDTO(){
         Review review = new Review();
-        review.setUser(new User());
-        review.getUser().setRole(new Role());
         review.setShowed(false);
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
         Assert.assertEquals(review.isShowed(), reviewDTO.isShowed());
