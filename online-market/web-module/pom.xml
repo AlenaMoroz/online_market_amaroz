@@ -15,6 +15,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<liquibase.version>3.6.3</liquibase.version>
+		<bootstrap.version>3.3.7</bootstrap.version>
 	</properties>
 
 	<dependencies>
@@ -68,12 +70,12 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>3.6.3</version>
+            <version>${liquibase.version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>3.3.7</version>
+			<version>${bootstrap.version}</version>
 		</dependency>
 		<!-- HTMLUnit -->
 		<dependency>
