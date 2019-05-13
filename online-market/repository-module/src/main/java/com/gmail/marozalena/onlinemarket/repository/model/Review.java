@@ -8,13 +8,13 @@ public class Review {
     private User user;
     private String review;
     private Date date;
-    private boolean isShowed;
+    private boolean showed;
 
-    public Review(User user, String review, Date date, boolean isShowed) {
+    public Review(User user, String review, Date date, boolean showed) {
         this.user = user;
         this.review = review;
         this.date = date;
-        this.isShowed = isShowed;
+        this.showed = showed;
     }
 
     public Review() {
@@ -52,11 +52,11 @@ public class Review {
         this.date = date;
     }
 
-    public boolean isShowed() {
-        return isShowed;
+    public boolean showed() {
+        return showed;
     }
 
     public void setShowed(boolean showed) {
-        isShowed = showed;
+        this.showed = showed;
     }
 }

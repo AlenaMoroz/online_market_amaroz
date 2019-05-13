@@ -1,0 +1,212 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="USER_TABLE_1" author="maroralena@gmail.com">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="surname" type="varchar(80)"/>
+            <column name="name" type="varchar(80)"/>
+            <column name="patronymic" type="varchar(80)"/>
+            <column name="email" type="varchar(80)"/>
+            <column name="password" type="varchar(60)"/>
+            <column name="roles_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ROLE_TABLE_1" author="marozalena@gmail.com">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="REVIEW_TABLE_1" author="maroralena@gmail.com">
+        <createTable tableName="reviews">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="users_id" type="BIGINT"/>
+            <column name="review" type="varchar(80)"/>
+            <column name="date" type="DATETIME"/>
+            <column name="showed" type="TINYINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="FOREIGNKEY_Reviews_With_Users" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="reviews"
+                                 baseColumnNames="users_id"
+                                 constraintName="fk_reviews_users"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="FOREIGNKEY_Users_With_Roles" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="roles_id"
+                                 constraintName="fk_users_roles"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="Set_Role_Admin" author="marozalena@gmail.com">
+        <insert tableName="roles">
+            <column name="role">Administrator</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Role_Sale_User" author="marozalena@gmail.com">
+        <insert tableName="roles">
+            <column name="role">Sale User</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Role_Customer_User" author="marozalena@gmail.com">
+        <insert tableName="roles">
+            <column name="role">Customer User</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Role_Secure_API_User" author="marozalena@gmail.com">
+        <insert tableName="roles">
+            <column name="role">Secure API User</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_ADMIN" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="surname">Admin</column>
+            <column name="name">Admin</column>
+            <column name="patronymic">Admin</column>
+            <column name="email">admin@admin.com</column>
+            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
+            <column name="roles_id">1</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Review1" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">2</column>
+            <column name="review">Review 1</column>
+            <column name="date">2019-05-11 16:13:39.541</column>
+            <column name="showed">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="USER_TABLE_2" author="maroralena@gmail.com">
+        <addColumn tableName="users">
+            <column name="deleted" type="TINYINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Set_Review2" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 2</column>
+            <column name="date">2019-05-12 16:13:39.541</column>
+            <column name="showed">1</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Review3" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 3</column>
+            <column name="date">2019-06-11 16:13:39.541</column>
+            <column name="showed">1</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Review4" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 4</column>
+            <column name="date">2019-12-11 16:13:39.541</column>
+            <column name="showed">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Review5" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 5</column>
+            <column name="date">2019-10-15 16:13:39.541</column>
+            <column name="showed">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Review6" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 6</column>
+            <column name="date">2018-05-11 16:13:39.541</column>
+            <column name="showed">1</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="REVIEW_TABLE_2" author="maroralena@gmail.com">
+        <addColumn tableName="reviews">
+            <column name="deleted" type="TINYINT"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Set_Review7" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 7</column>
+            <column name="date">2018-05-11 16:13:39.541</column>
+            <column name="showed">1</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+    <changeSet id="Set_Review8" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 8</column>
+            <column name="date">2018-05-11 16:13:39.541</column>
+            <column name="showed">1</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+    <changeSet id="Set_Review9" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">9</column>
+            <column name="review">Review 6</column>
+            <column name="date">2018-05-11 16:13:39.541</column>
+            <column name="showed">1</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+    <changeSet id="Set_Review10" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 10</column>
+            <column name="date">2018-05-11 16:13:39.541</column>
+            <column name="showed">1</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+    <changeSet id="Set_Review11" author="marozalena@gmail.com">
+        <insert tableName="reviews">
+            <column name="users_id">1</column>
+            <column name="review">Review 11</column>
+            <column name="date">2018-05-11 16:13:39.541</column>
+            <column name="showed">1</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

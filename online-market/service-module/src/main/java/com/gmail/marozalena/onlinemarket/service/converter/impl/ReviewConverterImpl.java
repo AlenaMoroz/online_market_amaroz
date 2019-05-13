@@ -5,7 +5,9 @@ import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReviewConverterImpl implements ReviewConverter {
 
     private final UserConverter userConverter;
@@ -39,7 +41,7 @@ public class ReviewConverterImpl implements ReviewConverter {
         reviewDTO.setUser(userConverter.toUserDTO(review.getUser()));
         reviewDTO.setReview(review.getReview());
         reviewDTO.setDate(review.getDate());
-        reviewDTO.setShowed(review.isShowed());
+        reviewDTO.setShowed(review.showed());
         return reviewDTO;
     }
 }

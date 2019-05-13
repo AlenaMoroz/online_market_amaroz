@@ -5,7 +5,9 @@ import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserConverterImpl implements UserConverter {
 
     private final RoleConverter roleConverter;

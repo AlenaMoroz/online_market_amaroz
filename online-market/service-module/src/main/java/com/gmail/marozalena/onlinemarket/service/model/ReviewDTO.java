@@ -8,14 +8,14 @@ public class ReviewDTO {
     private UserDTO user;
     private String review;
     private Date date;
-    private boolean isShowed;
+    private boolean showed;
 
     public ReviewDTO(UserDTO user, String review,
-                     Date date, boolean isShowed) {
+                     Date date, boolean showed) {
         this.user = user;
         this.review = review;
         this.date = date;
-        this.isShowed = isShowed;
+        this.showed = showed;
     }
 
     public ReviewDTO() {
@@ -54,10 +54,10 @@ public class ReviewDTO {
     }
 
     public boolean isShowed() {
-        return isShowed;
+        return showed;
     }
 
     public void setShowed(boolean showed) {
-        isShowed = showed;
+        this.showed = showed;
     }
 }

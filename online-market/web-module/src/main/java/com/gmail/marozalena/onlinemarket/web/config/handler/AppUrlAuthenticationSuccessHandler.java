@@ -24,8 +24,7 @@ public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException
-    {
+                                        Authentication authentication) throws IOException, ServletException {
         handle(request, response, authentication);
         clearAuthenticationAttributes(request);
     }
@@ -42,29 +41,22 @@ public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     private String determineTargetUrl(Authentication authentication) {
-        boolean isCustomer = false;
         boolean isAdministrator = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equals("Customer")) {
-                isCustomer = true;
-                break;
-            } else if (authority.getAuthority().equals("Administrator")) {
+            if (authority.getAuthority().equals("Administrator")) {
                 isAdministrator = true;
                 break;
             }
         }
-        if (isCustomer) {
-            return "/items";
-        } else if (isAdministrator) {
-            return "/users";
+        if (isAdministrator) {
+            return "/private/users";
         } else {
             throw new IllegalStateException();
         }
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {
-
         HttpSession session = request.getSession(false);
         if (session == null) {
             return;

@@ -38,7 +38,7 @@ public class AdminControllerIntegrationTest {
     @WithMockUser(authorities = {"Administrator"})
     @Test
     public void requestForAdminIsProcessedWithUsersList() throws Exception {
-        this.mvc.perform(get("/private/users").accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
+        this.mvc.perform(get("/private/users/1").accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(content().string(CoreMatchers.containsString("Users")));
@@ -47,7 +47,7 @@ public class AdminControllerIntegrationTest {
     @WithMockUser(authorities = {"Administrator"})
     @Test
     public void requestForAdminIsProcessedWithReviewsList() throws Exception {
-        this.mvc.perform(get("/private/reviews").accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
+        this.mvc.perform(get("/private/reviews/1").accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(content().string(CoreMatchers.containsString("Reviews")));

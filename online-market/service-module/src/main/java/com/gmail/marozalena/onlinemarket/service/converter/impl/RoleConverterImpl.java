@@ -3,7 +3,9 @@ package com.gmail.marozalena.onlinemarket.service.converter.impl;
 import com.gmail.marozalena.onlinemarket.service.converter.RoleConverter;
 import com.gmail.marozalena.onlinemarket.repository.model.Role;
 import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RoleConverterImpl implements RoleConverter {
 
     @Override

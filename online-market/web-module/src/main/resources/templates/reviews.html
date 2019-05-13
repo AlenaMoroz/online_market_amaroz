@@ -1,10 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Reviews</title>
+    <div th:replace="fragments/header :: header-css"></div>
 </head>
 <body>
+<table align="center" cellpadding="7" border="1">
+    <tr>
+        <th height="50" width="150"></th>
+        <th height="50" width="150">Review</th>
+        <th height="50" width="20">
+            <form id="update" th:action="@{/reviews/save}" th:object="${reviews}"
+                  method="post">
+                <input class="btn btn-success" type="submit"
+                       value="Update">
+            </form>
+        </th>
+    </tr>
+    <form id="delete" action="#" th:action="@{/reviews/delete}" th:object="${review}" method="post">
+        <tr th:each="review,stat : ${reviews.listOfReviews}">
+            <th height="300" width="300">
+                <p th:text="${review.user.surname + ' ' + review.user.name + ' ' + review.user.patronymic}"></p>
+                <p th:text="${review.date}" th:field="${review.date}"></p></th>
+            <th height="300" width="300" th:text="${review.review}"></th>
+            <th height="300" width="20">
+                <label>
+                    <input class="checkbox top-left" type="checkbox" form="update"
+                           th:field="${reviews.listOfReviews[__${stat.index}__].showed}">
+                    <input hidden form="update" th:name="id" th:value="${review.id}"
+                           th:field="${reviews.listOfReviews[__${stat.index}__].id}">
+                </label>
+            </th>
+            <th height="300" width="50" sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Administrator')">
+                <br><input class="btn btn-danger" type="submit" value="Delete">
+                    </span>
+            </th>
+        </tr>
+    </form>
+</table>
 
+<div class="pagination justify-content-center">
+    <hr>
+    <tr th:if="${pages.size() > 0}" th:each="page : ${pages}">
+        <th th:if="${page} == ${current}" class="page-item active">
+            <a class="page-link" th:href="@{/reviews/{pageNumber}(pageNumber=${page})}" th:text="${page}"></a>
+        </th>
+        <th th:unless="${page} == ${current}" class="page-item">
+            <a class="page-link" th:href="@{/reviews/{pageNumber}(pageNumber=${page})}" th:text="${page}"></a>
+        </th>
+    </tr>
+    <hr>
+</div>
 </body>
 </html>

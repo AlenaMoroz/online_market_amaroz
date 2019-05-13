@@ -9,13 +9,17 @@ public class User {
     private String email;
     private String password;
     private Role role;
+    private boolean isDeleted;
 
-    public User(String surname, String name, String patronymic, String email, Role role) {
+    public User(String surname, String name, String patronymic, String email,
+                String password, Role role, boolean isDeleted) {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
         this.email = email;
+        this.password = password;
         this.role = role;
+        this.isDeleted = isDeleted;
     }
 
     public User() {
@@ -75,5 +79,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

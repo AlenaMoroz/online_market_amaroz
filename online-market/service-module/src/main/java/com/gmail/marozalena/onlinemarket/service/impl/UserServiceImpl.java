@@ -6,7 +6,12 @@ import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.exception.UserNotAddedException;
 import com.gmail.marozalena.onlinemarket.service.exception.UserNotFoundException;
+import com.gmail.marozalena.onlinemarket.service.exception.UserNotSavedException;
+import com.gmail.marozalena.onlinemarket.service.exception.UsersNotDeletedException;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.PasswordGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +40,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getUsers() {
+    public List<UserDTO> getUsers(Integer page) {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                List<User> users = userRepository.getUsers(connection);
+                List<User> users = userRepository.getUsers(connection, page);
                 List<UserDTO> list = users.stream()
-                        .map(userConverter::toUserDTO)
-                        .collect(Collectors.toList());
+                        .map(userConverter::toUserDTO).sorted(new Comparator<UserDTO>() {
+                            @Override
+                            public int compare(UserDTO user1, UserDTO user2) {
+                                return user1.getEmail().compareTo(user2.getEmail());
+                            }
+                        }).collect(Collectors.toList());
                 connection.commit();
                 return list;
             } catch (Exception e) {
@@ -78,11 +89,14 @@ public class UserServiceImpl implements UserService {
     public void addUser(UserDTO userDTO) {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
-            try{
+            try {
+                String randomPassword = getRandomPassword();
+                userDTO.setPassword(randomPassword);
+                logger.info("For new user was generated password: " + randomPassword);
                 User user = userConverter.fromUserDTO(userDTO);
                 userRepository.addUser(connection, user);
                 connection.commit();
-            }catch (Exception e){
+            } catch (Exception e) {
                 connection.rollback();
                 logger.error(e.getMessage(), e);
                 throw new UserNotAddedException("User not added in database", e);
@@ -90,6 +104,75 @@ public class UserServiceImpl implements UserService {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new UserNotAddedException("User not added in database", e);
+        }
+    }
+
+    @Override
+    public void deleteUsers(List<Long> idUsers) {
+        try (Connection connection = userRepository.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                userRepository.deleteUsers(connection, idUsers);
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+                logger.error(e.getMessage(), e);
+                throw new UsersNotDeletedException("Users not deleted from database", e);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UsersNotDeletedException("Users not deleted from database", e);
+        }
+    }
+
+    @Override
+    public void saveUser(UserDTO userDTO) {
+        try (Connection connection = userRepository.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                User user = userConverter.fromUserDTO(userDTO);
+                userRepository.saveUser(connection, user);
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+                logger.error(e.getMessage(), e);
+                throw new UserNotSavedException("Users not saved in database", e);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UserNotSavedException("Users not saved in database", e);
+        }
+    }
+
+    public String getRandomPassword() {
+        List<CharacterRule> rules = Arrays.asList(new CharacterRule(EnglishCharacterData.UpperCase, 2),
+                new CharacterRule(EnglishCharacterData.LowerCase, 2),
+                new CharacterRule(EnglishCharacterData.Digit, 2),
+                new CharacterRule(EnglishCharacterData.Special, 2));
+        PasswordGenerator passwordGenerator = new PasswordGenerator();
+        return passwordGenerator.generatePassword(12, rules);
+    }
+
+    @Override
+    public int getCountPages() {
+        try (Connection connection = userRepository.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                int usersNumber = userRepository.countOfUsers(connection);
+                int pagesNumber = usersNumber / 10;
+                if (usersNumber > (pagesNumber * 10)) {
+                    pagesNumber += 1;
+                }
+                connection.commit();
+                return pagesNumber;
+            } catch (Exception e) {
+                connection.rollback();
+                logger.error(e.getMessage(), e);
+                throw new UserNotFoundException("Users not found in database", e);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UserNotFoundException("Users not found in database", e);
         }
     }
 }

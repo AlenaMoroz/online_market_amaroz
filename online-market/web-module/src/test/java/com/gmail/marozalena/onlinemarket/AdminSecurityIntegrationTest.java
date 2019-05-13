@@ -35,21 +35,28 @@ public class AdminSecurityIntegrationTest {
     @WithMockUser(authorities = {"Administrator"})
     @Test
     public void shouldSucceedWith200ForUsersPage() throws Exception {
-        mvc.perform(get("/private/users"))
+        mvc.perform(get("/private/users/1"))
                 .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = {"Administrator"})
     @Test
     public void shouldSucceedWith200ForAddUserPage() throws Exception {
-        mvc.perform(get("/private/add/user"))
+        mvc.perform(get("/private/users/add"))
                 .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = {"Administrator"})
     @Test
-    public void shouldSucceedWith200ForReviewsPage() throws Exception {
-        mvc.perform(get("/private/reviews"))
-                .andExpect(status().isOk());
+    public void shouldSucceedWith200ForDeleteUserPage() throws Exception {
+        mvc.perform(get("/private/users/delete"))
+                .andExpect(status().is(400));
+    }
+
+    @WithMockUser(authorities = {"Administrator"})
+    @Test
+    public void shouldSucceedWith200ForReviewsSavePage() throws Exception {
+        mvc.perform(get("/reviews/save"))
+                .andExpect(status().is(400));
     }
 }
