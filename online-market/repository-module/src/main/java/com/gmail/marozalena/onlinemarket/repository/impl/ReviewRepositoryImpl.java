@@ -3,6 +3,7 @@ package com.gmail.marozalena.onlinemarket.repository.impl;
 import com.gmail.marozalena.onlinemarket.repository.ReviewRepository;
 import com.gmail.marozalena.onlinemarket.repository.exception.DatabaseException;
 import com.gmail.marozalena.onlinemarket.repository.model.Review;
+import com.gmail.marozalena.onlinemarket.repository.model.Role;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,8 @@ public class ReviewRepositoryImpl extends GenericRepositoryImpl implements Revie
                 review.getUser().setSurname(resultSet.getString("surname"));
                 review.getUser().setName(resultSet.getString("name"));
                 review.getUser().setPatronymic(resultSet.getString("patronymic"));
+                review.getUser().setRole(new Role());
+                review.getUser().getRole().setId(resultSet.getLong("roles_id"));
                 review.setReview(resultSet.getString("review"));
                 review.setDate(resultSet.getDate("date"));
                 review.setShowed(resultSet.getBoolean("showed"));
@@ -49,7 +52,7 @@ public class ReviewRepositoryImpl extends GenericRepositoryImpl implements Revie
 
     @Override
     public void deleteReview(Connection connection, Review review) {
-        String sql = String.format("UPDATE `reviews` SET `deleted`='1' WHERE `id`='%d'", review.getId());
+        String sql = String.format("UPDATE `reviews` SET `deleted`='1' WHERE `review`='%s'", review.getReview());
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -61,7 +64,7 @@ public class ReviewRepositoryImpl extends GenericRepositoryImpl implements Revie
     @Override
     public void updateReviews(Connection connection, List<Review> reviews) {
         for (Review review : reviews) {
-            String sql = "UPDATE `reviews` SET `showed`= ? WHERE `id`=?";
+            String sql = "UPDATE reviews SET showed= ? WHERE id=?";
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
                 preparedStatement.setBoolean(1, review.showed());
                 preparedStatement.setLong(2, review.getId());

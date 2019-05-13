@@ -15,6 +15,7 @@
             <column name="email" type="varchar(80)"/>
             <column name="password" type="varchar(60)"/>
             <column name="roles_id" type="BIGINT"/>
+            <column name="deleted" type="TINYINT"/>
         </createTable>
     </changeSet>
 
@@ -36,6 +37,7 @@
             <column name="review" type="varchar(80)"/>
             <column name="date" type="DATETIME"/>
             <column name="showed" type="TINYINT"/>
+            <column name="deleted" type="TINYINT"/>
         </createTable>
     </changeSet>
 
@@ -95,6 +97,19 @@
             <column name="email">admin@admin.com</column>
             <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
             <column name="roles_id">1</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_User" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="surname">Tes1t</column>
+            <column name="name">Test1</column>
+            <column name="patronymic">Test1</column>
+            <column name="email">test@test.com</column>
+            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
+            <column name="roles_id">2</column>
+            <column name="deleted">0</column>
         </insert>
     </changeSet>
 
@@ -104,13 +119,8 @@
             <column name="review">Review 1</column>
             <column name="date">2019-05-11 16:13:39.541</column>
             <column name="showed">0</column>
+            <column name="deleted">0</column>
         </insert>
-    </changeSet>
-
-    <changeSet id="USER_TABLE_2" author="maroralena@gmail.com">
-        <addColumn tableName="users">
-            <column name="deleted" type="TINYINT"/>
-        </addColumn>
     </changeSet>
 
     <changeSet id="Set_Review2" author="marozalena@gmail.com">
@@ -119,6 +129,7 @@
             <column name="review">Review 2</column>
             <column name="date">2019-05-12 16:13:39.541</column>
             <column name="showed">1</column>
+            <column name="deleted">0</column>
         </insert>
     </changeSet>
 
@@ -128,6 +139,7 @@
             <column name="review">Review 3</column>
             <column name="date">2019-06-11 16:13:39.541</column>
             <column name="showed">1</column>
+            <column name="deleted">0</column>
         </insert>
     </changeSet>
 
@@ -137,6 +149,7 @@
             <column name="review">Review 4</column>
             <column name="date">2019-12-11 16:13:39.541</column>
             <column name="showed">0</column>
+            <column name="deleted">0</column>
         </insert>
     </changeSet>
 
@@ -146,6 +159,7 @@
             <column name="review">Review 5</column>
             <column name="date">2019-10-15 16:13:39.541</column>
             <column name="showed">0</column>
+            <column name="deleted">0</column>
         </insert>
     </changeSet>
 
@@ -155,13 +169,8 @@
             <column name="review">Review 6</column>
             <column name="date">2018-05-11 16:13:39.541</column>
             <column name="showed">1</column>
+            <column name="deleted">0</column>
         </insert>
-    </changeSet>
-
-    <changeSet id="REVIEW_TABLE_2" author="maroralena@gmail.com">
-        <addColumn tableName="reviews">
-            <column name="deleted" type="TINYINT"/>
-        </addColumn>
     </changeSet>
 
     <changeSet id="Set_Review7" author="marozalena@gmail.com">
@@ -184,8 +193,8 @@
     </changeSet>
     <changeSet id="Set_Review9" author="marozalena@gmail.com">
         <insert tableName="reviews">
-            <column name="users_id">9</column>
-            <column name="review">Review 6</column>
+            <column name="users_id">1</column>
+            <column name="review">Review 9</column>
             <column name="date">2018-05-11 16:13:39.541</column>
             <column name="showed">1</column>
             <column name="deleted">0</column>

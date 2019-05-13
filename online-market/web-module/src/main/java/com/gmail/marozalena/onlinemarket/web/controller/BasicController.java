@@ -59,7 +59,7 @@ public class BasicController {
     }
 
     @PostMapping("/reviews/delete")
-    public String deleteReview(@ModelAttribute("review") ReviewDTO reviewDTO) {
+    public String deleteReview(ReviewDTO reviewDTO) {
         reviewService.deleteReview(reviewDTO);
         return "redirect:/reviews/1";
     }
