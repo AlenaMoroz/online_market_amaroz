@@ -48,38 +48,19 @@ public class AdminControllerTest {
                     "Name1.1", "Name2.1", "Name3.1", "Email1", "Password",
                     new RoleDTO(3L, "Customer User"), false));
 
-    private List<ReviewDTO> reviews = asList(new ReviewDTO(
-                    new UserDTO(
-                            "Surname", "Name", "Patronymic", "Email",
-                            "Password", null, true),
-                    "Review", new Timestamp(new Date().getTime()), true),
-            new ReviewDTO(
-                    new UserDTO(
-                            "Surname1", "Name1", "Patronymic1", "Email1",
-                            "Password", null, false),
-                    "Review1", new Timestamp(new Date().getTime()), false));
-
     @Before
     public void init() {
         adminController = new AdminController(userService, reviewService, roleServise);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
-       // when(userService.getUsers()).thenReturn(users);
-        //when(reviewService.getReviews()).thenReturn(reviews);
+        when(userService.getUsers(1)).thenReturn(users);
     }
 
     @Test
     public void allUsersAreAddedToModelForUsersView() {
         Model model = new ExtendedModelMap();
-        //String users = adminController.getUsers(model);
+        String users = adminController.getUsersWithPage(model, 1);
         assertThat(users, equalTo("users"));
-        //assertThat(model.asMap(), hasEntry("users", this.users));
+        assertThat(model.asMap(), hasEntry("users", this.users));
     }
 
-    @Test
-    public void allReviewsAreAddedToModelForReviewsView() {
-        Model model = new ExtendedModelMap();
-        //String reviews = adminController.getReviews(model);
-        assertThat(reviews, equalTo("reviews"));
-        assertThat(model.asMap(), hasEntry("reviews", this.reviews));
-    }
 }

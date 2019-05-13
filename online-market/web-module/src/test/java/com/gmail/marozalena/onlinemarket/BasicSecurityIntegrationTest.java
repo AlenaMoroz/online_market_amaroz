@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -35,5 +36,17 @@ public class BasicSecurityIntegrationTest {
     public void shouldSucceedWith200ForLoginPage() throws Exception {
         mvc.perform(get("/login"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldSucceedWith200ForReviewsSavePage() throws Exception {
+        mvc.perform(get("/reviews/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldSucceedWith302ForReviewsSavePage() throws Exception {
+        mvc.perform(get("/reviews"))
+                .andExpect(status().is(302));
     }
 }
