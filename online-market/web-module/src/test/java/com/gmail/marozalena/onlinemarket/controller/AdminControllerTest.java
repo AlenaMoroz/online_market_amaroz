@@ -1,9 +1,7 @@
 package com.gmail.marozalena.onlinemarket.controller;
 
-import com.gmail.marozalena.onlinemarket.service.ReviewService;
 import com.gmail.marozalena.onlinemarket.service.RoleServise;
 import com.gmail.marozalena.onlinemarket.service.UserService;
-import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
 import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import com.gmail.marozalena.onlinemarket.web.controller.AdminController;
@@ -17,8 +15,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -32,8 +28,6 @@ public class AdminControllerTest {
 
     @Mock
     private UserService userService;
-    @Mock
-    private ReviewService reviewService;
     @Mock
     private RoleServise roleServise;
 
@@ -50,7 +44,7 @@ public class AdminControllerTest {
 
     @Before
     public void init() {
-        adminController = new AdminController(userService, reviewService, roleServise);
+        adminController = new AdminController(userService, roleServise);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
         when(userService.getUsers(1)).thenReturn(users);
     }

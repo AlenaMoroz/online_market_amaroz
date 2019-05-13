@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 public class BasicController {
 
     private final ReviewService reviewService;
+    private static final String redirectToReviewFirstPage = "redirect:/reviews/1";
 
     @Autowired
     public BasicController(ReviewService reviewService) {
@@ -32,7 +33,7 @@ public class BasicController {
 
     @GetMapping("reviews")
     public String getReviews(){
-        return "redirect:/reviews/1";
+        return redirectToReviewFirstPage;
     }
 
     @GetMapping("/reviews/{page}")
@@ -61,13 +62,13 @@ public class BasicController {
     @PostMapping("/reviews/delete")
     public String deleteReview(ReviewDTO reviewDTO) {
         reviewService.deleteReview(reviewDTO);
-        return "redirect:/reviews/1";
+        return redirectToReviewFirstPage;
     }
 
     @PostMapping("/reviews/save")
     public String updateReviews(@ModelAttribute("reviews") ListOfReviewsDTO list){
         reviewService.updateReviews(list);
-        return "redirect:/reviews/1";
+        return redirectToReviewFirstPage;
     }
 
 }

@@ -21,8 +21,8 @@ public class AdminSecurityIntegrationTest {
 
     @Autowired
     private WebApplicationContext context;
-
     private MockMvc mvc;
+    private static final String adminAuthority = "Administrator";
 
     @Before
     public void setup(){
@@ -32,21 +32,21 @@ public class AdminSecurityIntegrationTest {
                 .build();
     }
 
-    @WithMockUser(authorities = {"Administrator"})
+    @WithMockUser(authorities = {adminAuthority})
     @Test
     public void shouldSucceedWith200ForUsersPage() throws Exception {
         mvc.perform(get("/private/users/1"))
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(authorities = {"Administrator"})
+    @WithMockUser(authorities = {adminAuthority})
     @Test
     public void shouldSucceedWith302ForUsersPage() throws Exception {
         mvc.perform(get("/private/users"))
                 .andExpect(status().is(302));
     }
 
-    @WithMockUser(authorities = {"Administrator"})
+    @WithMockUser(authorities = {adminAuthority})
     @Test
     public void shouldSucceedWith200ForAddUserPage() throws Exception {
         mvc.perform(get("/private/users/add"))
