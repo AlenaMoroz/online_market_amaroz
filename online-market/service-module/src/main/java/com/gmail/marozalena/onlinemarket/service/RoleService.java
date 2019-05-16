@@ -4,7 +4,7 @@ import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
 
 import java.util.List;
 
-public interface RoleServise {
+public interface RoleService {
 
     List<RoleDTO> getRoles();
 }

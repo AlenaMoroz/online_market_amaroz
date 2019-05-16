@@ -1,7 +1,7 @@
 package com.gmail.marozalena.onlinemarket.controller;
 
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
-import com.gmail.marozalena.onlinemarket.service.RoleServise;
+import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
@@ -30,7 +30,7 @@ public class AdminControllerTest {
     @Mock
     private UserService userService;
     @Mock
-    private RoleServise roleServise;
+    private RoleService roleServise;
     @Mock
     private RandomPasswordService randomPasswordService;
 
@@ -42,7 +42,7 @@ public class AdminControllerTest {
 
     @Before
     public void init() {
-        adminController = new AdminController(userService, roleServise,randomPasswordService);
+        adminController = new AdminController(userService, roleServise,randomPasswordService, paginationService);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
         when(userService.getUsers(1)).thenReturn(users);
     }

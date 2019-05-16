@@ -12,6 +12,4 @@ public interface ReviewRepository extends GenericRepository {
     void deleteReview(Connection connection, Long id);
 
     void updateReview(Connection connection, Review review);
-
-    int getCountOfReviews(Connection connection);
 }

@@ -3,6 +3,7 @@ package com.gmail.marozalena.onlinemarket.web.controller;
 import com.gmail.marozalena.onlinemarket.service.ReviewService;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
+import com.gmail.marozalena.onlinemarket.service.pagination.PaginationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,12 +19,16 @@ import java.util.stream.IntStream;
 @Controller
 public class BasicController {
 
+    private static final String redirectToReviewFirstPage = "redirect:/reviews";
+
     private final ReviewService reviewService;
-    private static final String redirectToReviewFirstPage = "redirect:/reviews/1";
+    private final PaginationService paginationService;
 
     @Autowired
-    public BasicController(ReviewService reviewService) {
+    public BasicController(ReviewService reviewService,
+                           PaginationService paginationService) {
         this.reviewService = reviewService;
+        this.paginationService = paginationService;
     }
 
     @GetMapping("/login")
@@ -31,30 +36,20 @@ public class BasicController {
         return "login";
     }
 
-    @GetMapping("reviews")
-    public String getReviews() {
-        return redirectToReviewFirstPage;
-    }
-
-    @GetMapping("/reviews/{page}")
+    @GetMapping("/reviews")
     public String getReviewsWithPage(Model model,
                                      @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        int pageN;
-        if (page == null) {
-            pageN = 1;
-        } else {
-            pageN = page;
-        }
-        int countPages = reviewService.getCountPages();
-        if (pageN > countPages && countPages > 0) {
-            pageN = countPages;
+
+        int countPages = paginationService.getCountPagesForPageWithReviews();
+        if (page > countPages && countPages > 0) {
+            page = countPages;
         }
         List<Integer> countOfPages = IntStream.rangeClosed(1, countPages)
                 .boxed()
                 .collect(Collectors.toList());
         model.addAttribute("pages", countOfPages);
-        model.addAttribute("current", pageN);
-        List<ReviewDTO> reviews = reviewService.getReviews(pageN);
+        model.addAttribute("current", page);
+        List<ReviewDTO> reviews = reviewService.getReviews(page);
         ListOfReviewsDTO list = new ListOfReviewsDTO();
         list.setListOfReviews(reviews);
         model.addAttribute("reviews", list);

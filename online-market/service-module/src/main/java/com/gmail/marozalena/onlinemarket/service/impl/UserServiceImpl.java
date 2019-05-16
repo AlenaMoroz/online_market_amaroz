@@ -140,27 +140,4 @@ public class UserServiceImpl implements UserService {
             throw new UserNotSavedException("Users not saved in database", e);
         }
     }
-
-    @Override
-    public int getCountPages() {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                int usersNumber = userRepository.getCountOfUsers(connection);
-                int pagesNumber = usersNumber / 10;
-                if (usersNumber > (pagesNumber * 10)) {
-                    pagesNumber += 1;
-                }
-                connection.commit();
-                return pagesNumber;
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new UserNotFoundException("Users not found in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new UserNotFoundException("Users not found in database", e);
-        }
-    }
 }

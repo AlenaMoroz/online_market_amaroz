@@ -142,21 +142,6 @@ public class UserRepositoryImpl extends GenericRepositoryImpl implements UserRep
         }
     }
 
-    @Override
-    public int getCountOfUsers(Connection connection) {
-        String sql = "SELECT COUNT(*) FROM `users` WHERE deleted = '0'";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new DatabaseException("Problems with getting user from database", e);
-        }
-        return 0;
-    }
-
     private String encoder(String password) {
         return passwordEncoder.encode(password);
     }

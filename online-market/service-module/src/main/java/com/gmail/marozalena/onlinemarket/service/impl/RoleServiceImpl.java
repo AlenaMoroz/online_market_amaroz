@@ -2,7 +2,7 @@ package com.gmail.marozalena.onlinemarket.service.impl;
 
 import com.gmail.marozalena.onlinemarket.repository.RoleRepository;
 import com.gmail.marozalena.onlinemarket.repository.model.Role;
-import com.gmail.marozalena.onlinemarket.service.RoleServise;
+import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.converter.RoleConverter;
 import com.gmail.marozalena.onlinemarket.service.exception.RolesNotFoundException;
 import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class RoleServiseImpl implements RoleServise {
+public class RoleServiceImpl implements RoleService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RoleServiseImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
     private final RoleRepository roleRepository;
     private final RoleConverter roleConverter;
 
     @Autowired
-    public RoleServiseImpl(RoleRepository roleRepository,
+    public RoleServiceImpl(RoleRepository roleRepository,
                            RoleConverter roleConverter) {
         this.roleRepository = roleRepository;
         this.roleConverter = roleConverter;

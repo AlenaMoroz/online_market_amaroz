@@ -14,6 +14,4 @@ public interface UserService {
     void deleteUsers(List<Long> idUsers);
 
     void saveUser(UserDTO userDTO);
-
-    int getCountPages();
 }

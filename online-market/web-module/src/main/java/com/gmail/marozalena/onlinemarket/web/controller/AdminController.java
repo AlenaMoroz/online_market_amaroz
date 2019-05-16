@@ -1,9 +1,10 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
-import com.gmail.marozalena.onlinemarket.service.RoleServise;
+import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
+import com.gmail.marozalena.onlinemarket.service.pagination.PaginationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,26 +25,31 @@ import java.util.stream.IntStream;
 public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-
-    private final UserService userService;
-    private final RoleServise roleServise;
-    private final RandomPasswordService randomPasswordService;
     private static final String redirectToUsersPage = "redirect:/private/users";
 
+    private final UserService userService;
+    private final RoleService roleService;
+    private final RandomPasswordService randomPasswordService;
+    private final PaginationService paginationService;
+
     @Autowired
-    public AdminController(UserService userService,
-                           RoleServise roleServise,
-                           RandomPasswordService randomPasswordService) {
+    public AdminController(
+            UserService userService,
+            RoleService roleService,
+            RandomPasswordService randomPasswordService,
+            PaginationService paginationService)
+    {
         this.userService = userService;
-        this.roleServise = roleServise;
+        this.roleService = roleService;
         this.randomPasswordService = randomPasswordService;
+        this.paginationService = paginationService;
     }
 
     @GetMapping("/users")
     public String getUsers(Model model,
                            @RequestParam(value = "page", defaultValue = "1") Integer page) {
-        model.addAttribute("roles", roleServise.getRoles());
-        int countPages = userService.getCountPages();
+        model.addAttribute("roles", roleService.getRoles());
+        int countPages = paginationService.getCountPagesForPageWithUsers();
         if (page > countPages && countPages > 0) {
             page = countPages;
         }
@@ -80,7 +86,7 @@ public class AdminController {
     @GetMapping("/users/add")
     public String addUser(Model model) {
         model.addAttribute("user", new UserDTO());
-        model.addAttribute("roles", roleServise.getRoles());
+        model.addAttribute("roles", roleService.getRoles());
         return "add";
     }
 

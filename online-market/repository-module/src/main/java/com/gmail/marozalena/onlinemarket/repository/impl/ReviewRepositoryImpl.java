@@ -88,20 +88,4 @@ public class ReviewRepositoryImpl extends GenericRepositoryImpl implements Revie
             throw new DatabaseException("Problems with updating review in database", e);
         }
     }
-
-    @Override
-    public int getCountOfReviews(Connection connection) {
-        String sql = "SELECT COUNT(*) FROM `reviews` WHERE deleted = '0'";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new DatabaseException("Problems with getting review from database", e);
-        }
-        return 0;
-    }
-
 }

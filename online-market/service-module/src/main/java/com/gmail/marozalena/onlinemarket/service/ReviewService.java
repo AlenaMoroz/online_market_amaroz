@@ -12,6 +12,4 @@ public interface ReviewService {
     void deleteReview(Long id);
 
     void updateReviews(ListOfReviewsDTO list);
-
-    int getCountPages();
 }
