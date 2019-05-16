@@ -84,7 +84,7 @@ public class ReviewServiceImpl implements ReviewService {
                         .map(reviewConverter::fromReviewDTO)
                         .collect(Collectors.toList());
                 for (Review review : reviews) {
-                    reviewRepository.updateReviews(connection, review);
+                    reviewRepository.updateReview(connection, review);
                 }
                 connection.commit();
             } catch (Exception e) {

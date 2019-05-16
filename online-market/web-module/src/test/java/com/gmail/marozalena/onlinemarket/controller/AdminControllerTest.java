@@ -50,7 +50,7 @@ public class AdminControllerTest {
     @Test
     public void allUsersAreAddedToModelForUsersView() {
         Model model = new ExtendedModelMap();
-        String users = adminController.getUsersWithPage(model, 1);
+        String users = adminController.getUsers(model, 1);
         assertThat(users, equalTo("users"));
         assertThat(model.asMap(), hasEntry("users", this.users));
     }

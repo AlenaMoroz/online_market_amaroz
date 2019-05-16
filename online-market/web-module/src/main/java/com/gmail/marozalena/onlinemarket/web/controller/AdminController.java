@@ -28,7 +28,7 @@ public class AdminController {
     private final UserService userService;
     private final RoleServise roleServise;
     private final RandomPasswordService randomPasswordService;
-    private static final String redirectToFirstUsersPage = "redirect:/private/users/1";
+    private static final String redirectToUsersPage = "redirect:/private/users";
 
     @Autowired
     public AdminController(UserService userService,
@@ -40,31 +40,19 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String getUsers(Model model) {
-        return redirectToFirstUsersPage;
-    }
-
-    @GetMapping("/users/{page}")
-    public String getUsersWithPage(Model model,
-                                   @RequestParam(value = "page", defaultValue = "1") Integer page) {
-
+    public String getUsers(Model model,
+                           @RequestParam(value = "page", defaultValue = "1") Integer page) {
         model.addAttribute("roles", roleServise.getRoles());
-        int pageN;
-        if (page == null) {
-            pageN = 1;
-        } else {
-            pageN = page;
-        }
         int countPages = userService.getCountPages();
-        if (pageN > countPages && countPages > 0) {
-            pageN = countPages;
+        if (page > countPages && countPages > 0) {
+            page = countPages;
         }
         List<Integer> countOfPages = IntStream.rangeClosed(1, countPages)
                 .boxed()
                 .collect(Collectors.toList());
         model.addAttribute("pages", countOfPages);
-        model.addAttribute("current", pageN);
-        model.addAttribute("users", userService.getUsers(pageN));
+        model.addAttribute("current", page);
+        model.addAttribute("users", userService.getUsers(page));
         return "users";
     }
 
@@ -73,20 +61,20 @@ public class AdminController {
         if (idUsers != null) {
             userService.deleteUsers(idUsers);
         }
-        return redirectToFirstUsersPage;
+        return redirectToUsersPage;
     }
 
     @PostMapping(value = "/users", params = "action=password")
     public String getPassword(UserDTO userDTO) {
         String password = randomPasswordService.getRandomPassword();
         logger.info("For user with email: " + userDTO.getEmail() + " was generated new password: " + password);
-        return redirectToFirstUsersPage;
+        return redirectToUsersPage;
     }
 
     @PostMapping(value = "/users", params = "action=save")
     public String saveUser(UserDTO userDTO) {
         userService.saveUser(userDTO);
-        return redirectToFirstUsersPage;
+        return redirectToUsersPage;
     }
 
     @GetMapping("/users/add")
@@ -99,7 +87,7 @@ public class AdminController {
     @PostMapping("/users/add")
     public String addUser(@ModelAttribute(value = "user") UserDTO userDTO) {
         userService.addUser(userDTO);
-        return redirectToFirstUsersPage;
+        return redirectToUsersPage;
     }
 
 }

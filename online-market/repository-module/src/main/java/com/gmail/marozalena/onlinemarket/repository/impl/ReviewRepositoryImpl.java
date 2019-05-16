@@ -77,7 +77,7 @@ public class ReviewRepositoryImpl extends GenericRepositoryImpl implements Revie
     }
 
     @Override
-    public void updateReviews(Connection connection, Review review) {
+    public void updateReview(Connection connection, Review review) {
         String sql = "UPDATE reviews SET showed=? WHERE id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setBoolean(1, review.showed());
