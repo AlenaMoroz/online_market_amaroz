@@ -37,9 +37,15 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewDTOWithUserToReview() {
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setUser(new UserDTO("TestSurname", "TestName",
-                "TestPatronymic", "TestEmail", "TestPassword",
-                new RoleDTO(2L, "Sale User"), false));
+        UserDTO userDTO = new UserDTO();
+        RoleDTO roleDTO = new RoleDTO();
+        userDTO.setSurname("Name");
+        userDTO.setSurname("Surname");
+        userDTO.setPatronymic("Patronymic");
+        userDTO.setEmail("Email");
+        userDTO.setPassword("Password");
+        userDTO.setRole(roleDTO);
+        reviewDTO.setUser(userDTO);
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
         Assert.assertEquals(reviewDTO.getUser().getSurname(), review.getUser().getSurname());
     }
@@ -79,9 +85,15 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewWithUserToReviewDTO() {
         Review review = new Review();
-        review.setUser(new User("TestSurname", "TestName",
-                "TestPatronymic", "TestEmail", "TestPassword",
-                new Role(2L, "Sale User"), true));
+        User user = new User();
+        Role role = new Role();
+        user.setSurname("Name");
+        user.setSurname("Surname");
+        user.setPatronymic("Patronymic");
+        user.setEmail("Email");
+        user.setPassword("Password");
+        user.setRole(role);
+        review.setUser(user);
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
         Assert.assertEquals(review.getUser().getSurname(), reviewDTO.getUser().getSurname());
     }

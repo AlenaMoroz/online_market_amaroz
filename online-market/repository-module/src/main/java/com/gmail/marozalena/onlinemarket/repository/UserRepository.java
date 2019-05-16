@@ -16,5 +16,5 @@ public interface UserRepository extends GenericRepository{
 
     void saveUser(Connection connection, User user);
 
-    int countOfUsers(Connection connection);
+    int getCountOfUsers(Connection connection);
 }

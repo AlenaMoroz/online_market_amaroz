@@ -1,7 +1,6 @@
 package com.gmail.marozalena.onlinemarket.service.impl;
 
 import com.gmail.marozalena.onlinemarket.repository.ReviewRepository;
-import com.gmail.marozalena.onlinemarket.repository.impl.UserRepositoryImpl;
 import com.gmail.marozalena.onlinemarket.repository.model.Review;
 import com.gmail.marozalena.onlinemarket.service.ReviewService;
 import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
@@ -58,12 +57,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(ReviewDTO reviewDTO) {
+    public void deleteReview(Long id) {
         try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                Review review = reviewConverter.fromReviewDTO(reviewDTO);
-                reviewRepository.deleteReview(connection, review);
+                reviewRepository.deleteReview(connection, id);
                 connection.commit();
             } catch (Exception e) {
                 connection.rollback();
@@ -85,7 +83,9 @@ public class ReviewServiceImpl implements ReviewService {
                         .stream()
                         .map(reviewConverter::fromReviewDTO)
                         .collect(Collectors.toList());
-                reviewRepository.updateReviews(connection, reviews);
+                for (Review review : reviews) {
+                    reviewRepository.updateReviews(connection, review);
+                }
                 connection.commit();
             } catch (Exception e) {
                 connection.rollback();
@@ -103,7 +103,7 @@ public class ReviewServiceImpl implements ReviewService {
         try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                int usersNumber = reviewRepository.countOfReviews(connection);
+                int usersNumber = reviewRepository.getCountOfReviews(connection);
                 int pagesNumber = usersNumber / 10;
                 if (usersNumber > (pagesNumber * 10)) {
                     pagesNumber += 1;

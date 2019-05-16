@@ -15,7 +15,5 @@ public interface UserService {
 
     void saveUser(UserDTO userDTO);
 
-    String getRandomPassword();
-
     int getCountPages();
 }

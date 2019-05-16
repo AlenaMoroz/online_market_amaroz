@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTATOR;
+
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -45,10 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/private/users", "/private/users/{page}",
-                        "/private/users/delete", "/private/users/add", "reviews/delete",
+                .antMatchers("/private/users", "/private/users/**", "reviews/delete",
                         "reviews/save")
-                .hasAuthority("Administrator")
+                .hasAuthority(ADMINISTATOR)
                 .antMatchers("/login", "/reviews", "/reviews/{page}")
                 .permitAll()
                 .and()

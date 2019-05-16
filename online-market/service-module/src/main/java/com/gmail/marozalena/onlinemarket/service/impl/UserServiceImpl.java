@@ -2,6 +2,7 @@ package com.gmail.marozalena.onlinemarket.service.impl;
 
 import com.gmail.marozalena.onlinemarket.repository.UserRepository;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
+import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.exception.UserNotAddedException;
@@ -9,9 +10,6 @@ import com.gmail.marozalena.onlinemarket.service.exception.UserNotFoundException
 import com.gmail.marozalena.onlinemarket.service.exception.UserNotSavedException;
 import com.gmail.marozalena.onlinemarket.service.exception.UsersNotDeletedException;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
-import org.passay.CharacterRule;
-import org.passay.EnglishCharacterData;
-import org.passay.PasswordGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,12 +28,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    private final RandomPasswordService randomPasswordService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           UserConverter userConverter) {
+                           UserConverter userConverter,
+                           RandomPasswordService randomPasswordService) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.randomPasswordService = randomPasswordService;
     }
 
     @Override
@@ -46,12 +46,9 @@ public class UserServiceImpl implements UserService {
             try {
                 List<User> users = userRepository.getUsers(connection, page);
                 List<UserDTO> list = users.stream()
-                        .map(userConverter::toUserDTO).sorted(new Comparator<UserDTO>() {
-                            @Override
-                            public int compare(UserDTO user1, UserDTO user2) {
-                                return user1.getEmail().compareTo(user2.getEmail());
-                            }
-                        }).collect(Collectors.toList());
+                        .map(userConverter::toUserDTO)
+                        .sorted(Comparator.comparing(UserDTO::getEmail))
+                        .collect(Collectors.toList());
                 connection.commit();
                 return list;
             } catch (Exception e) {
@@ -90,7 +87,7 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                String randomPassword = getRandomPassword();
+                String randomPassword = randomPasswordService.getRandomPassword();
                 userDTO.setPassword(randomPassword);
                 logger.info("For new user was generated password: " + randomPassword);
                 User user = userConverter.fromUserDTO(userDTO);
@@ -144,21 +141,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public String getRandomPassword() {
-        List<CharacterRule> rules = Arrays.asList(new CharacterRule(EnglishCharacterData.UpperCase, 2),
-                new CharacterRule(EnglishCharacterData.LowerCase, 2),
-                new CharacterRule(EnglishCharacterData.Digit, 2),
-                new CharacterRule(EnglishCharacterData.Special, 2));
-        PasswordGenerator passwordGenerator = new PasswordGenerator();
-        return passwordGenerator.generatePassword(12, rules);
-    }
-
     @Override
     public int getCountPages() {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                int usersNumber = userRepository.countOfUsers(connection);
+                int usersNumber = userRepository.getCountOfUsers(connection);
                 int pagesNumber = usersNumber / 10;
                 if (usersNumber > (pagesNumber * 10)) {
                     pagesNumber += 1;

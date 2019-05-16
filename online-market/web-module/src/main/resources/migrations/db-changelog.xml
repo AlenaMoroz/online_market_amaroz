@@ -96,7 +96,7 @@
             <column name="patronymic">Admin</column>
             <column name="email">admin@admin.com</column>
             <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
-            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE name='Administrator')"/>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Administrator')"/>
             <column name="deleted">0</column>
         </insert>
     </changeSet>

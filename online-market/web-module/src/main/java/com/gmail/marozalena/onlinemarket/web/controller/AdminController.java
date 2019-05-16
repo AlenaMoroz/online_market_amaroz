@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
+import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleServise;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
@@ -8,7 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,23 +27,26 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleServise roleServise;
+    private final RandomPasswordService randomPasswordService;
     private static final String redirectToFirstUsersPage = "redirect:/private/users/1";
 
     @Autowired
     public AdminController(UserService userService,
-                           RoleServise roleServise) {
+                           RoleServise roleServise,
+                           RandomPasswordService randomPasswordService) {
         this.userService = userService;
         this.roleServise = roleServise;
+        this.randomPasswordService = randomPasswordService;
     }
 
     @GetMapping("/users")
-    public String getUsers() {
+    public String getUsers(Model model) {
         return redirectToFirstUsersPage;
     }
 
     @GetMapping("/users/{page}")
     public String getUsersWithPage(Model model,
-                                   @PathVariable("page") Integer page) {
+                                   @RequestParam(value = "page", defaultValue = "1") Integer page) {
 
         model.addAttribute("roles", roleServise.getRoles());
         int pageN;
@@ -70,7 +78,7 @@ public class AdminController {
 
     @PostMapping(value = "/users", params = "action=password")
     public String getPassword(UserDTO userDTO) {
-        String password = userService.getRandomPassword();
+        String password = randomPasswordService.getRandomPassword();
         logger.info("For user with email: " + userDTO.getEmail() + " was generated new password: " + password);
         return redirectToFirstUsersPage;
     }
@@ -84,6 +92,7 @@ public class AdminController {
     @GetMapping("/users/add")
     public String addUser(Model model) {
         model.addAttribute("user", new UserDTO());
+        model.addAttribute("roles", roleServise.getRoles());
         return "add";
     }
 

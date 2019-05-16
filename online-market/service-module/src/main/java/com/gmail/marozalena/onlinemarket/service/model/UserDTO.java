@@ -2,7 +2,6 @@ package com.gmail.marozalena.onlinemarket.service.model;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserDTO {
@@ -23,18 +22,6 @@ public class UserDTO {
     private String email;
     private String password;
     private RoleDTO role;
-    private boolean isDeleted;
-
-    public UserDTO(String surname, String name, String patronymic, String email,
-                   String password, RoleDTO role, boolean isDeleted) {
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.isDeleted = isDeleted;
-    }
 
     public UserDTO() {
     }
@@ -94,12 +81,5 @@ public class UserDTO {
     public void setRole(RoleDTO role) {
         this.role = role;
     }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 }
+

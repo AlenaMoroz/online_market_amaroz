@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,22 +27,24 @@ public class BasicController {
     }
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "login";
     }
 
     @GetMapping("reviews")
-    public String getReviews(){
+    public String getReviews() {
         return redirectToReviewFirstPage;
     }
 
     @GetMapping("/reviews/{page}")
     public String getReviewsWithPage(Model model,
-                                     @PathVariable("page") Integer page) {
+                                     @RequestParam(value = "page", defaultValue = "1") Integer page) {
         int pageN;
-        if(page==null){
+        if (page == null) {
             pageN = 1;
-        }else {pageN = page;}
+        } else {
+            pageN = page;
+        }
         int countPages = reviewService.getCountPages();
         if (pageN > countPages && countPages > 0) {
             pageN = countPages;
@@ -60,13 +62,13 @@ public class BasicController {
     }
 
     @PostMapping("/reviews/delete")
-    public String deleteReview(ReviewDTO reviewDTO) {
-        reviewService.deleteReview(reviewDTO);
+    public String deleteReview(@RequestParam("delete") Long id) {
+        reviewService.deleteReview(id);
         return redirectToReviewFirstPage;
     }
 
     @PostMapping("/reviews/save")
-    public String updateReviews(@ModelAttribute("reviews") ListOfReviewsDTO list){
+    public String updateReviews(@ModelAttribute("reviews") ListOfReviewsDTO list) {
         reviewService.updateReviews(list);
         return redirectToReviewFirstPage;
     }

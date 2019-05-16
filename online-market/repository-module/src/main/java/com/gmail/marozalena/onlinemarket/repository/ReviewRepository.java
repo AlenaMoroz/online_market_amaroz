@@ -9,9 +9,9 @@ public interface ReviewRepository extends GenericRepository {
 
     List<Review> getReviews(Connection connection, Integer page);
 
-    void deleteReview(Connection connection, Review review);
+    void deleteReview(Connection connection, Long id);
 
-    void updateReviews(Connection connection, List<Review> reviews);
+    void updateReviews(Connection connection, Review review);
 
-    int countOfReviews(Connection connection);
+    int getCountOfReviews(Connection connection);
 }

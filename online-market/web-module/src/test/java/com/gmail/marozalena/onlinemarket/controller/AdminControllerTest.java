@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.controller;
 
+import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleServise;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
@@ -30,21 +31,18 @@ public class AdminControllerTest {
     private UserService userService;
     @Mock
     private RoleServise roleServise;
+    @Mock
+    private RandomPasswordService randomPasswordService;
 
     private AdminController adminController;
 
     private MockMvc mvc;
 
-    private List<UserDTO> users = asList(new UserDTO(
-                    "Name1", "Name2", "Name3", "Email", "Password",
-                    new RoleDTO(2L, "Sale User"), true),
-            new UserDTO(
-                    "Name1.1", "Name2.1", "Name3.1", "Email1", "Password",
-                    new RoleDTO(3L, "Customer User"), false));
+    private List<UserDTO> users = asList(generateUserDTO(), generateUserDTO());
 
     @Before
     public void init() {
-        adminController = new AdminController(userService, roleServise);
+        adminController = new AdminController(userService, roleServise,randomPasswordService);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
         when(userService.getUsers(1)).thenReturn(users);
     }
@@ -55,6 +53,17 @@ public class AdminControllerTest {
         String users = adminController.getUsersWithPage(model, 1);
         assertThat(users, equalTo("users"));
         assertThat(model.asMap(), hasEntry("users", this.users));
+    }
+
+    private UserDTO generateUserDTO(){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setName("Name");
+        userDTO.setSurname("Name");
+        userDTO.setPatronymic("Name");
+        userDTO.setEmail("Email");
+        userDTO.setPassword("Password");
+        userDTO.setRole(new RoleDTO());
+        return userDTO;
     }
 
 }

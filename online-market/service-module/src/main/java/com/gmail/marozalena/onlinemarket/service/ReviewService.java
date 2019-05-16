@@ -9,7 +9,7 @@ public interface ReviewService {
 
     List<ReviewDTO> getReviews(Integer page);
 
-    void deleteReview(ReviewDTO reviewDTO);
+    void deleteReview(Long id);
 
     void updateReviews(ListOfReviewsDTO list);
 

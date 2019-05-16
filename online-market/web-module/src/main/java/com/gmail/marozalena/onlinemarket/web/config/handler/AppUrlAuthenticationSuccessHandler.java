@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.web.config.handler;
 
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTATOR;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -44,7 +45,7 @@ public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccess
         boolean isAdministrator = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equals("Administrator")) {
+            if (authority.getAuthority().equals(ADMINISTATOR)) {
                 isAdministrator = true;
                 break;
             }
