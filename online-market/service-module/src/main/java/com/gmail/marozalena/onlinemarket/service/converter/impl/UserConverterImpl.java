@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.service.converter.impl;
 
+import com.gmail.marozalena.onlinemarket.service.converter.ProfileConverter;
 import com.gmail.marozalena.onlinemarket.service.converter.RoleConverter;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Component;
 public class UserConverterImpl implements UserConverter {
 
     private final RoleConverter roleConverter;
+    private final ProfileConverter profileConverter;
 
     @Autowired
-    public UserConverterImpl(RoleConverter roleConverter) {
+    public UserConverterImpl(RoleConverter roleConverter,
+                             ProfileConverter profileConverter) {
         this.roleConverter = roleConverter;
+        this.profileConverter = profileConverter;
     }
 
     @Override
@@ -24,12 +28,10 @@ public class UserConverterImpl implements UserConverter {
         }
         User user = new User();
         user.setId(userDTO.getId());
-        user.setSurname(userDTO.getSurname());
-        user.setName(userDTO.getName());
-        user.setPatronymic(userDTO.getPatronymic());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setRole(roleConverter.fromRoleDTO(userDTO.getRole()));
+        user.setProfile(profileConverter.fromDTO(userDTO.getProfile()));
         return user;
     }
 
@@ -40,12 +42,10 @@ public class UserConverterImpl implements UserConverter {
         }
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
-        userDTO.setSurname(user.getSurname());
-        userDTO.setName(user.getName());
-        userDTO.setPatronymic(user.getPatronymic());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
         userDTO.setRole(roleConverter.toRoleDTO(user.getRole()));
+        userDTO.setProfile(profileConverter.toDTO(user.getProfile()));
         return userDTO;
     }
 }

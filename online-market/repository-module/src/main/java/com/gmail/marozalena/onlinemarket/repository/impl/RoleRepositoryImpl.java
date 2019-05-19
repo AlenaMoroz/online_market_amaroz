@@ -15,26 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class RoleRepositoryImpl extends GenericRepositoryImpl implements RoleRepository {
+public class RoleRepositoryImpl extends GenericRepositoryImpl<Long, Role> implements RoleRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(RoleRepositoryImpl.class);
-
-    @Override
-    public List<Role> getRoles(Connection connection) {
-        String sql = "SELECT * FROM `roles`";
-        List<Role> roles = new ArrayList<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery()){
-            while (resultSet.next()){
-                Role role = new Role();
-                role.setId(resultSet.getLong("id"));
-                role.setName(resultSet.getString("role"));
-                roles.add(role);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new DatabaseException("Problems with getting roles from database", e);
-        }
-        return roles;
-    }
 }

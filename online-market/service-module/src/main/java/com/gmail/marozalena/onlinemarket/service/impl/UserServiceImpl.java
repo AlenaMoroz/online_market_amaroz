@@ -1,20 +1,22 @@
 package com.gmail.marozalena.onlinemarket.service.impl;
 
 import com.gmail.marozalena.onlinemarket.repository.UserRepository;
+import com.gmail.marozalena.onlinemarket.repository.constant.LimitConstants;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
-import com.gmail.marozalena.onlinemarket.service.exception.UserNotAddedException;
 import com.gmail.marozalena.onlinemarket.service.exception.UserNotFoundException;
-import com.gmail.marozalena.onlinemarket.service.exception.UserNotSavedException;
 import com.gmail.marozalena.onlinemarket.service.exception.UsersNotDeletedException;
+import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -29,115 +31,76 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final RandomPasswordService randomPasswordService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            UserConverter userConverter,
-                           RandomPasswordService randomPasswordService) {
+                           RandomPasswordService randomPasswordService,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
         this.randomPasswordService = randomPasswordService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public List<UserDTO> getUsers(Integer page) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                List<User> users = userRepository.getUsers(connection, page);
-                List<UserDTO> list = users.stream()
-                        .map(userConverter::toUserDTO)
-                        .sorted(Comparator.comparing(UserDTO::getEmail))
-                        .collect(Collectors.toList());
-                connection.commit();
-                return list;
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new UserNotFoundException("Users not found in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new UserNotFoundException("Users not found in database", e);
-        }
+    @Transactional
+    public PageDTO<UserDTO> getUsers(Integer page) {
+        List<User> users = userRepository.findAll(page);
+        List<UserDTO> list = users.stream()
+                .map(userConverter::toUserDTO)
+                .sorted(Comparator.comparing(UserDTO::getEmail))
+                .collect(Collectors.toList());
+        PageDTO<UserDTO> listOfUsers = new PageDTO<>();
+        listOfUsers.setList(list);
+        listOfUsers.setCountOfPages(getCountOfPages(userRepository.getCountOfEntities()));
+        return listOfUsers;
     }
 
     @Override
-    public UserDTO loadUserByUsername(String email) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                User user = userRepository.loadUserByEmail(connection, email);
-                UserDTO userDTO = userConverter.toUserDTO(user);
-                connection.commit();
-                return userDTO;
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new UserNotFoundException("User with email " + email + " not found", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new UserNotFoundException("User with email " + email + " not found", e);
-        }
+    @Transactional
+    public UserDTO loadUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return userConverter.toUserDTO(user);
     }
 
     @Override
+    @Transactional
     public void addUser(UserDTO userDTO) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                String randomPassword = randomPasswordService.getRandomPassword();
-                userDTO.setPassword(randomPassword);
-                logger.info("For new user was generated password: " + randomPassword);
-                User user = userConverter.fromUserDTO(userDTO);
-                userRepository.addUser(connection, user);
-                connection.commit();
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new UserNotAddedException("User not added in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new UserNotAddedException("User not added in database", e);
-        }
+        String randomPassword = randomPasswordService.getRandomPassword();
+        userDTO.setPassword(encoder(randomPassword));
+        User user = userConverter.fromUserDTO(userDTO);
+        userRepository.persist(user);
     }
 
     @Override
+    @Transactional
     public void deleteUsers(List<Long> idUsers) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                userRepository.deleteUsers(connection, idUsers);
-                connection.commit();
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new UsersNotDeletedException("Users not deleted from database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new UsersNotDeletedException("Users not deleted from database", e);
+        for (Long id : idUsers) {
+            User user = userRepository.findByID(id);
+            userRepository.remove(user);
         }
     }
 
     @Override
+    @Transactional
     public void saveUser(UserDTO userDTO) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                User user = userConverter.fromUserDTO(userDTO);
-                userRepository.saveUser(connection, user);
-                connection.commit();
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new UserNotSavedException("Users not saved in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new UserNotSavedException("Users not saved in database", e);
+        User user = userConverter.fromUserDTO(userDTO);
+        user.getRole().setId(userDTO.getRole().getId());
+        user.getRole().setName(userDTO.getRole().getName());
+        userRepository.persist(user);
+    }
+
+    private int getCountOfPages(int countOfUsers) {
+        int countOfPages = countOfUsers / LimitConstants.ENTITY_ON_PAGE;
+        if (countOfUsers > (countOfPages * LimitConstants.ENTITY_ON_PAGE)) {
+            countOfPages += 1;
         }
+        return countOfPages;
+    }
+
+    private String encoder(String password) {
+        return passwordEncoder.encode(password);
     }
 }

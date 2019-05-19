@@ -3,6 +3,7 @@ package com.gmail.marozalena.onlinemarket;
 import com.gmail.marozalena.onlinemarket.repository.model.Role;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
+import com.gmail.marozalena.onlinemarket.service.converter.impl.ProfileConverterImpl;
 import com.gmail.marozalena.onlinemarket.service.converter.impl.RoleConverterImpl;
 import com.gmail.marozalena.onlinemarket.service.converter.impl.UserConverterImpl;
 import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
@@ -17,7 +18,7 @@ public class UserConverterTest {
 
     @Before
     public void init() {
-        userConverter = new UserConverterImpl(new RoleConverterImpl());
+        userConverter = new UserConverterImpl(new RoleConverterImpl(), new ProfileConverterImpl());
     }
 
     @Test
@@ -26,30 +27,6 @@ public class UserConverterTest {
         userDTO.setId(2L);
         User user = userConverter.fromUserDTO(userDTO);
         Assert.assertEquals(userDTO.getId(), user.getId());
-    }
-
-    @Test
-    public void shouldConvertUserDTOWithSurnameToUser() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setSurname("Surname");
-        User user = userConverter.fromUserDTO(userDTO);
-        Assert.assertEquals(userDTO.getSurname(), user.getSurname());
-    }
-
-    @Test
-    public void shouldConvertUserDTOWithNameToUser() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("Name");
-        User user = userConverter.fromUserDTO(userDTO);
-        Assert.assertEquals(userDTO.getName(), user.getName());
-    }
-
-    @Test
-    public void shouldConvertUserDTOWithPatronymicToUser() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setPatronymic("Patronymic");
-        User user = userConverter.fromUserDTO(userDTO);
-        Assert.assertEquals(userDTO.getPatronymic(), user.getPatronymic());
     }
 
     @Test
@@ -82,30 +59,6 @@ public class UserConverterTest {
         user.setId(2L);
         UserDTO userDTO = userConverter.toUserDTO(user);
         Assert.assertEquals(user.getId(), userDTO.getId());
-    }
-
-    @Test
-    public void shouldConvertUserWithSurnameToUserDTO() {
-        User user = new User();
-        user.setSurname("Surname");
-        UserDTO userDTO = userConverter.toUserDTO(user);
-        Assert.assertEquals(user.getSurname(), userDTO.getSurname());
-    }
-
-    @Test
-    public void shouldConvertUserWithNameToUserDTO() {
-        User user = new User();
-        user.setName("Name");
-        UserDTO userDTO = userConverter.toUserDTO(user);
-        Assert.assertEquals(user.getName(), userDTO.getName());
-    }
-
-    @Test
-    public void shouldConvertUserWithPatronymicToUserDTO() {
-        User user = new User();
-        user.setPatronymic("Patronymic");
-        UserDTO userDTO = userConverter.toUserDTO(user);
-        Assert.assertEquals(user.getPatronymic(), userDTO.getPatronymic());
     }
 
     @Test

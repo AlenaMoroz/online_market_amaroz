@@ -3,8 +3,8 @@ package com.gmail.marozalena.onlinemarket.web.controller;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
+import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
-import com.gmail.marozalena.onlinemarket.service.pagination.PaginationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,35 +30,32 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
     private final RandomPasswordService randomPasswordService;
-    private final PaginationService paginationService;
 
     @Autowired
     public AdminController(
             UserService userService,
             RoleService roleService,
-            RandomPasswordService randomPasswordService,
-            PaginationService paginationService)
-    {
+            RandomPasswordService randomPasswordService) {
         this.userService = userService;
         this.roleService = roleService;
         this.randomPasswordService = randomPasswordService;
-        this.paginationService = paginationService;
     }
 
     @GetMapping("/users")
     public String getUsers(Model model,
                            @RequestParam(value = "page", defaultValue = "1") Integer page) {
         model.addAttribute("roles", roleService.getRoles());
-        int countPages = paginationService.getCountPagesForPageWithUsers();
-        if (page > countPages && countPages > 0) {
-            page = countPages;
+        PageDTO<UserDTO> users = userService.getUsers(page);
+        model.addAttribute("users", users.getList());
+        int countOfPages = users.getCountOfPages();
+        if (page > countOfPages && countOfPages > 0) {
+            page = countOfPages;
         }
-        List<Integer> countOfPages = IntStream.rangeClosed(1, countPages)
+        List<Integer> pages = IntStream.rangeClosed(1, countOfPages)
                 .boxed()
                 .collect(Collectors.toList());
-        model.addAttribute("pages", countOfPages);
+        model.addAttribute("pages", pages);
         model.addAttribute("current", page);
-        model.addAttribute("users", userService.getUsers(page));
         return "users";
     }
 
@@ -83,14 +80,14 @@ public class AdminController {
         return redirectToUsersPage;
     }
 
-    @GetMapping("/users/add")
+    @GetMapping("/users/new")
     public String addUser(Model model) {
         model.addAttribute("user", new UserDTO());
         model.addAttribute("roles", roleService.getRoles());
         return "add";
     }
 
-    @PostMapping("/users/add")
+    @PostMapping("/users/new")
     public String addUser(@ModelAttribute(value = "user") UserDTO userDTO) {
         userService.addUser(userDTO);
         return redirectToUsersPage;

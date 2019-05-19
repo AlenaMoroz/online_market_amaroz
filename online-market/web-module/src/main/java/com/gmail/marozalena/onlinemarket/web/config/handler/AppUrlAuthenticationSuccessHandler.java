@@ -1,6 +1,8 @@
 package com.gmail.marozalena.onlinemarket.web.config.handler;
 
-import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTATOR;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SECURE_REST_API;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -42,19 +44,15 @@ public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccess
     }
 
     private String determineTargetUrl(Authentication authentication) {
-        boolean isAdministrator = false;
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equals(ADMINISTATOR)) {
-                isAdministrator = true;
-                break;
+            if (authority.getAuthority().equals(ADMINISTRATOR)) {
+                return "/private/users";
+            }else if(authority.getAuthority().equals(SECURE_REST_API)){
+                return "/api/articles";
             }
         }
-        if (isAdministrator) {
-            return "/private/users";
-        } else {
-            throw new IllegalStateException();
-        }
+        throw new IllegalStateException();
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {

@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/header :: header-css"></div>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<form id="deleteUsers" th:action="@{/private/users/delete}" method="post"></form>
-<table>
-    <tr>
-        <th>Delete</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Patronymic</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
-    <tr th:each="user : ${users}">
-        <form action="#" th:action="@{/private/users}" method="post">
-            <th>
-                <center>
-                    <input th:if="${user.id!=1}" class="checkbox" type="checkbox" name="ids"
-                           th:value="${user.id}" form="deleteUsers">
-                </center>
-            </th>
-            <th>
-                <input id="name" name="name" th:value="${user.name}">
-            </th>
-            <th>
-                <input id="surname" name="surname" th:value="${user.surname}">
-            </th>
-            <th>
-                <input id="patronymic" name="patronymic" th:value="${user.patronymic}">
-            </th>
-            <th>
-                <input id="email" name="email" th:value="${user.email}">
-            </th>
-            <th:block th:if="${user.id==1}">
-                <th>
-                    <input name="role.name" th:value="${user.role.name}">
-                </th>
-            </th:block>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <legend>Users</legend>
+        </div>
+    </div>
+    <form id="deleteUsers" th:action="@{/private/users/delete}" method="post"></form>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-responsive table-hover table-bordered ">
+                <thead>
+                <tr class="info">
+                    <th><input type="checkbox" value=""></th>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Patronymic</th>
+                    <th>E-Mail</th>
+                    <th>Role</th>
+                    <th>Password</th>
+                    <th>Save</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <form action="#" th:action="@{/private/users}" method="post">
+                        <td><input th:if="${user.id!=1}" class="checkbox" type="checkbox" name="ids"
+                                   th:value="${user.id}" form="deleteUsers"></td>
+                        <td id="name" th:text="${user.profile.name}"></td>
+                        <td id="surname" th:text="${user.profile.surname}"></td>
+                        <td id="patronymic" th:text="${user.profile.patronymic}"></td>
+                        <td id="email" th:text="${user.email}"></td>
+                        <td>
+                            <select id="role.name" name="role.id" th:if="${user.id!=1}">
+                                <option th:each="role,stat:${roles}"
+                                        name="user.id"
+                                        th:value="${roles[__${stat.index}__].id}"
+                                        th:text="${roles[__${stat.index}__].name}"
+                                        th:selected="${user.role.name == roles[__${stat.index}__].name}">
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <button th:if="${user.id!=1}" id="password" name="action" value="password"
+                                    class="btn btn-success">New
+                            </button>
+                        </td>
+                        <td>
+                            <button th:if="${user.id!=1}" name="action" value="save" class="btn btn-primary">Save
+                            </button>
+                        </td>
+                    </form>
+                </tr>
 
-            <th:block th:if="${user.id!=1}">
-                <th>
-                    <select id="role.name" name="role.id">
-                        <option th:each="role,stat:${roles}"
-                                name="user.id"
-                                th:value="${roles[__${stat.index}__].id}"
-                                th:text="${roles[__${stat.index}__].name}"
-                                th:selected="${user.role.name == roles[__${stat.index}__].name}">
-                        </option>
-                    </select>
-                </th>
-            </th:block>
-            <th:block th:if="${user.id!=1}">
-                <th>
-                    <button id="password" name="action" value="password" class="btn btn-success">Password</button>
-                </th>
-                <th>
-                    <button name="action" value="save" class="btn btn-primary">Save</button>
-                </th>
-            </th:block>
-        </form>
-    </tr>
-</table>
-<div class="col-md-2">
-    <button th:form="deleteUsers" class="btn btn-danger">Delete</button>
-</div>
-
-<div class="pagination justify-content-center">
-    <hr>
-    <tr th:if="${pages.size() > 0}" th:each="page : ${pages}">
-        <th th:if="${page} == ${current}" class="page-item active">
-            <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}" th:text="${page}"></a>
-        </th>
-        <th th:unless="${page} == ${current}" class="page-item">
-            <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}" th:text="${page}"></a>
-        </th>
-    </tr>
-    <hr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2">
+            <button th:form="deleteUsers" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+    <div class="pagination justify-content-center">
+        <hr>
+        <tr th:if="${pages.size() > 0}" th:each="page : ${pages}">
+            <th th:if="${page} == ${current}" class="page-item active">
+                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}" th:text="${page}"></a>
+            </th>
+            <th th:unless="${page} == ${current}" class="page-item">
+                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}" th:text="${page}"></a>
+            </th>
+        </tr>
+        <hr>
+    </div>
 </div>
 </body>
 </html>
