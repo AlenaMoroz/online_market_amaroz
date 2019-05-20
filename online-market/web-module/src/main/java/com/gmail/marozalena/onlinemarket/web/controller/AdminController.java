@@ -37,8 +37,7 @@ public class AdminController {
     public AdminController(
             UserService userService,
             RoleService roleService,
-            RandomPasswordService randomPasswordService,
-            ProfileService profileService) {
+            RandomPasswordService randomPasswordService) {
         this.userService = userService;
         this.roleService = roleService;
         this.randomPasswordService = randomPasswordService;

@@ -34,8 +34,6 @@ public class AdminControllerTest {
     private RoleService roleService;
     @Mock
     private RandomPasswordService randomPasswordService;
-    @Mock
-    private ProfileService profileService;
 
     private AdminController adminController;
 
@@ -43,7 +41,7 @@ public class AdminControllerTest {
 
     @Before
     public void init() {
-        adminController = new AdminController(userService, roleService,randomPasswordService, profileService);
+        adminController = new AdminController(userService, roleService,randomPasswordService);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
         when(userService.getUsers(1)).thenReturn(generatePage());
     }
