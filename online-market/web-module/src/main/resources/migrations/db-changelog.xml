@@ -195,6 +195,16 @@
         </insert>
     </changeSet>
 
+    <changeSet id="Set_Profile_for_Secure_Api" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">Secure</column>
+            <column name="surname">Secure</column>
+            <column name="patronymic">Secure</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37533234567</column>
+        </insert>
+    </changeSet>
+
     <changeSet id="Set_ADMIN" author="marozalena@gmail.com">
         <insert tableName="users">
             <column name="email">admin@admin.com</column>
@@ -202,6 +212,16 @@
             <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Administrator')"/>
             <column name="deleted">0</column>
             <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Admin')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_SECURE_API" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">secure@secure.com</column>
+            <column name="password">$2a$10$hS713tvaXz9S2ZtYeYPTheOH9JFSi.hRgXU9Tcce1J5TlrGWgXvwC</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='SECURE REST API')"/>
+            <column name="deleted">0</column>
+            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Secure')"/>
         </insert>
     </changeSet>
 
