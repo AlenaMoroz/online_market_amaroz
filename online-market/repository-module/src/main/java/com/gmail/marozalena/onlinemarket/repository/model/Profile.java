@@ -1,5 +1,7 @@
 package com.gmail.marozalena.onlinemarket.repository.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -89,13 +91,12 @@ public class Profile {
         return Objects.equals(id, profile.id) &&
                 Objects.equals(name, profile.name) &&
                 Objects.equals(surname, profile.surname) &&
-                Objects.equals(patronymic, profile.patronymic) &&
                 Objects.equals(address, profile.address) &&
                 Objects.equals(phone, profile.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, patronymic, address, phone);
+        return Objects.hash(id, name, surname, address, phone);
     }
 }

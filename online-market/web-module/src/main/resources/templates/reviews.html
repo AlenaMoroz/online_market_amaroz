@@ -20,9 +20,9 @@
         <tr th:each="review,stat : ${reviews.list}">
             <form id="delete" action="#" th:action="@{/reviews/delete}" method="post">
             <th height="300" width="300">
-                <p><input id="name" name="name" th:value="${review.user.name}"></p>
-                <p><input id="surname" name="surname" th:value="${review.user.surname}"></p>
-                <p><input id="patronymic" name="patronymic" th:value="${review.user.patronymic}"></p>
+                <p><input id="name" name="name" th:value="${review.user.profile.name}"></p>
+                <p><input id="surname" name="surname" th:value="${review.user.profile.surname}"></p>
+                <p><input id="patronymic" name="patronymic" th:value="${review.user.profile.patronymic}"></p>
                 <p th:text="${review.date}"></p>
             <th height="300" width="300">
                 <input id="review" name="review" th:value="${review.review}"></th>

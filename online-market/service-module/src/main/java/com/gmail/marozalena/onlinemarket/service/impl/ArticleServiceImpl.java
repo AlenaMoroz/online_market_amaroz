@@ -50,7 +50,31 @@ public class ArticleServiceImpl implements ArticleService {
         return articleConverter.toDTO(article);
     }
 
-    private int getCountOfPages(int countOfArticles){
+    @Override
+    @Transactional
+    public List<ArticleDTO> getAllArticles() {
+        List<Article> articles = articleRepository.findAll();
+        return articles.stream()
+                .map(articleConverter::toDTO)
+                .sorted(Comparator.comparing(ArticleDTO::getDate))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void addArticle(ArticleDTO articleDTO) {
+        Article article = articleConverter.fromDTO(articleDTO);
+        article.setId(articleDTO.getId());
+        articleRepository.persist(article);
+    }
+
+    @Override
+    public void deleteArticle(Long id) {
+        Article article = articleRepository.findByID(id);
+        articleRepository.remove(article);
+    }
+
+    private int getCountOfPages(int countOfArticles) {
         int countOfPages = countOfArticles / LimitConstants.ENTITY_ON_PAGE;
         if (countOfArticles > (countOfPages * LimitConstants.ENTITY_ON_PAGE)) {
             countOfPages += 1;

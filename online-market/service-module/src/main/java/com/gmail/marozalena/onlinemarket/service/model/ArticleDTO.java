@@ -6,14 +6,24 @@ import java.util.List;
 
 public class ArticleDTO {
 
+    private Long id;
     private Date date;
     private String topic;
-    private String pathToPicture;
-    private UserDTO userDTO;
+    private String summary;
+    private String picture;
+    private UserDTO user = new UserDTO();
     private String body;
-    private List<CommentDTO> commentsDTO = new ArrayList<>();
+    private List<CommentDTO> comments = new ArrayList<>();
 
     public ArticleDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getDate() {
@@ -32,20 +42,20 @@ public class ArticleDTO {
         this.topic = topic;
     }
 
-    public String getPathToPicture() {
-        return pathToPicture;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPathToPicture(String pathToPicture) {
-        this.pathToPicture = pathToPicture;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public String getBody() {
@@ -56,11 +66,19 @@ public class ArticleDTO {
         this.body = body;
     }
 
-    public List<CommentDTO> getCommentsDTO() {
-        return commentsDTO;
+    public List<CommentDTO> getComments() {
+        return comments;
     }
 
-    public void setCommentsDTO(List<CommentDTO> commentsDTO) {
-        this.commentsDTO = commentsDTO;
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

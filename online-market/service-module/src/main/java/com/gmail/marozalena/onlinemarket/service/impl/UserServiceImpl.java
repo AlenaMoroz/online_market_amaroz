@@ -1,13 +1,14 @@
 package com.gmail.marozalena.onlinemarket.service.impl;
 
+import com.gmail.marozalena.onlinemarket.repository.ProfileRepository;
 import com.gmail.marozalena.onlinemarket.repository.UserRepository;
 import com.gmail.marozalena.onlinemarket.repository.constant.LimitConstants;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
-import com.gmail.marozalena.onlinemarket.service.exception.UserNotFoundException;
-import com.gmail.marozalena.onlinemarket.service.exception.UsersNotDeletedException;
+import com.gmail.marozalena.onlinemarket.service.exception.UserNotAddedException;
+import com.gmail.marozalena.onlinemarket.service.exception.UserNotSavedException;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.slf4j.Logger;
@@ -32,16 +33,19 @@ public class UserServiceImpl implements UserService {
     private final UserConverter userConverter;
     private final RandomPasswordService randomPasswordService;
     private final PasswordEncoder passwordEncoder;
+    private final ProfileRepository profileRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            UserConverter userConverter,
                            RandomPasswordService randomPasswordService,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           ProfileRepository profileRepository) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
         this.randomPasswordService = randomPasswordService;
         this.passwordEncoder = passwordEncoder;
+        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -66,12 +70,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void addUser(UserDTO userDTO) {
-        String randomPassword = randomPasswordService.getRandomPassword();
-        userDTO.setPassword(encoder(randomPassword));
-        User user = userConverter.fromUserDTO(userDTO);
-        userRepository.persist(user);
+        try (Connection connection = userRepository.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                String randomPassword = randomPasswordService.getRandomPassword();
+                userDTO.setPassword(randomPassword);
+                logger.info("For new user was generated password: " + randomPassword);
+                User user = userConverter.fromUserDTO(userDTO);
+                profileRepository.addProfile(connection, user.getProfile());
+                userRepository.addUser(connection, user);
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+                logger.error(e.getMessage(), e);
+                throw new UserNotAddedException("User not added in database", e);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UserNotAddedException("User not added in database", e);
+        }
     }
 
     @Override
@@ -84,12 +102,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void saveUser(UserDTO userDTO) {
-        User user = userConverter.fromUserDTO(userDTO);
-        user.getRole().setId(userDTO.getRole().getId());
-        user.getRole().setName(userDTO.getRole().getName());
-        userRepository.persist(user);
+        try (Connection connection = userRepository.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                User user = userConverter.fromUserDTO(userDTO);
+                userRepository.saveUser(connection, user);
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+                logger.error(e.getMessage(), e);
+                throw new UserNotSavedException("Users not saved in database", e);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new UserNotSavedException("Users not saved in database", e);
+        }
     }
 
     private int getCountOfPages(int countOfUsers) {

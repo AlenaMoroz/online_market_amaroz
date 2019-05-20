@@ -4,14 +4,17 @@ import com.gmail.marozalena.onlinemarket.service.ArticleService;
 import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Controller
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -25,7 +28,7 @@ public class ArticleController {
     public String getArticles(Model model,
                                      @RequestParam(value = "page", defaultValue = "1") Integer page) {
         PageDTO<ArticleDTO> articles = articleService.getArticles(page);
-        model.addAttribute("articles", articles);
+        model.addAttribute("articles", articles.getList());
         int countOfPages = articles.getCountOfPages();
         if (page > countOfPages && countOfPages > 0) {
             page = countOfPages;
@@ -40,7 +43,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String getArticle(Model model,
-                              @RequestParam(value = "id") Long id) {
+                              @PathVariable Long id) {
         ArticleDTO article = articleService.findByID(id);
         model.addAttribute("article", article);
         return "article";

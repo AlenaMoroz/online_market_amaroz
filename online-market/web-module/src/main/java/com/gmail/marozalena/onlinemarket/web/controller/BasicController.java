@@ -37,7 +37,9 @@ public class BasicController {
     public String getReviewsWithPage(Model model,
                                      @RequestParam(value = "page", defaultValue = "1") Integer page) {
         PageDTO<ReviewDTO> reviews = reviewService.getReviews(page);
-        model.addAttribute("reviews", reviews);
+        ListOfReviewsDTO list = new ListOfReviewsDTO();
+        list.setListOfReviews(reviews.getList());
+        model.addAttribute("reviews", list);
         int countOfPages = reviews.getCountOfPages();
         if (page > countOfPages && countOfPages > 0) {
             page = countOfPages;
@@ -57,8 +59,8 @@ public class BasicController {
     }
 
     @PostMapping("/reviews/save")
-    public String updateReviews(@ModelAttribute("reviews") ListOfReviewsDTO list) {
-        reviewService.updateReviews(list);
+    public String updateReviews(@ModelAttribute("reviews") ListOfReviewsDTO reviews) {
+        reviewService.updateReviews(reviews);
         return redirectToReviewFirstPage;
     }
 

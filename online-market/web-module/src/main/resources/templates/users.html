@@ -30,13 +30,13 @@
                 </thead>
                 <tbody>
                 <tr th:each="user : ${users}">
-                    <form action="#" th:action="@{/private/users}" method="post">
+                    <form action="#" th:action="@{/private/users/{id}(id=${user.id})}" th:object="${userDTO}" method="post">
                         <td><input th:if="${user.id!=1}" class="checkbox" type="checkbox" name="ids"
                                    th:value="${user.id}" form="deleteUsers"></td>
                         <td id="name" th:text="${user.profile.name}"></td>
                         <td id="surname" th:text="${user.profile.surname}"></td>
                         <td id="patronymic" th:text="${user.profile.patronymic}"></td>
-                        <td id="email" th:text="${user.email}"></td>
+                        <td id="email" th:text="${user.email}" th:field="*{email}"></td>
                         <td>
                             <select id="role.name" name="role.id" th:if="${user.id!=1}">
                                 <option th:each="role,stat:${roles}"

@@ -51,10 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/private/users", "/private/users/**", "/reviews/delete",
                         "/reviews/save")
                 .hasAuthority(ADMINISTRATOR)
-                .antMatchers("/api/**")
-                .hasAuthority(SECURE_REST_API)
-                .antMatchers("/login", "/reviews", "/reviews/{page}")
+                .antMatchers("/login", "/reviews", "/reviews/**", "/articles",
+                        "/articles/**")
                 .permitAll()
+                .antMatchers("/profile")
+                .fullyAuthenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

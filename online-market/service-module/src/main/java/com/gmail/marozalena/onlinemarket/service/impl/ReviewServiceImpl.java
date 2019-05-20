@@ -5,6 +5,7 @@ import com.gmail.marozalena.onlinemarket.repository.constant.LimitConstants;
 import com.gmail.marozalena.onlinemarket.repository.model.Review;
 import com.gmail.marozalena.onlinemarket.service.ReviewService;
 import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
+import com.gmail.marozalena.onlinemarket.service.exception.ReviewsNotUpdatedException;
 import com.gmail.marozalena.onlinemarket.service.exception.ServiceException;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
@@ -60,12 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public void updateReviews(ListOfReviewsDTO list) {
-        for (ReviewDTO reviewDTO : list.getListOfReviews()) {
-            Review review = reviewConverter.fromReviewDTO(reviewDTO);
-            review.setShowed(reviewDTO.isShowed());
-            reviewRepository.merge(review);
-        }
-       /* try (Connection connection = reviewRepository.getConnection()) {
+        try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 List<Review> reviews = list.getListOfReviews()
@@ -79,14 +75,12 @@ public class ReviewServiceImpl implements ReviewService {
             } catch (Exception e) {
                 connection.rollback();
                 logger.error(e.getMessage(), e);
-                throw new ServiceException("Reviews " + list.getListOfReviews().toString()
-                        + " not updated in database", e);
+                throw new ReviewsNotUpdatedException("Reviews not updated in database", e);
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw new ServiceException("Reviews " + list.getListOfReviews().toString()
-                    + " not updated in database", e);
-        }*/
+            throw new ReviewsNotUpdatedException("Reviews not updated in database", e);
+        }
     }
 
     private int getCountOfPages(int countOfReviews) {

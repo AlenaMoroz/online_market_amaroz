@@ -12,8 +12,8 @@ public class UserDTO {
     @Email
     private String email;
     private String password;
-    private RoleDTO role;
-    private ProfileDTO profile;
+    private RoleDTO role = new RoleDTO();
+    private ProfileDTO profile = new ProfileDTO();
 
     public UserDTO() {
     }

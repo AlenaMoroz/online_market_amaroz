@@ -59,10 +59,11 @@
             </column>
             <column name="date" type="DATETIME"/>
             <column name="topic" type="varchar(30)"/>
+            <column name="summary" type="varchar(200)"/>
             <column name="picture" type="varchar(80)"/>
             <column name="users_id" type="BIGINT"/>
             <column name="body" type="varchar(1000)"/>
-            <column name="comments_id" type="BIGINT"/>
+            <column name="deleted" type="TINYINT"/>
         </createTable>
     </changeSet>
 
@@ -74,6 +75,7 @@
             <column name="users_id" type="BIGINT"/>
             <column name="date" type="DATETIME"/>
             <column name="comment" type="varchar(200)"/>
+            <column name="articles_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
@@ -126,14 +128,14 @@
     </changeSet>
 
     <changeSet id="FOREIGNKEY_Articles_With_Comments" author="marozalena@gmail.com">
-        <addForeignKeyConstraint baseTableName="articles"
-                                 baseColumnNames="comments_id"
-                                 constraintName="fk_articles_comments"
+        <addForeignKeyConstraint baseTableName="comments"
+                                 baseColumnNames="articles_id"
+                                 constraintName="fk_comments_articles"
                                  deferrable="false"
                                  initiallyDeferred="false"
                                  onUpdate="RESTRICT"
                                  onDelete="RESTRICT"
-                                 referencedTableName="comments"
+                                 referencedTableName="articles"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -223,99 +225,26 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Set_Review2" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 2</column>
-            <column name="date">2019-05-12 16:13:39.541</column>
-            <column name="showed">1</column>
+    <changeSet id="Set_Article1" author="marozalena@gmail.com">
+        <insert tableName="articles">
+            <column name="date">2019-05-11 16:13:39.541</column>
+            <column name="topic">Test Topic</column>
+            <column name="summary">Some Summary</column>
+            <column name="picture">http://eskimo.egemenerd.com/wp-content/uploads/2018/05/product14-150x150.jpg</column>
+            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='admin@admin.com')"/>
+            <column name="body">Text, Text, Text, Text, Text, Text, Text
+                , Text, Text, Text, Text, Text, Text
+                , Text, Text, Text, Text, Text, Text</column>
             <column name="deleted">0</column>
         </insert>
     </changeSet>
 
-    <changeSet id="Set_Review3" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 3</column>
-            <column name="date">2019-06-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review4" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 4</column>
-            <column name="date">2019-12-11 16:13:39.541</column>
-            <column name="showed">0</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review5" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 5</column>
-            <column name="date">2019-10-15 16:13:39.541</column>
-            <column name="showed">0</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review6" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 6</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review7" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 7</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review8" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 8</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review9" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 9</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review10" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 10</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review11" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 11</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
+    <changeSet id="Set_Comment1" author="marozalena@gmail.com">
+        <insert tableName="comments">
+            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='test@test.com')"/>
+            <column name="date">2019-05-11 16:13:39.541</column>
+            <column name="comment">Test Comment</column>
+            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Test Topic')"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
+import com.gmail.marozalena.onlinemarket.service.ProfileService;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +37,8 @@ public class AdminController {
     public AdminController(
             UserService userService,
             RoleService roleService,
-            RandomPasswordService randomPasswordService) {
+            RandomPasswordService randomPasswordService,
+            ProfileService profileService) {
         this.userService = userService;
         this.roleService = roleService;
         this.randomPasswordService = randomPasswordService;
@@ -56,6 +59,8 @@ public class AdminController {
                 .collect(Collectors.toList());
         model.addAttribute("pages", pages);
         model.addAttribute("current", page);
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("userDTO", userDTO);
         return "users";
     }
 
@@ -67,15 +72,17 @@ public class AdminController {
         return redirectToUsersPage;
     }
 
-    @PostMapping(value = "/users", params = "action=password")
-    public String getPassword(UserDTO userDTO) {
+    @PostMapping(value = "/users/{id}", params = "action=password")
+    public String getPassword(@PathVariable Long id,
+                              UserDTO userDTO) {
         String password = randomPasswordService.getRandomPassword();
-        logger.info("For user with email: " + userDTO.getEmail() + " was generated new password: " + password);
+        logger.info("For user with id: " + userDTO.getId() + " was generated new password: " + password);
         return redirectToUsersPage;
     }
 
-    @PostMapping(value = "/users", params = "action=save")
-    public String saveUser(UserDTO userDTO) {
+    @PostMapping(value = "/users/{id}", params = "action=save")
+    public String saveUser(@PathVariable Long id,
+            @ModelAttribute(value = "userDTO") UserDTO userDTO) {
         userService.saveUser(userDTO);
         return redirectToUsersPage;
     }

@@ -1,8 +1,12 @@
 package com.gmail.marozalena.onlinemarket.repository.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +20,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "articles")
+@SQLDelete(sql = "UPDATE articles SET deleted = '1' WHERE id = ?")
+@Where(clause = "deleted = '0'")
 public class Article {
 
     @Id
@@ -26,15 +32,17 @@ public class Article {
     private Date date;
     @Column(name = "topic")
     private String topic;
+    @Column(name = "summary")
+    private String summary;
     @Column(name = "picture")
-    private String pathToPicture;
+    private String picture;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users_id")
     private User user;
     @Column(name = "body")
     private String body;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "comments_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "articles_id")
     private List<Comment> comments = new ArrayList<>();
 
     public Article() {
@@ -64,12 +72,12 @@ public class Article {
         this.topic = topic;
     }
 
-    public String getPathToPicture() {
-        return pathToPicture;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPathToPicture(String pathToPicture) {
-        this.pathToPicture = pathToPicture;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public User getUser() {
@@ -94,5 +102,13 @@ public class Article {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }

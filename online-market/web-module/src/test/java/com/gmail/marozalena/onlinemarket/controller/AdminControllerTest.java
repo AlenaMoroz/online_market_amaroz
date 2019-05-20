@@ -1,13 +1,12 @@
 package com.gmail.marozalena.onlinemarket.controller;
 
+import com.gmail.marozalena.onlinemarket.service.ProfileService;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
-import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import com.gmail.marozalena.onlinemarket.web.controller.AdminController;
-import javafx.scene.control.Pagination;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,6 @@ import org.springframework.ui.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.junit.Assert.assertThat;
@@ -36,6 +34,8 @@ public class AdminControllerTest {
     private RoleService roleService;
     @Mock
     private RandomPasswordService randomPasswordService;
+    @Mock
+    private ProfileService profileService;
 
     private AdminController adminController;
 
@@ -43,7 +43,7 @@ public class AdminControllerTest {
 
     @Before
     public void init() {
-        adminController = new AdminController(userService, roleService,randomPasswordService);
+        adminController = new AdminController(userService, roleService,randomPasswordService, profileService);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
         when(userService.getUsers(1)).thenReturn(generatePage());
     }

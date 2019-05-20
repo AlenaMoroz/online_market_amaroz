@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Profile</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <form action="#" th:action="@{/profile/save}" method="post">
+                            <table class="table table-user-information">
+                                <tbody>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>
+                                        <input type="text" class="form-control" name="name"
+                                               id="name" placeholder="name"
+                                               th:value="${user.profile.name}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Surname:</td>
+                                    <td>
+                                        <input type="text" class="form-control" name="surname"
+                                               id="surname" placeholder="surname"
+                                               th:value="${user.profile.surname}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Home Address:</td>
+                                    <td>
+                                        <input type="text" class="form-control" name="address"
+                                               id="address" placeholder="address"
+                                               th:value="${user.profile.address}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Phone:</td>
+                                    <td>
+                                        <input type="text" class="form-control" name="phone"
+                                               id="phone" placeholder="phone"
+                                               th:value="${user.profile.phone}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Password:</td>
+                                    <td>
+                                        <input type="text" class="form-control" name="password"
+                                               id="password" placeholder="password">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>New Password:</td>
+                                    <td>
+                                        <input type="text" class="form-control" name="newPassword"
+                                               id="newPassword" placeholder="new password">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="save"></label>
+                                <div class="col-md-4">
+                                    <button id="save" name="save" th:value="${user.profile.id}" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

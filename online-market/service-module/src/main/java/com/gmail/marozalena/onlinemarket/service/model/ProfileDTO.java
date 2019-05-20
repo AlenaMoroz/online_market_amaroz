@@ -8,7 +8,6 @@ public class ProfileDTO {
     private String patronymic;
     private String address;
     private String phone;
-    private UserDTO user = new UserDTO();
 
     public ProfileDTO() {
     }
@@ -60,12 +59,5 @@ public class ProfileDTO {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
+    
 }

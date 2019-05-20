@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface UserRepository extends GenericRepository<Long, User> {
 
-    //void deleteUsers(Connection connection, List<Long> idUsers);
+    void saveUser(Connection connection, User user);
 
-    //void saveUser(Connection connection, User user);
+    void addUser(Connection connection, User user);
+
+    //void deleteUsers(Connection connection, List<Long> idUsers);
 }

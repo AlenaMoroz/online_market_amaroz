@@ -4,19 +4,28 @@ import java.util.Date;
 
 public class CommentDTO {
 
-    private UserDTO userDTO;
+    private Long id;
+    private UserDTO user = new UserDTO();
     private Date date;
     private String comment;
 
     public CommentDTO() {
     }
 
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public Date getDate() {
