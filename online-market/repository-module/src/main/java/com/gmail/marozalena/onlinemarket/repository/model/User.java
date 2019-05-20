@@ -32,10 +32,12 @@ public class User {
     private String password;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "roles_id")
-    private Role role = new Role();
-    @OneToOne(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @JoinColumn(name = "profiles_id")
-    private Profile profile = new Profile();
+    private Role role;
+    @OneToOne(fetch = FetchType.LAZY,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Profile profile;
 
     public User() {
     }

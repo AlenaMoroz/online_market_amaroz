@@ -1,15 +1,15 @@
 package com.gmail.marozalena.onlinemarket.repository.model;
 
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -17,8 +17,11 @@ import java.util.Objects;
 @Table(name = "profiles")
 public class Profile {
 
+    @GenericGenerator(name = "generator",
+            strategy = "foreign",
+            parameters = @Parameter(name = "property", value = "user"))
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "generator")
     @Column(name = "id")
     private Long id;
     @Column(name = "name")
@@ -31,6 +34,9 @@ public class Profile {
     private String address;
     @Column(name = "phone")
     private String phone;
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private User user;
 
     public Profile() {
     }
@@ -98,5 +104,13 @@ public class Profile {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, surname, address, phone);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

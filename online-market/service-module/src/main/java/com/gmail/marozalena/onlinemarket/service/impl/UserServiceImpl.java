@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDTO loadUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         return userConverter.toUserDTO(user);
     }
 

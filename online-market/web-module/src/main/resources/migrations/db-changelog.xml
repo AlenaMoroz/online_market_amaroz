@@ -103,18 +103,6 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="FOREIGNKEY_Users_With_Profiles" author="marozalena@gmail.com">
-        <addForeignKeyConstraint baseTableName="users"
-                                 baseColumnNames="profiles_id"
-                                 constraintName="fk_users_profiles"
-                                 deferrable="false"
-                                 initiallyDeferred="false"
-                                 onUpdate="RESTRICT"
-                                 onDelete="RESTRICT"
-                                 referencedTableName="profiles"
-                                 referencedColumnNames="id"/>
-    </changeSet>
-
     <changeSet id="FOREIGNKEY_Articles_With_Users" author="marozalena@gmail.com">
         <addForeignKeyConstraint baseTableName="articles"
                                  baseColumnNames="users_id"
@@ -175,16 +163,6 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Set_Profile_for_User" author="marozalena@gmail.com">
-        <insert tableName="profiles">
-            <column name="name">TestUser</column>
-            <column name="surname">TestSurname</column>
-            <column name="patronymic">TestPatronymic</column>
-            <column name="address">TestAddress</column>
-            <column name="phone">+37511234567</column>
-        </insert>
-    </changeSet>
-
     <changeSet id="Set_Profile_for_Admin" author="marozalena@gmail.com">
         <insert tableName="profiles">
             <column name="name">Admin</column>
@@ -192,6 +170,16 @@
             <column name="patronymic">Admin</column>
             <column name="address">TestAddress</column>
             <column name="phone">+37533234567</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Profile_for_User" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">TestUser</column>
+            <column name="surname">TestSurname</column>
+            <column name="patronymic">TestPatronymic</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37511234567</column>
         </insert>
     </changeSet>
 
@@ -215,16 +203,6 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Set_SECURE_API" author="marozalena@gmail.com">
-        <insert tableName="users">
-            <column name="email">secure@secure.com</column>
-            <column name="password">$2a$10$hS713tvaXz9S2ZtYeYPTheOH9JFSi.hRgXU9Tcce1J5TlrGWgXvwC</column>
-            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='SECURE REST API')"/>
-            <column name="deleted">0</column>
-            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Secure')"/>
-        </insert>
-    </changeSet>
-
     <changeSet id="Set_User" author="marozalena@gmail.com">
         <insert tableName="users">
             <column name="email">test@test.com</column>
@@ -232,6 +210,16 @@
             <column name="roles_id">2</column>
             <column name="deleted">0</column>
             <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='TestUser')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_SECURE_API" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">secure@secure.com</column>
+            <column name="password">$2a$10$hS713tvaXz9S2ZtYeYPTheOH9JFSi.hRgXU9Tcce1J5TlrGWgXvwC</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='SECURE REST API')"/>
+            <column name="deleted">0</column>
+            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Secure')"/>
         </insert>
     </changeSet>
 

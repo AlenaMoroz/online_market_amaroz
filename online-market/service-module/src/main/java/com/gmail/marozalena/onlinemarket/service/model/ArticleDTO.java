@@ -11,7 +11,7 @@ public class ArticleDTO {
     private String topic;
     private String summary;
     private String picture;
-    private UserDTO user = new UserDTO();
+    private UserDTO user;
     private String body;
     private List<CommentDTO> comments = new ArrayList<>();
 

@@ -5,7 +5,7 @@ import java.util.Date;
 public class CommentDTO {
 
     private Long id;
-    private UserDTO user = new UserDTO();
+    private UserDTO user;
     private Date date;
     private String comment;
 

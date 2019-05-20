@@ -88,14 +88,6 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
         return ((Number) q.getSingleResult()).intValue();
     }
 
-    @Override
-    public T findByEmail(String email) {
-        String query = "FROM " + entityClass.getName() + " WHERE email = :emailParam";
-        Query q = entityManager.createQuery(query);
-        q.setParameter("emailParam", email);
-        return (T) q.getSingleResult();
-    }
-
     private int getCountOfOffset(Integer page) {
         return (page - 1) * 10;
     }

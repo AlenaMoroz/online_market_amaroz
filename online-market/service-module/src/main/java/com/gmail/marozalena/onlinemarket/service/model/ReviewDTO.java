@@ -5,7 +5,7 @@ import java.util.Date;
 public class ReviewDTO {
 
     private Long id;
-    private UserDTO user = new UserDTO();
+    private UserDTO user;
     private String review;
     private Date date;
     private boolean showed;

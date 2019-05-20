@@ -27,7 +27,7 @@ public class Review {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
-    private User user = new User();
+    private User user;
     @Column(name = "review")
     private String review;
     @Column(name = "date")

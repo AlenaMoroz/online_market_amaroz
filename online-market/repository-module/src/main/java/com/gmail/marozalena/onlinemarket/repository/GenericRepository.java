@@ -20,6 +20,4 @@ public interface GenericRepository<I, T> {
     List<T> findAll();
 
     int getCountOfEntities();
-
-    T findByEmail(String email);
 }

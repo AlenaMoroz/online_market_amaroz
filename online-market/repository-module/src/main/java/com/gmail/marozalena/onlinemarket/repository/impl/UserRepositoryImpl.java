@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -51,6 +52,14 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
             logger.error(e.getMessage(), e);
             throw new DatabaseException("Problems with adding user from database", e);
         }
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        String query = "FROM " + entityClass.getName()+" WHERE email = :emailParam";
+        Query q = entityManager.createQuery(query);
+        q.setParameter("emailParam", email);
+        return (User) q.getSingleResult();
     }
 
     private String encoder(String password) {
