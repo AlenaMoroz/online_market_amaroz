@@ -10,6 +10,4 @@ public interface UserRepository extends GenericRepository<Long, User> {
     void saveUser(Connection connection, User user);
 
     void addUser(Connection connection, User user);
-
-    //void deleteUsers(Connection connection, List<Long> idUsers);
 }

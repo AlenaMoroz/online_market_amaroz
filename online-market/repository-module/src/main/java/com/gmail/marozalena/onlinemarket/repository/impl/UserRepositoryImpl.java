@@ -25,20 +25,6 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         this.passwordEncoder = passwordEncoder;
     }
 
-    /*@Override
-    public void deleteUsers(Connection connection, List<Long> idUsers) {
-        for (Long idUser : idUsers) {
-            String sql = "UPDATE users SET deleted = '1' WHERE id = ?";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setLong(1, idUser);
-                preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-                logger.error(e.getMessage(), e);
-                throw new DatabaseException("Problems removing user from the database", e);
-            }
-        }
-    }*/
-
     @Override
     public void saveUser(Connection connection, User user) {
         String sql = "UPDATE users SET roles_id=? WHERE id=?";
