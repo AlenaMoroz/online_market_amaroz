@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>List of News</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9" th:each="article : ${articles}">
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img th:src="${article.picture}">
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="news-content">
+                                            <h2 th:text="${article.topic}"></h2>
+                                            <p th:text="${article.summary}"></p>
+                                        </div>
+                                        <div class="news-footer">
+                                            <div class="news-author">
+                                                <ul class="list-inline list-unstyled">
+                                                    <li class="list-inline-item text-secondary">
+                                                        <i class="fa fa-user"
+                                                           th:text="${article.user.profile.name +' '+article.user.profile.surname}"></i>
+                                                    </li>
+                                                    <li class="list-inline-item text-secondary">
+                                                        <i class="fa fa-calendar" th:text="${article.date}"></i>
+                                                    </li>
+                                                    <a th:href="@{/articles/{id}(id=${article.id})}" name="id" th:value="${article.id}">
+                                                        <li class="list-inline-item text-secondary">
+                                                        <i class="fa fa-user"></i>
+                                                        More...
+                                                    </li></a>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <ul class="pagination" th:if="${pages.size() > 0}" th:each="page : ${pages}">
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${current-1})}">
+                                Previous</a></li>
+                        <li class="page-item active" th:if="${page} == ${current}">
+                            <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}"
+                               th:text="${page}"></a></li>
+                        <li class="page-item " th:unless="${page} == ${current}">
+                            <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}"
+                               th:text="${page}"></a></li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${current+1})}">
+                                Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

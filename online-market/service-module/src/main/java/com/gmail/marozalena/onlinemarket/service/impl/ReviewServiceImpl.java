@@ -1,19 +1,21 @@
 package com.gmail.marozalena.onlinemarket.service.impl;
 
 import com.gmail.marozalena.onlinemarket.repository.ReviewRepository;
+import com.gmail.marozalena.onlinemarket.repository.constant.LimitConstants;
 import com.gmail.marozalena.onlinemarket.repository.model.Review;
 import com.gmail.marozalena.onlinemarket.service.ReviewService;
 import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
-import com.gmail.marozalena.onlinemarket.service.exception.ReviewNotDeletedException;
-import com.gmail.marozalena.onlinemarket.service.exception.ReviewNotFoundException;
 import com.gmail.marozalena.onlinemarket.service.exception.ReviewsNotUpdatedException;
+import com.gmail.marozalena.onlinemarket.service.exception.ServiceException;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
+import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -35,46 +37,29 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewDTO> getReviews(Integer page) {
-        try (Connection connection = reviewRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                List<Review> reviews = reviewRepository.getReviews(connection, page);
-                List<ReviewDTO> list = reviews.stream()
-                        .map(reviewConverter::toReviewDTO)
-                        .collect(Collectors.toList());
-                connection.commit();
-                return list;
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ReviewNotFoundException("Reviews not found in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ReviewNotFoundException("Reviews not found in database", e);
-        }
+    @Transactional
+    public PageDTO<ReviewDTO> getReviews(Integer page) {
+        List<Review> reviews = reviewRepository.findAll(page);
+        List<ReviewDTO> list = reviews.stream()
+                .map(reviewConverter::toReviewDTO)
+                .collect(Collectors.toList());
+        PageDTO<ReviewDTO> pageDTO = new PageDTO<>();
+        pageDTO.setList(list);
+
+        pageDTO.setCountOfPages(
+                getCountOfPages(reviewRepository.getCountOfEntities()));
+        return pageDTO;
     }
 
     @Override
+    @Transactional
     public void deleteReview(Long id) {
-        try (Connection connection = reviewRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                reviewRepository.deleteReview(connection, id);
-                connection.commit();
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ReviewNotDeletedException("Review not deleted from database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ReviewNotDeletedException("Review not deleted from database", e);
-        }
+        Review review = reviewRepository.findByID(id);
+        reviewRepository.remove(review);
     }
 
     @Override
+    @Transactional
     public void updateReviews(ListOfReviewsDTO list) {
         try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
@@ -98,26 +83,11 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    @Override
-    public int getCountPages() {
-        try (Connection connection = reviewRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                int usersNumber = reviewRepository.getCountOfReviews(connection);
-                int pagesNumber = usersNumber / 10;
-                if (usersNumber > (pagesNumber * 10)) {
-                    pagesNumber += 1;
-                }
-                connection.commit();
-                return pagesNumber;
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ReviewNotFoundException("Reviews not found in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ReviewNotFoundException("Reviews not found in database", e);
+    private int getCountOfPages(int countOfReviews) {
+        int countOfPages = countOfReviews / LimitConstants.ENTITY_ON_PAGE;
+        if (countOfReviews > (countOfPages * LimitConstants.ENTITY_ON_PAGE)) {
+            countOfPages += 1;
         }
+        return countOfPages;
     }
 }

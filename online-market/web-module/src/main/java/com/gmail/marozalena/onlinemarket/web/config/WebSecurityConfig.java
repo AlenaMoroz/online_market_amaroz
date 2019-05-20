@@ -13,7 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTATOR;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SECURE_REST_API;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -47,11 +48,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/private/users", "/private/users/**", "reviews/delete",
-                        "reviews/save")
-                .hasAuthority(ADMINISTATOR)
-                .antMatchers("/login", "/reviews", "/reviews/{page}")
+                .antMatchers("/private/users", "/private/users/**", "/reviews/delete",
+                        "/reviews/save")
+                .hasAuthority(ADMINISTRATOR)
+                .antMatchers("/login", "/reviews", "/reviews/**", "/articles",
+                        "/articles/**")
                 .permitAll()
+                .antMatchers("/profile")
+                .fullyAuthenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

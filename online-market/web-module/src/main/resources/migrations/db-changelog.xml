@@ -9,13 +9,11 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="surname" type="varchar(80)"/>
-            <column name="name" type="varchar(80)"/>
-            <column name="patronymic" type="varchar(80)"/>
             <column name="email" type="varchar(80)"/>
             <column name="password" type="varchar(60)"/>
             <column name="roles_id" type="BIGINT"/>
             <column name="deleted" type="TINYINT"/>
+            <column name="profiles_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
@@ -25,6 +23,19 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="role" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="PROFILE_TABLE_1" author="marozalena@gmail.com">
+        <createTable tableName="profiles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="surname" type="varchar(80)"/>
+            <column name="name" type="varchar(80)"/>
+            <column name="patronymic" type="varchar(80)"/>
+            <column name="address" type="varchar(80)"/>
+            <column name="phone" type="varchar(13)"/>
         </createTable>
     </changeSet>
 
@@ -41,6 +52,33 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="ARTICLE_TABLE_1" author="maroralena@gmail.com">
+        <createTable tableName="articles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="DATETIME"/>
+            <column name="topic" type="varchar(30)"/>
+            <column name="summary" type="varchar(200)"/>
+            <column name="picture" type="varchar(80)"/>
+            <column name="users_id" type="BIGINT"/>
+            <column name="body" type="varchar(1000)"/>
+            <column name="deleted" type="TINYINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="COMMENT_TABLE_1" author="maroralena@gmail.com">
+        <createTable tableName="comments">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="users_id" type="BIGINT"/>
+            <column name="date" type="DATETIME"/>
+            <column name="comment" type="varchar(200)"/>
+            <column name="articles_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
     <changeSet id="FOREIGNKEY_Reviews_With_Users" author="marozalena@gmail.com">
         <addForeignKeyConstraint baseTableName="reviews"
                                  baseColumnNames="users_id"
@@ -50,6 +88,42 @@
                                  onUpdate="RESTRICT"
                                  onDelete="RESTRICT"
                                  referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="FOREIGNKEY_Users_With_Roles" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="roles_id"
+                                 constraintName="fk_users_roles"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="FOREIGNKEY_Articles_With_Users" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="articles"
+                                 baseColumnNames="users_id"
+                                 constraintName="fk_articles_users"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="FOREIGNKEY_Articles_With_Comments" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="comments"
+                                 baseColumnNames="articles_id"
+                                 constraintName="fk_comments_articles"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="articles"
                                  referencedColumnNames="id"/>
     </changeSet>
 
@@ -85,31 +159,67 @@
 
     <changeSet id="Set_Role_Secure_API_User" author="marozalena@gmail.com">
         <insert tableName="roles">
-            <column name="role">Secure API User</column>
+            <column name="role">SECURE REST API</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Profile_for_Admin" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">Admin</column>
+            <column name="surname">Admin</column>
+            <column name="patronymic">Admin</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37533234567</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Profile_for_User" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">TestUser</column>
+            <column name="surname">TestSurname</column>
+            <column name="patronymic">TestPatronymic</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37511234567</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Profile_for_Secure_Api" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">Secure</column>
+            <column name="surname">Secure</column>
+            <column name="patronymic">Secure</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37533234567</column>
         </insert>
     </changeSet>
 
     <changeSet id="Set_ADMIN" author="marozalena@gmail.com">
         <insert tableName="users">
-            <column name="surname">Admin</column>
-            <column name="name">Admin</column>
-            <column name="patronymic">Admin</column>
             <column name="email">admin@admin.com</column>
             <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
             <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Administrator')"/>
             <column name="deleted">0</column>
+            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Admin')"/>
         </insert>
     </changeSet>
 
     <changeSet id="Set_User" author="marozalena@gmail.com">
         <insert tableName="users">
-            <column name="surname">Tes1t</column>
-            <column name="name">Test1</column>
-            <column name="patronymic">Test1</column>
             <column name="email">test@test.com</column>
             <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
             <column name="roles_id">2</column>
             <column name="deleted">0</column>
+            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='TestUser')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_SECURE_API" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">secure@secure.com</column>
+            <column name="password">$2a$10$hS713tvaXz9S2ZtYeYPTheOH9JFSi.hRgXU9Tcce1J5TlrGWgXvwC</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='SECURE REST API')"/>
+            <column name="deleted">0</column>
+            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Secure')"/>
         </insert>
     </changeSet>
 
@@ -123,99 +233,26 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Set_Review2" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 2</column>
-            <column name="date">2019-05-12 16:13:39.541</column>
-            <column name="showed">1</column>
+    <changeSet id="Set_Article1" author="marozalena@gmail.com">
+        <insert tableName="articles">
+            <column name="date">2019-05-11 16:13:39.541</column>
+            <column name="topic">Test Topic</column>
+            <column name="summary">Some Summary</column>
+            <column name="picture">http://eskimo.egemenerd.com/wp-content/uploads/2018/05/product14-150x150.jpg</column>
+            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='admin@admin.com')"/>
+            <column name="body">Text, Text, Text, Text, Text, Text, Text
+                , Text, Text, Text, Text, Text, Text
+                , Text, Text, Text, Text, Text, Text</column>
             <column name="deleted">0</column>
         </insert>
     </changeSet>
 
-    <changeSet id="Set_Review3" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 3</column>
-            <column name="date">2019-06-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review4" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 4</column>
-            <column name="date">2019-12-11 16:13:39.541</column>
-            <column name="showed">0</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review5" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 5</column>
-            <column name="date">2019-10-15 16:13:39.541</column>
-            <column name="showed">0</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review6" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 6</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review7" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 7</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review8" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 8</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review9" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 9</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review10" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 10</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-    <changeSet id="Set_Review11" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id">1</column>
-            <column name="review">Review 11</column>
-            <column name="date">2018-05-11 16:13:39.541</column>
-            <column name="showed">1</column>
-            <column name="deleted">0</column>
+    <changeSet id="Set_Comment1" author="marozalena@gmail.com">
+        <insert tableName="comments">
+            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='test@test.com')"/>
+            <column name="date">2019-05-11 16:13:39.541</column>
+            <column name="comment">Test Comment</column>
+            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Test Topic')"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

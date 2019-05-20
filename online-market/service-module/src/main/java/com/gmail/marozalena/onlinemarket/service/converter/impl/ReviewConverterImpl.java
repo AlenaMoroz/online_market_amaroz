@@ -41,7 +41,7 @@ public class ReviewConverterImpl implements ReviewConverter {
         reviewDTO.setUser(userConverter.toUserDTO(review.getUser()));
         reviewDTO.setReview(review.getReview());
         reviewDTO.setDate(review.getDate());
-        reviewDTO.setShowed(review.showed());
+        reviewDTO.setShowed(review.isShowed());
         return reviewDTO;
     }
 }

@@ -1,9 +1,10 @@
 package com.gmail.marozalena.onlinemarket.controller;
 
+import com.gmail.marozalena.onlinemarket.service.ProfileService;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
-import com.gmail.marozalena.onlinemarket.service.RoleServise;
+import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
-import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
+import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import com.gmail.marozalena.onlinemarket.web.controller.AdminController;
 import org.junit.Before;
@@ -16,9 +17,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.junit.Assert.assertThat;
@@ -30,7 +31,7 @@ public class AdminControllerTest {
     @Mock
     private UserService userService;
     @Mock
-    private RoleServise roleServise;
+    private RoleService roleService;
     @Mock
     private RandomPasswordService randomPasswordService;
 
@@ -38,13 +39,11 @@ public class AdminControllerTest {
 
     private MockMvc mvc;
 
-    private List<UserDTO> users = asList(generateUserDTO(), generateUserDTO());
-
     @Before
     public void init() {
-        adminController = new AdminController(userService, roleServise,randomPasswordService);
+        adminController = new AdminController(userService, roleService,randomPasswordService);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
-        when(userService.getUsers(1)).thenReturn(users);
+        when(userService.getUsers(1)).thenReturn(generatePage());
     }
 
     @Test
@@ -52,18 +51,17 @@ public class AdminControllerTest {
         Model model = new ExtendedModelMap();
         String users = adminController.getUsers(model, 1);
         assertThat(users, equalTo("users"));
-        assertThat(model.asMap(), hasEntry("users", this.users));
+        assertThat(model.asMap(), hasEntry("users", generatePage()));
     }
 
-    private UserDTO generateUserDTO(){
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("Name");
-        userDTO.setSurname("Name");
-        userDTO.setPatronymic("Name");
-        userDTO.setEmail("Email");
-        userDTO.setPassword("Password");
-        userDTO.setRole(new RoleDTO());
-        return userDTO;
+    private PageDTO<UserDTO> generatePage(){
+        PageDTO<UserDTO> users = new PageDTO<>();
+        List<UserDTO> list = new ArrayList<>();
+        list.add(new UserDTO());
+        list.add(new UserDTO());
+        users.setList(list);
+        users.setCountOfPages(1);
+        return users;
     }
 
 }

@@ -5,13 +5,9 @@ import com.gmail.marozalena.onlinemarket.repository.model.Review;
 import java.sql.Connection;
 import java.util.List;
 
-public interface ReviewRepository extends GenericRepository {
-
-    List<Review> getReviews(Connection connection, Integer page);
+public interface ReviewRepository extends GenericRepository<Long, Review> {
 
     void deleteReview(Connection connection, Long id);
 
     void updateReview(Connection connection, Review review);
-
-    int getCountOfReviews(Connection connection);
 }

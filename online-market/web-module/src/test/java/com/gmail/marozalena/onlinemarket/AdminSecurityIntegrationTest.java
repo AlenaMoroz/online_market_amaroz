@@ -14,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTATOR;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -32,21 +32,21 @@ public class AdminSecurityIntegrationTest {
                 .build();
     }
 
-    @WithMockUser(authorities = {ADMINISTATOR})
+    @WithMockUser(authorities = {ADMINISTRATOR})
     @Test
     public void shouldSucceedWith200ForUsersPage() throws Exception {
         mvc.perform(get("/private/users/1"))
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(authorities = {ADMINISTATOR})
+    @WithMockUser(authorities = {ADMINISTRATOR})
     @Test
     public void shouldSucceedWith302ForUsersPage() throws Exception {
         mvc.perform(get("/private/users"))
                 .andExpect(status().is(302));
     }
 
-    @WithMockUser(authorities = {ADMINISTATOR})
+    @WithMockUser(authorities = {ADMINISTRATOR})
     @Test
     public void shouldSucceedWith200ForAddUserPage() throws Exception {
         mvc.perform(get("/private/users/add"))

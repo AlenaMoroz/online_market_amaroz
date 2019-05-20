@@ -1,10 +1,11 @@
 package com.gmail.marozalena.onlinemarket.service.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfReviewsDTO {
 
-    private List<ReviewDTO> listOfReviews;
+    private List<ReviewDTO> listOfReviews = new ArrayList<>();
 
     public ListOfReviewsDTO(List<ReviewDTO> listOfReviews) {
         this.listOfReviews = listOfReviews;

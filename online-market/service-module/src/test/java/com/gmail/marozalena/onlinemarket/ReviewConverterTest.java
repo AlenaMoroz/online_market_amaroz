@@ -4,6 +4,7 @@ import com.gmail.marozalena.onlinemarket.repository.model.Review;
 import com.gmail.marozalena.onlinemarket.repository.model.Role;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
+import com.gmail.marozalena.onlinemarket.service.converter.impl.ProfileConverterImpl;
 import com.gmail.marozalena.onlinemarket.service.converter.impl.ReviewConverterImpl;
 import com.gmail.marozalena.onlinemarket.service.converter.impl.RoleConverterImpl;
 import com.gmail.marozalena.onlinemarket.service.converter.impl.UserConverterImpl;
@@ -23,7 +24,8 @@ public class ReviewConverterTest {
 
     @Before
     public void init() {
-        reviewConverter = new ReviewConverterImpl(new UserConverterImpl(new RoleConverterImpl()));
+        reviewConverter = new ReviewConverterImpl(new UserConverterImpl(
+                new RoleConverterImpl(), new ProfileConverterImpl()));
     }
 
     @Test
@@ -39,15 +41,12 @@ public class ReviewConverterTest {
         ReviewDTO reviewDTO = new ReviewDTO();
         UserDTO userDTO = new UserDTO();
         RoleDTO roleDTO = new RoleDTO();
-        userDTO.setSurname("Name");
-        userDTO.setSurname("Surname");
-        userDTO.setPatronymic("Patronymic");
         userDTO.setEmail("Email");
         userDTO.setPassword("Password");
         userDTO.setRole(roleDTO);
         reviewDTO.setUser(userDTO);
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
-        Assert.assertEquals(reviewDTO.getUser().getSurname(), review.getUser().getSurname());
+        Assert.assertEquals(reviewDTO.getUser().getEmail(), review.getUser().getEmail());
     }
 
     @Test
@@ -71,7 +70,7 @@ public class ReviewConverterTest {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setShowed(true);
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
-        Assert.assertEquals(reviewDTO.isShowed(), review.showed());
+        Assert.assertEquals(reviewDTO.isShowed(), review.isShowed());
     }
 
     @Test
@@ -87,15 +86,12 @@ public class ReviewConverterTest {
         Review review = new Review();
         User user = new User();
         Role role = new Role();
-        user.setSurname("Name");
-        user.setSurname("Surname");
-        user.setPatronymic("Patronymic");
         user.setEmail("Email");
         user.setPassword("Password");
         user.setRole(role);
         review.setUser(user);
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
-        Assert.assertEquals(review.getUser().getSurname(), reviewDTO.getUser().getSurname());
+        Assert.assertEquals(review.getUser().getEmail(), reviewDTO.getUser().getEmail());
     }
 
     @Test
@@ -119,6 +115,6 @@ public class ReviewConverterTest {
         Review review = new Review();
         review.setShowed(false);
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
-        Assert.assertEquals(review.showed(), reviewDTO.isShowed());
+        Assert.assertEquals(review.isShowed(), reviewDTO.isShowed());
     }
 }

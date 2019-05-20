@@ -5,7 +5,6 @@ import com.gmail.marozalena.onlinemarket.repository.model.Role;
 import java.sql.Connection;
 import java.util.List;
 
-public interface RoleRepository extends GenericRepository {
+public interface RoleRepository extends GenericRepository<Long, Role> {
 
-    List<Role> getRoles(Connection connection);
 }

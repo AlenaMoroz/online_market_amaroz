@@ -8,20 +8,12 @@ public class UserDTO {
 
     private Long id;
     @NotNull
-    @Size(max = 40)
-    private String surname;
-    @NotNull
-    @Size(max = 20)
-    private String name;
-    @NotNull
-    @Size(max = 40)
-    private String patronymic;
-    @NotNull
     @Size(max = 50)
     @Email
     private String email;
     private String password;
     private RoleDTO role;
+    private ProfileDTO profile;
 
     public UserDTO() {
     }
@@ -32,30 +24,6 @@ public class UserDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
     }
 
     public String getEmail() {
@@ -80,6 +48,14 @@ public class UserDTO {
 
     public void setRole(RoleDTO role) {
         this.role = role;
+    }
+
+    public ProfileDTO getProfile() {
+        return profile;
+    }
+
+    public void setProfile(ProfileDTO profile) {
+        this.profile = profile;
     }
 }
 

@@ -31,6 +31,6 @@ public class LoginAccessDeniedHandler implements AccessDeniedHandler {
                     )
             );
         }
-        response.sendRedirect(request.getContextPath() + "/403");
+        response.sendRedirect(request.getContextPath() + "/error");
     }
 }
