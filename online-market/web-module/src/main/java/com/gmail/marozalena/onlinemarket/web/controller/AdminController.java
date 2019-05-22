@@ -1,6 +1,5 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
-import com.gmail.marozalena.onlinemarket.service.ProfileService;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
@@ -74,14 +73,13 @@ public class AdminController {
     @PostMapping(value = "/users/{id}", params = "action=password")
     public String getPassword(@PathVariable Long id,
                               UserDTO userDTO) {
-        String password = randomPasswordService.getRandomPassword();
-        logger.info("For user with id: " + userDTO.getId() + " was generated new password: " + password);
+        randomPasswordService.getRandomPassword(userDTO.getEmail());
         return redirectToUsersPage;
     }
 
     @PostMapping(value = "/users/{id}", params = "action=save")
     public String saveUser(@PathVariable Long id,
-            @ModelAttribute(value = "userDTO") UserDTO userDTO) {
+                           @ModelAttribute(value = "userDTO") UserDTO userDTO) {
         userService.saveUser(userDTO);
         return redirectToUsersPage;
     }

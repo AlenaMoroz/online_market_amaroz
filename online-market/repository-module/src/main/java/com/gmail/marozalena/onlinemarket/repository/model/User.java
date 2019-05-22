@@ -30,7 +30,7 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "roles_id")
     private Role role;
     @OneToOne(fetch = FetchType.LAZY,

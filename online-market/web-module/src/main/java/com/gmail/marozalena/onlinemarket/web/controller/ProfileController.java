@@ -31,7 +31,7 @@ public class ProfileController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         UserDTO userDTO = userService.loadUserByEmail(email);
-        model.addAttribute("user", userDTO);
+        model.addAttribute("profile", userDTO.getProfile());
         return "profile";
     }
 

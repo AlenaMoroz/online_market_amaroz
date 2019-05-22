@@ -23,7 +23,7 @@
                                     <td>
                                         <input type="text" class="form-control" name="name"
                                                id="name" placeholder="name"
-                                               th:value="${user.profile.name}">
+                                               th:value="${profile.name}">
                                     </td>
                                 </tr>
                                 <tr>
@@ -31,7 +31,7 @@
                                     <td>
                                         <input type="text" class="form-control" name="surname"
                                                id="surname" placeholder="surname"
-                                               th:value="${user.profile.surname}">
+                                               th:value="${profile.surname}">
                                     </td>
                                 </tr>
                                 <tr>
@@ -39,7 +39,7 @@
                                     <td>
                                         <input type="text" class="form-control" name="address"
                                                id="address" placeholder="address"
-                                               th:value="${user.profile.address}">
+                                               th:value="${profile.address}">
                                     </td>
                                 </tr>
                                 <tr>
@@ -47,20 +47,20 @@
                                     <td>
                                         <input type="text" class="form-control" name="phone"
                                                id="phone" placeholder="phone"
-                                               th:value="${user.profile.phone}">
+                                               th:value="${profile.phone}">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Password:</td>
                                     <td>
-                                        <input type="text" class="form-control" name="password"
+                                        <input type="password" class="form-control" name="password"
                                                id="password" placeholder="password">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>New Password:</td>
                                     <td>
-                                        <input type="text" class="form-control" name="newPassword"
+                                        <input type="password" class="form-control" name="newPassword"
                                                id="newPassword" placeholder="new password">
                                     </td>
                                 </tr>
@@ -69,7 +69,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="save"></label>
                                 <div class="col-md-4">
-                                    <button id="save" name="save" th:value="${user.profile.id}" class="btn btn-primary">Save</button>
+                                    <button id="save" name="id" th:value="${profile.id}" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
                         </form>
