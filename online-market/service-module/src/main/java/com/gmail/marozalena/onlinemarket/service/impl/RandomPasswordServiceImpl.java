@@ -35,7 +35,7 @@ public class RandomPasswordServiceImpl implements RandomPasswordService {
             password.append(Character.toUpperCase(chars.charAt(random.nextInt(chars.length()))));
             password.append(numbers.charAt(random.nextInt(numbers.length())));
         }
-        logger.info("For user with email=" + email + " was generated new password");
+        logger.info("For user with email=" + email + " was generated new password"+password);
         return encoder(password.toString());
     }
 

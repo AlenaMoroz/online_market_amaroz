@@ -10,15 +10,19 @@
         <th height="50" width="150"></th>
         <th height="50" width="150">Review</th>
         <th height="50" width="20">
-            <form id="update" th:action="@{/reviews/save}" th:object="${reviews}"
-                  method="post">
-                <input class="btn btn-success" type="submit"
-                       value="Update">
-            </form>
+            <div sec:authorize="isAuthenticated()">
+                <div sec:authorize="hasAuthority('Administrator')">
+                    <form id="update" th:action="@{/reviews/save}" th:object="${reviews}"
+                          method="post">
+                        <input class="btn btn-success" type="submit"
+                               value="Update">
+                    </form>
+                </div>
+            </div>
         </th>
     </tr>
-        <tr th:each="review,stat : ${reviews.listOfReviews}">
-            <form id="delete" action="#" th:action="@{/reviews/delete}" method="post">
+    <tr th:each="review,stat : ${reviews.listOfReviews}">
+        <form id="delete" action="#" th:action="@{/reviews/delete}" method="post">
             <th height="300" width="300">
                 <p><input id="name" name="name" th:value="${review.user.profile.name}"></p>
                 <p><input id="surname" name="surname" th:value="${review.user.profile.surname}"></p>
@@ -27,22 +31,26 @@
             <th height="300" width="300">
                 <input id="review" name="review" th:value="${review.review}"></th>
             <th height="300" width="20">
-                <label>
-                    <input class="checkbox top-left" type="checkbox" form="update"
-                           th:field="${reviews.listOfReviews[__${stat.index}__].showed}">
-                    <input hidden form="update" th:name="id" th:value="${review.id}"
-                           th:field="${reviews.listOfReviews[__${stat.index}__].id}">
-                </label>
+                <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasAuthority('Administrator')">
+                        <label>
+                            <input class="checkbox top-left" type="checkbox" form="update"
+                                   th:field="${reviews.listOfReviews[__${stat.index}__].showed}">
+                            <input hidden form="update" th:name="id" th:value="${review.id}"
+                                   th:field="${reviews.listOfReviews[__${stat.index}__].id}">
+                        </label>
+                    </div>
+                </div>
             </th>
             <th height="300" width="50">
                 <div sec:authorize="isAuthenticated()">
-                <div sec:authorize="hasRole('ROLE_Administrator')">
-                    <button name="delete" th:value="${review.id}" class="btn btn-danger">Delete</button>
-                </div>
+                    <div sec:authorize="hasAuthority('Administrator')">
+                        <button name="delete" th:value="${review.id}" class="btn btn-danger">Delete</button>
+                    </div>
                 </div>
             </th>
-            </form>
-        </tr>
+        </form>
+    </tr>
 </table>
 
 <div class="pagination justify-content-center">
