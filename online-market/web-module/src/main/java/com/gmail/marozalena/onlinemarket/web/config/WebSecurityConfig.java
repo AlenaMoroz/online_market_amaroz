@@ -25,9 +25,9 @@ import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_USERS_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_REVIEWS_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_ARTICLE_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_PROFILE_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_REVIEWS_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDTE_ARTICLE_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USERS_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USER_PAGE;
 
@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         URL_TO_ADD_NEW_ARTICLE_PAGE,
                         URL_TO_DELETE_ARTICLE_PAGE,
-                        URL_TO_UPDTE_ARTICLE_PAGE)
+                        URL_TO_UPDATE_ARTICLE_PAGE)
                 .hasAuthority(SALE_USER)
                 .antMatchers("/login", URL_TO_REVIEWS_PAGE)
                 .permitAll()
