@@ -37,7 +37,7 @@ public class RestApiController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity addUser(@RequestBody @Valid UserDTO user) {
+    public ResponseEntity addUser(@RequestBody UserDTO user) {
         userService.addUser(user);
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -29,7 +29,6 @@ public class ArticleConverterImpl implements ArticleConverter {
         Article article = new Article();
         article.setId(articleDTO.getId());
         article.setPicture(articleDTO.getPicture());
-        article.setSummary(articleDTO.getSummary());
         article.setTopic(articleDTO.getTopic());
         article.setUser(userConverter.fromUserDTO(articleDTO.getUser()));
         try {
@@ -47,11 +46,15 @@ public class ArticleConverterImpl implements ArticleConverter {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setId(article.getId());
         articleDTO.setBody(article.getBody());
-        articleDTO.setSummary(article.getSummary());
         articleDTO.setUser(userConverter.toUserDTO(article.getUser()));
         articleDTO.setTopic(article.getTopic());
         articleDTO.setPicture(article.getPicture());
         articleDTO.setDate(article.getDate().toString());
+        if (article.getBody().length() > 196) {
+            articleDTO.setSummary(article.getBody().substring(0, 196) + "...");
+        }else {
+            articleDTO.setSummary(article.getBody());
+        }
         articleDTO.setComments(commentConverter.toDTO(article.getComments()));
         return articleDTO;
     }

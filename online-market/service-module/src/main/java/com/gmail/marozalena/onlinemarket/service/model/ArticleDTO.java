@@ -1,7 +1,6 @@
 package com.gmail.marozalena.onlinemarket.service.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ArticleDTO {

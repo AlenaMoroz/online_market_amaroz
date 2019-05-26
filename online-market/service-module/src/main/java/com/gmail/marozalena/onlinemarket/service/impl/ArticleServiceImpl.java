@@ -82,7 +82,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void addArticle(ArticleDTO articleDTO) {
         Article article = articleConverter.fromDTO(articleDTO);
-        article.setId(articleDTO.getId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User user = userRepository.findUserByEmail(email);
+        article.setUser(user);
         articleRepository.persist(article);
     }
 
