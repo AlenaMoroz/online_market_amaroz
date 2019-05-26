@@ -15,7 +15,7 @@ public class UrlConstants {
     public static final String URL_TO_DELETE_ARTICLE_PAGE = "/articles/delete";
     public static final String URL_TO_UPDATE_ARTICLE_PAGE = "/articles/{id}/save";
     public static final String URL_TO_PROFILE_PAGE = "/profile";
-    public static final String URL_TO_UPDATE_PROFILE_PAGE = "/profile/save";
+    public static final String URL_TO_PROFILE_PAGES = "/profile/**";
     public static final String URL_TO_DELETE_COMMENT_PAGE = "/articles/{id}/comments/{idCom}/delete";
     public static final String URL_TO_ITEMS_PAGE = "/items";
     public static final String URL_TO_ITEM_PAGE = "/items/{id}";

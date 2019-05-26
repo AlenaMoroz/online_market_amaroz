@@ -29,7 +29,7 @@ import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_REVIEWS_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_ARTICLE_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_PROFILE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGES;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_REVIEWS_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USERS_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USER_PAGE;
@@ -77,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority(ADMINISTRATOR)
                 .antMatchers(
                         URL_TO_PROFILE_PAGE,
-                        URL_TO_UPDATE_PROFILE_PAGE)
+                        URL_TO_PROFILE_PAGES)
                 .hasAuthority(CUSTOMER_USER)
                 .antMatchers(
                         URL_TO_ARTICLES_PAGE,
