@@ -14,7 +14,25 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
-import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SECURE_REST_API;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.CUSTOMER_USER;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SALE_USER;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ADD_NEW_ARTICLE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ADD_NEW_USER_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLES_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_ARTICLE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_COMMENT_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_REVIEW_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_USERS_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ITEMS_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ITEM_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_REVIEWS_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_ARTICLE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGES;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_REVIEWS_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USERS_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USER_PAGE;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -24,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public WebSecurityConfig(UserDetailsService userDetailsService,
-                                 PasswordEncoder passwordEncoder) {
+                             PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -48,14 +66,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/private/users", "/private/users/**", "/reviews/delete",
-                        "/reviews/save")
+                .antMatchers(
+                        URL_TO_USERS_PAGE,
+                        URL_TO_USER_PAGE,
+                        URL_TO_ADD_NEW_USER_PAGE,
+                        URL_TO_DELETE_USERS_PAGE,
+                        URL_TO_REVIEWS_PAGE,
+                        URL_TO_DELETE_REVIEW_PAGE,
+                        URL_TO_UPDATE_REVIEWS_PAGE)
                 .hasAuthority(ADMINISTRATOR)
-                .antMatchers("/login", "/reviews", "/reviews/**", "/articles",
-                        "/articles/**")
+                .antMatchers(
+                        URL_TO_PROFILE_PAGE,
+                        URL_TO_PROFILE_PAGES)
+                .hasAuthority(CUSTOMER_USER)
+                .antMatchers(
+                        URL_TO_ARTICLES_PAGE,
+                        URL_TO_ARTICLE_PAGE)
+                .hasAnyAuthority(SALE_USER, CUSTOMER_USER)
+                .antMatchers(
+                        URL_TO_ADD_NEW_ARTICLE_PAGE,
+                        URL_TO_DELETE_ARTICLE_PAGE,
+                        URL_TO_UPDATE_ARTICLE_PAGE,
+                        URL_TO_DELETE_COMMENT_PAGE,
+                        URL_TO_ITEMS_PAGE,
+                        URL_TO_ITEM_PAGE)
+                .hasAuthority(SALE_USER)
+                .antMatchers("/login", URL_TO_REVIEWS_PAGE)
                 .permitAll()
-                .antMatchers("/profile")
-                .fullyAuthenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

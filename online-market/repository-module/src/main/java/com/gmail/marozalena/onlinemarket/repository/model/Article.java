@@ -32,8 +32,6 @@ public class Article {
     private Date date;
     @Column(name = "topic")
     private String topic;
-    @Column(name = "summary")
-    private String summary;
     @Column(name = "picture")
     private String picture;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -102,13 +100,5 @@ public class Article {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 }

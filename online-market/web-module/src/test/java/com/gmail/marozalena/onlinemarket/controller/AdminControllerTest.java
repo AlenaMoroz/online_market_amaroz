@@ -1,6 +1,5 @@
 package com.gmail.marozalena.onlinemarket.controller;
 
-import com.gmail.marozalena.onlinemarket.service.ProfileService;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import com.gmail.marozalena.onlinemarket.service.RoleService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
@@ -41,7 +40,7 @@ public class AdminControllerTest {
 
     @Before
     public void init() {
-        adminController = new AdminController(userService, roleService,randomPasswordService);
+        adminController = new AdminController(userService, roleService, randomPasswordService);
         mvc = MockMvcBuilders.standaloneSetup(adminController).build();
         when(userService.getUsers(1)).thenReturn(generatePage());
     }
@@ -51,10 +50,10 @@ public class AdminControllerTest {
         Model model = new ExtendedModelMap();
         String users = adminController.getUsers(model, 1);
         assertThat(users, equalTo("users"));
-        assertThat(model.asMap(), hasEntry("users", generatePage()));
+        assertThat(model.asMap(), hasEntry("users", ""));
     }
 
-    private PageDTO<UserDTO> generatePage(){
+    private PageDTO<UserDTO> generatePage() {
         PageDTO<UserDTO> users = new PageDTO<>();
         List<UserDTO> list = new ArrayList<>();
         list.add(new UserDTO());

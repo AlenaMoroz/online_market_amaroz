@@ -12,8 +12,7 @@
             <column name="email" type="varchar(80)"/>
             <column name="password" type="varchar(60)"/>
             <column name="roles_id" type="BIGINT"/>
-            <column name="deleted" type="TINYINT"/>
-            <column name="profiles_id" type="BIGINT"/>
+            <column name="deleted" type="TINYINT" defaultValue="0"/>
         </createTable>
     </changeSet>
 
@@ -48,7 +47,7 @@
             <column name="review" type="varchar(80)"/>
             <column name="date" type="DATETIME"/>
             <column name="showed" type="TINYINT"/>
-            <column name="deleted" type="TINYINT"/>
+            <column name="deleted" type="TINYINT" defaultValue="0"/>
         </createTable>
     </changeSet>
 
@@ -58,12 +57,11 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="date" type="DATETIME"/>
-            <column name="topic" type="varchar(30)"/>
-            <column name="summary" type="varchar(200)"/>
+            <column name="topic" type="varchar(100)"/>
             <column name="picture" type="varchar(80)"/>
             <column name="users_id" type="BIGINT"/>
             <column name="body" type="varchar(1000)"/>
-            <column name="deleted" type="TINYINT"/>
+            <column name="deleted" type="TINYINT" defaultValue="0"/>
         </createTable>
     </changeSet>
 
@@ -163,6 +161,42 @@
         </insert>
     </changeSet>
 
+    <changeSet id="Set_ADMIN" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">admin@admin.com</column>
+            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Administrator')"/>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_User" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">test@test.com</column>
+            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
+            <column name="roles_id">2</column>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Sale_user" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">sale@gmail.com</column>
+            <column name="password">$2a$12$zr3KkDcPDIeTtVpSfGKtQ.1zVvJsEmGOrhJYV31tlZy6awKgU4slG</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Sale User')"/>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="Set_Customer_user" author="marozalena@gmail.com">
+        <insert tableName="users">
+            <column name="email">cus@gmail.com</column>
+            <column name="password">$2a$12$/H9jtLNL33PXavnB8KRDkuJPgTw/eXMnhYIlyCaOTyju3YyOBLIDe</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Customer User')"/>
+            <column name="deleted">0</column>
+        </insert>
+    </changeSet>
+
     <changeSet id="Set_Profile_for_Admin" author="marozalena@gmail.com">
         <insert tableName="profiles">
             <column name="name">Admin</column>
@@ -193,33 +227,23 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Set_ADMIN" author="marozalena@gmail.com">
-        <insert tableName="users">
-            <column name="email">admin@admin.com</column>
-            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
-            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='Administrator')"/>
-            <column name="deleted">0</column>
-            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Admin')"/>
+    <changeSet id="Set_Profile_for_Sale_User" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">Sale</column>
+            <column name="surname">Sale</column>
+            <column name="patronymic">Sale</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37533234567</column>
         </insert>
     </changeSet>
 
-    <changeSet id="Set_User" author="marozalena@gmail.com">
-        <insert tableName="users">
-            <column name="email">test@test.com</column>
-            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
-            <column name="roles_id">2</column>
-            <column name="deleted">0</column>
-            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='TestUser')"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_SECURE_API" author="marozalena@gmail.com">
-        <insert tableName="users">
-            <column name="email">secure@secure.com</column>
-            <column name="password">$2a$10$hS713tvaXz9S2ZtYeYPTheOH9JFSi.hRgXU9Tcce1J5TlrGWgXvwC</column>
-            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='SECURE REST API')"/>
-            <column name="deleted">0</column>
-            <column name="profiles_id" valueComputed="(SELECT id FROM profiles WHERE name='Secure')"/>
+    <changeSet id="Set_Profile_for_Customer_User" author="marozalena@gmail.com">
+        <insert tableName="profiles">
+            <column name="name">Customer</column>
+            <column name="surname">Customer</column>
+            <column name="patronymic">Customer</column>
+            <column name="address">TestAddress</column>
+            <column name="phone">+37533234567</column>
         </insert>
     </changeSet>
 
@@ -236,13 +260,14 @@
     <changeSet id="Set_Article1" author="marozalena@gmail.com">
         <insert tableName="articles">
             <column name="date">2019-05-11 16:13:39.541</column>
-            <column name="topic">Test Topic</column>
-            <column name="summary">Some Summary</column>
-            <column name="picture">http://eskimo.egemenerd.com/wp-content/uploads/2018/05/product14-150x150.jpg</column>
+            <column name="topic">Trump dismisses North Korean tests of 'some small weapons'</column>
+            <column name="picture">images/product14.jpg</column>
             <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='admin@admin.com')"/>
-            <column name="body">Text, Text, Text, Text, Text, Text, Text
-                , Text, Text, Text, Text, Text, Text
-                , Text, Text, Text, Text, Text, Text</column>
+            <column name="body">Earlier this month, the regime tested several short-range missiles, launching them from the Hodo peninsula in the east of the country. North Korean state media said Mr Kim personally oversaw a "strike drill" testing various missile components.
+                That test came after Pyongyang said it had tested what it described as a new "tactical guided weapon" in April.
+                Neither violate North Korea's promise not to test long range or nuclear missiles. Yet, they are likely to cause unease in Japan.
+                Speaking in Tokyo last week, Mr Abe mirrored Mr Bolton's comments, calling North Korea's recent missile launches "a breach of UN Security Council resolutions and extremely regrettable".
+                "While cooperating closely with the US and other related countries, we are planning to tackle this appropriately by strengthening enforcement of related UN Security Council resolutions," he said.</column>
             <column name="deleted">0</column>
         </insert>
     </changeSet>
@@ -253,6 +278,27 @@
             <column name="date">2019-05-11 16:13:39.541</column>
             <column name="comment">Test Comment</column>
             <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Test Topic')"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet id="ITEM_TABLE" author="marozalena@gmail.com">
+        <createTable tableName="items">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(30)"/>
+            <column name="number" type="varchar(60)"/>
+            <column name="price" type="decimal(10,2)"/>
+            <column name="description" type="varchar(200)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Set_Item1" author="marozalena@gmail.com">
+        <insert tableName="items">
+            <column name="name">Book</column>
+            <column name="number">72642352752</column>
+            <column name="price">15.35</column>
+            <column name="description">Test Description</column>
         </insert>
     </changeSet>
 </databaseChangeLog>

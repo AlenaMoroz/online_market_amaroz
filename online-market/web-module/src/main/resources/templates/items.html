@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="card">
+    <table class="table table-hover shopping-cart-wrap">
+        <thead class="text-muted">
+        <tr>
+            <th scope="col" width="200">Product</th>
+            <th scope="col" width="120">Number</th>
+            <th scope="col" width="120">Price</th>
+            <th scope="col" width="200"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td>
+                <figure class="media">
+                    <figcaption class="media-body">
+                        <h6 class="title text-truncate" th:text="${item.name}"></h6>
+                    </figcaption>
+                    <form action="#" th:action="@{/items/{id}/copy(id=${item.id})}" method="post">
+                        <button id="copy" name="copy" class="btn btn-primary">Copy</button>
+                    </form>
+                    <form action="#" th:action="@{/items/{id}/delete(id=${item.id})}" method="post">
+                        <button id="delete" name="delete" class="btn btn-danger">Delete</button>
+                    </form>
+                </figure>
+            </td>
+            <td>
+                <p th:text="${item.number}"></p>
+            </td>
+            <td>
+                <div class="price-wrap">
+                    <var class="price" th:text="${item.price}+' USD'"></var>
+                </div>
+            </td>
+            <td class="text-right">
+                <a th:href="@{/items/{id}(id=${item.id})}" name="id">More...</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row mb-2">
+    <div class="col-md-12">
+        <ul class="pagination" th:if="${pages.size() > 0}" th:each="page : ${pages}">
+            <li class="page-item">
+                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${current-1})}">
+                    <<</a></li>
+            <li class="page-item active" th:if="${page} == ${current}">
+                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}"
+                   th:text="${page}"></a></li>
+            <li class="page-item " th:unless="${page} == ${current}">
+                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}"
+                   th:text="${page}"></a></li>
+            <li class="page-item">
+                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${current+1})}">
+                    >></a></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

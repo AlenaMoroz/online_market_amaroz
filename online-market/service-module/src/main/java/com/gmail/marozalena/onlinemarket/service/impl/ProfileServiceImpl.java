@@ -8,6 +8,8 @@ import com.gmail.marozalena.onlinemarket.service.ProfileService;
 import com.gmail.marozalena.onlinemarket.service.converter.ProfileConverter;
 import com.gmail.marozalena.onlinemarket.service.exception.ServiceException;
 import com.gmail.marozalena.onlinemarket.service.model.ProfileDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,7 @@ public class ProfileServiceImpl implements ProfileService {
                                     String password,
                                     String newPassword) {
         Profile profile = profileRepository.findByID(profileDTO.getId());
-        if(password.equals("") && newPassword.equals("")){
+        if (password.isEmpty() && newPassword.isEmpty()) {
             profile.setName(profileDTO.getName());
             profile.setSurname(profileDTO.getSurname());
             profile.setAddress(profileDTO.getAddress());
@@ -55,7 +57,7 @@ public class ProfileServiceImpl implements ProfileService {
             return profileConverter.toDTO(profile);
         } else {
             User user = userRepository.findByID(profileDTO.getId());
-            if(user.getPassword().equals(encoder(password)) && !newPassword.equals("")){
+            if (passwordEncoder.matches(password, user.getPassword()) && !newPassword.isEmpty()) {
                 user.getProfile().setName(profileDTO.getName());
                 user.getProfile().setSurname(profileDTO.getSurname());
                 user.getProfile().setAddress(profileDTO.getAddress());

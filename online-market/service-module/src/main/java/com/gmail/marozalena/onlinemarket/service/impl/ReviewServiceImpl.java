@@ -5,8 +5,6 @@ import com.gmail.marozalena.onlinemarket.repository.constant.LimitConstants;
 import com.gmail.marozalena.onlinemarket.repository.model.Review;
 import com.gmail.marozalena.onlinemarket.service.ReviewService;
 import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
-import com.gmail.marozalena.onlinemarket.service.exception.ReviewsNotUpdatedException;
-import com.gmail.marozalena.onlinemarket.service.exception.ServiceException;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
@@ -16,15 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
     private final ReviewRepository reviewRepository;
     private final ReviewConverter reviewConverter;
@@ -61,25 +55,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public void updateReviews(ListOfReviewsDTO list) {
-        try (Connection connection = reviewRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                List<Review> reviews = list.getListOfReviews()
-                        .stream()
-                        .map(reviewConverter::fromReviewDTO)
-                        .collect(Collectors.toList());
-                for (Review review : reviews) {
-                    reviewRepository.updateReview(connection, review);
-                }
-                connection.commit();
-            } catch (Exception e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ReviewsNotUpdatedException("Reviews not updated in database", e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ReviewsNotUpdatedException("Reviews not updated in database", e);
+        for (ReviewDTO reviewDTO : list.getListOfReviews()) {
+            Review review = reviewRepository.findByID(reviewDTO.getId());
+            review.setShowed(reviewDTO.isShowed());
+            reviewRepository.merge(review);
         }
     }
 

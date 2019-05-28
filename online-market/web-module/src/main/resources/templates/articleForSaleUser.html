@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${article.topic}">
+    </title>
+</head>
+<body>
+<article>
+    <form action="#" th:action="@{/articles/{id}/save(id=${article.id})}" method="post">
+        <h1>
+            <input id="topic" name="topic" type="text" th:value="${article.topic}"
+                   placeholder="" class="form-control input-md">
+        </h1>
+        <p class="article-meta"><strong>Author:</strong>
+            <strong th:text="${article.user.profile.name+' '+article.user.profile.surname}+', '"></strong>
+            <strong>Published:</strong>
+            <strong th:text="${article.date}"></strong></p>
+        <div>
+            <img th:src="@{${article.picture}}" width = "300" height = "300">
+        </div>
+        <p>
+            <input id="body" name="body" type="text" th:value="${article.body}"
+                   placeholder="" class="form-control input-md">
+        </p>
+        <button id="save" name="save" class="btn btn-primary">Save</button>
+    </form>
+</article>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="page-header">
+                <h1>
+                    <small class="pull-right"></small>
+                    Comments
+                </h1>
+            </div>
+            <div class="comments-list">
+                <div class="media" th:each="comment:${article.comments}">
+                    <form id="delete" action="#"
+                          th:action="@{/articles/{id}/comments/{idCom}/delete(id=${article.id}, idCom=${comment.id})}"
+                          method="post">
+                        <p class="pull-right">
+                            <small th:text="${comment.date}"></small>
+                        </p>
+                        <div class="media-body">
+                            <h4 class="media-heading user_name"
+                                th:text="${comment.user.profile.name+' '+comment.user.profile.surname}"></h4>
+                            <h4 th:text="${comment.comment}"></h4>
+                        </div>
+                        <button th:form="delete" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

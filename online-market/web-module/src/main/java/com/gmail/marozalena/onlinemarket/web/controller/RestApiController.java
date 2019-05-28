@@ -1,8 +1,10 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
 import com.gmail.marozalena.onlinemarket.service.ArticleService;
+import com.gmail.marozalena.onlinemarket.service.ItemService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
+import com.gmail.marozalena.onlinemarket.service.model.ItemDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +25,15 @@ public class RestApiController {
 
     private final UserService userService;
     private final ArticleService articleService;
+    private final ItemService itemService;
 
     @Autowired
     public RestApiController(UserService userService,
-                             ArticleService articleService) {
+                             ArticleService articleService,
+                             ItemService itemService) {
         this.userService = userService;
         this.articleService = articleService;
+        this.itemService = itemService;
     }
 
     @PostMapping("/users")
@@ -51,7 +56,7 @@ public class RestApiController {
 
     @PostMapping("/articles")
     public ResponseEntity addArticle(
-           @RequestBody ArticleDTO articleDTO
+            @RequestBody ArticleDTO articleDTO
     ) {
         articleService.addArticle(articleDTO);
         return new ResponseEntity(HttpStatus.OK);
@@ -62,6 +67,34 @@ public class RestApiController {
             @PathVariable Long id
     ) {
         articleService.deleteArticle(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/items")
+    public List<ItemDTO> getItems() {
+        return itemService.findItems();
+    }
+
+    @GetMapping("/items/{id}")
+    public ItemDTO getItem(
+            @PathVariable Long id
+    ) {
+        return itemService.findByID(id);
+    }
+
+    @PostMapping("/items")
+    public ResponseEntity addItem(
+            @RequestBody ItemDTO itemDTO
+    ) {
+        itemService.addItem(itemDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/items/{id}")
+    public ResponseEntity deleteItem(
+            @PathVariable Long id
+    ) {
+        itemService.deleteItem(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -8,6 +8,14 @@ import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import static com.gmail.marozalena.onlinemarket.service.constant.DateConstants.PATTERN_FOR_DATE;
+import static com.gmail.marozalena.onlinemarket.service.constant.SummaryLengthConstant.END_LENGTH_OF_SUMMARY;
+import static com.gmail.marozalena.onlinemarket.service.constant.SummaryLengthConstant.FULL_LENGTH_OF_SUMMARY;
+import static com.gmail.marozalena.onlinemarket.service.constant.SummaryLengthConstant.STRART_LENGTH_OF_SUMMARY;
+
 @Component
 public class ArticleConverterImpl implements ArticleConverter {
 
@@ -26,10 +34,13 @@ public class ArticleConverterImpl implements ArticleConverter {
         Article article = new Article();
         article.setId(articleDTO.getId());
         article.setPicture(articleDTO.getPicture());
-        article.setSummary(articleDTO.getSummary());
         article.setTopic(articleDTO.getTopic());
         article.setUser(userConverter.fromUserDTO(articleDTO.getUser()));
-        article.setDate(articleDTO.getDate());
+        try {
+            article.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).parse(articleDTO.getDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         article.setBody(articleDTO.getBody());
         article.setComments(commentConverter.fromDTO(articleDTO.getComments()));
         return article;
@@ -40,11 +51,16 @@ public class ArticleConverterImpl implements ArticleConverter {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setId(article.getId());
         articleDTO.setBody(article.getBody());
-        articleDTO.setSummary(article.getSummary());
         articleDTO.setUser(userConverter.toUserDTO(article.getUser()));
         articleDTO.setTopic(article.getTopic());
         articleDTO.setPicture(article.getPicture());
-        articleDTO.setDate(article.getDate());
+        articleDTO.setDate(article.getDate().toString());
+        if (article.getBody().length() > FULL_LENGTH_OF_SUMMARY) {
+            articleDTO.setSummary(article.getBody().substring(
+                    STRART_LENGTH_OF_SUMMARY, END_LENGTH_OF_SUMMARY) + "...");
+        }else {
+            articleDTO.setSummary(article.getBody());
+        }
         articleDTO.setComments(commentConverter.toDTO(article.getComments()));
         return articleDTO;
     }

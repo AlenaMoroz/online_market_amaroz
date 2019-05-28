@@ -1,30 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title th:text="${article.topic}">
     </title>
 </head>
 <body>
-<article>
-    <h1 th:text="${article.topic}"></h1>
-    <p class="article-meta"> <strong>Author:</strong>
-        <strong th:text="${article.user.profile.name+' '+article.user.profile.surname}+', '"></strong>
-        <strong>Published:</strong>
-        <strong th:text="${article.date}"></strong></p>
-    <div>
-        <img th:src="${article.picture}">
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="news-title">
+                                        <h2 th:text="${article.topic}"></h2>
+                                    </div>
+                                    <div class="news-cats">
+                                        <p><strong>Author:</strong>
+                                            <strong th:text="${article.user.profile.name+' '+article.user.profile.surname}+', '"></strong>
+                                            <strong>Published:</strong>
+                                            <strong th:text="${article.date}"></strong></p>
+                                    </div>
+                                    <hr>
+                                    <div class="news-image">
+                                        <img th:src="@{${article.picture}}" width="450" height="450">
+                                    </div>
+                                    <div class="news-content">
+                                        <p th:text="${article.body}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <p th:text="${article.body}"></p>
-</article>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-8">
             <div class="page-header">
-                <h1><small class="pull-right"></small> Comments </h1>
+                <h1>
+                    <small class="pull-right"></small>
+                    Comments
+                </h1>
             </div>
             <div class="comments-list">
                 <div class="media" th:each="comment:${article.comments}">
-                    <p class="pull-right"><small th:text="${comment.date}"></small></p>
+                    <p class="pull-right">
+                        <small th:text="${comment.date}"></small>
+                    </p>
                     <div class="media-body">
                         <h4 class="media-heading user_name"
                             th:text="${comment.user.profile.name+' '+comment.user.profile.surname}"></h4>

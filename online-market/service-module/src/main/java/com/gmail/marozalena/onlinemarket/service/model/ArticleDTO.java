@@ -1,13 +1,12 @@
 package com.gmail.marozalena.onlinemarket.service.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ArticleDTO {
 
     private Long id;
-    private Date date;
+    private String date;
     private String topic;
     private String summary;
     private String picture;
@@ -26,11 +25,11 @@ public class ArticleDTO {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

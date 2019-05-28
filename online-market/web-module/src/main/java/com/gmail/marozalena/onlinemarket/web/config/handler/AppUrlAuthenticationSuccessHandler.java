@@ -1,8 +1,5 @@
 package com.gmail.marozalena.onlinemarket.web.config.handler;
 
-import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
-import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SECURE_REST_API;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -18,6 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
+
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.CUSTOMER_USER;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SALE_USER;
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SECURE_REST_API;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLES_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USERS_PAGE;
 
 public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -46,10 +51,15 @@ public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccess
     private String determineTargetUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equals(ADMINISTRATOR)) {
-                return "/private/users";
-            }else if(authority.getAuthority().equals(SECURE_REST_API)){
-                return "/api/articles";
+            switch (authority.getAuthority()) {
+                case ADMINISTRATOR:
+                    return URL_TO_USERS_PAGE;
+                case SECURE_REST_API:
+                    return "/api/articles";
+                case CUSTOMER_USER:
+                    return URL_TO_ARTICLES_PAGE;
+                case SALE_USER:
+                    return URL_TO_ARTICLES_PAGE;
             }
         }
         throw new IllegalStateException();
