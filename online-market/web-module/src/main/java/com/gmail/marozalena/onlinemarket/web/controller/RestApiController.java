@@ -37,7 +37,7 @@ public class RestApiController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity addUser(@RequestBody UserDTO user) {
+    public ResponseEntity addUser(@RequestBody @Valid UserDTO user) {
         userService.addUser(user);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -56,7 +56,7 @@ public class RestApiController {
 
     @PostMapping("/articles")
     public ResponseEntity addArticle(
-           @RequestBody ArticleDTO articleDTO
+            @RequestBody ArticleDTO articleDTO
     ) {
         articleService.addArticle(articleDTO);
         return new ResponseEntity(HttpStatus.OK);

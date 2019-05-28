@@ -19,8 +19,6 @@ import javax.transaction.Transactional;
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
-    Logger logger = LoggerFactory.getLogger(ProfileServiceImpl.class);
-
     private final ProfileRepository profileRepository;
     private final ProfileConverter profileConverter;
     private final UserRepository userRepository;
@@ -50,7 +48,7 @@ public class ProfileServiceImpl implements ProfileService {
                                     String password,
                                     String newPassword) {
         Profile profile = profileRepository.findByID(profileDTO.getId());
-        if (password.equals("") && newPassword.equals("")) {
+        if (password.isEmpty() && newPassword.isEmpty()) {
             profile.setName(profileDTO.getName());
             profile.setSurname(profileDTO.getSurname());
             profile.setAddress(profileDTO.getAddress());
@@ -59,7 +57,7 @@ public class ProfileServiceImpl implements ProfileService {
             return profileConverter.toDTO(profile);
         } else {
             User user = userRepository.findByID(profileDTO.getId());
-            if (passwordEncoder.matches(password, user.getPassword()) && !newPassword.equals("")) {
+            if (passwordEncoder.matches(password, user.getPassword()) && !newPassword.isEmpty()) {
                 user.getProfile().setName(profileDTO.getName());
                 user.getProfile().setSurname(profileDTO.getSurname());
                 user.getProfile().setAddress(profileDTO.getAddress());

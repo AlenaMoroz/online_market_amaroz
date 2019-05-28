@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import static com.gmail.marozalena.onlinemarket.service.constant.DateConstants.PATTERN_FOR_DATE;
+import static com.gmail.marozalena.onlinemarket.service.constant.SummaryLengthConstant.END_LENGTH_OF_SUMMARY;
+import static com.gmail.marozalena.onlinemarket.service.constant.SummaryLengthConstant.FULL_LENGTH_OF_SUMMARY;
+import static com.gmail.marozalena.onlinemarket.service.constant.SummaryLengthConstant.STRART_LENGTH_OF_SUMMARY;
+
 @Component
 public class ArticleConverterImpl implements ArticleConverter {
 
@@ -32,7 +37,7 @@ public class ArticleConverterImpl implements ArticleConverter {
         article.setTopic(articleDTO.getTopic());
         article.setUser(userConverter.fromUserDTO(articleDTO.getUser()));
         try {
-            article.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(articleDTO.getDate()));
+            article.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).parse(articleDTO.getDate()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -50,8 +55,9 @@ public class ArticleConverterImpl implements ArticleConverter {
         articleDTO.setTopic(article.getTopic());
         articleDTO.setPicture(article.getPicture());
         articleDTO.setDate(article.getDate().toString());
-        if (article.getBody().length() > 196) {
-            articleDTO.setSummary(article.getBody().substring(0, 196) + "...");
+        if (article.getBody().length() > FULL_LENGTH_OF_SUMMARY) {
+            articleDTO.setSummary(article.getBody().substring(
+                    STRART_LENGTH_OF_SUMMARY, END_LENGTH_OF_SUMMARY) + "...");
         }else {
             articleDTO.setSummary(article.getBody());
         }

@@ -20,4 +20,6 @@ public interface ArticleService {
     void createArticle(ArticleDTO articleDTO, MultipartFile file);
 
     void updateArticle(ArticleDTO articleDTO);
+
+    String getNameOfPicture(Long id);
 }

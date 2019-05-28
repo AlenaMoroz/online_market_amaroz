@@ -18,6 +18,7 @@ import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.CUSTO
 import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SALE_USER;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLES_PAGE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,5 +73,26 @@ public class ArticleControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("text/html;charset=UTF-8"))
                 .andExpect(content().string(CoreMatchers.containsString("Topic")));
+    }
+
+    @WithMockUser(authorities = {SALE_USER})
+    @Test
+    public void requestForSaleUserIsProcessedWithDeleteArticle() throws Exception {
+        this.mvc.perform(post("/articles/delete/1"))
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(authorities = {SALE_USER})
+    @Test
+    public void requestForSaleUserIsProcessedWithPageForNewArticle() throws Exception {
+        this.mvc.perform(get("/articles/new"))
+                .andExpect(status().isOk());
+    }
+
+    @WithMockUser(authorities = {SALE_USER})
+    @Test
+    public void requestForSaleUserIsProcessedWithNewArticle() throws Exception {
+        this.mvc.perform(post("/articles/new"))
+                .andExpect(status().isOk());
     }
 }

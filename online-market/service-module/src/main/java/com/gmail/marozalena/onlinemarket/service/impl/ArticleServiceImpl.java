@@ -100,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public void createArticle(ArticleDTO articleDTO, MultipartFile file) {
         uploadImage(file);
-        articleDTO.setPicture("images/" + file.getOriginalFilename());
+        articleDTO.setPicture(file.getOriginalFilename());
         Article article = articleConverter.fromDTO(articleDTO);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
@@ -119,11 +119,17 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.merge(article);
     }
 
+    @Override
+    @Transactional
+    public String getNameOfPicture(Long id) {
+        Article article = articleRepository.findByID(id);
+        return article.getPicture();
+    }
+
     private void uploadImage(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(System.getProperty("user.dir")
-                    + "/web-module/src/main/resources/templates/images/"
+            Path path = Paths.get(System.getProperty("java.io.tmpdir")
                     + file.getOriginalFilename());
             Files.write(path, bytes);
         } catch (IOException e) {

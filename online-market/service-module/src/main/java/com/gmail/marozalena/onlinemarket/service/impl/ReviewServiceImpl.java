@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
-
     private final ReviewRepository reviewRepository;
     private final ReviewConverter reviewConverter;
 

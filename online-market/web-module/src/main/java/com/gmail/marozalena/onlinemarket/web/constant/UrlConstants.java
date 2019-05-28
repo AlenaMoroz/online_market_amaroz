@@ -12,7 +12,7 @@ public class UrlConstants {
     public static final String URL_TO_ARTICLES_PAGE = "/articles";
     public static final String URL_TO_ARTICLE_PAGE = "/articles/{id}";
     public static final String URL_TO_ADD_NEW_ARTICLE_PAGE = "/articles/new";
-    public static final String URL_TO_DELETE_ARTICLE_PAGE = "/articles/delete";
+    public static final String URL_TO_DELETE_ARTICLE_PAGE = "/articles/delete/{id}";
     public static final String URL_TO_UPDATE_ARTICLE_PAGE = "/articles/{id}/save";
     public static final String URL_TO_PROFILE_PAGE = "/profile";
     public static final String URL_TO_PROFILE_PAGES = "/profile/**";

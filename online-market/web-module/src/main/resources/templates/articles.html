@@ -22,7 +22,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <img th:src="@{${article.picture}}" width = "150" height = "150">
+                                        <img th:src="@{/images/{id}(id=${article.id})}" width = "150" height = "150">
                                     </div>
                                     <div class="col-md-9">
                                         <div class="card-body">
