@@ -27,7 +27,7 @@
                                     </div>
                                     <hr>
                                     <div class="news-image">
-                                        <img th:src="@{${article.picture}}" width="450" height="450">
+                                        <img th:src="@{/images/{id}(id=${article.id})}" width="450" height="450">
                                     </div>
                                     <div class="news-content">
                                         <p th:text="${article.body}"></p>

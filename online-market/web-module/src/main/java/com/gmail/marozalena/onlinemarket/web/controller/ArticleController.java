@@ -69,13 +69,11 @@ public class ArticleController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         UserDTO userDTO = userService.loadUserByEmail(email);
+        ArticleDTO article = articleService.findByID(id);
+        model.addAttribute("article", article);
         if (userDTO.getRole().getName().equals(CUSTOMER_USER)) {
-            ArticleDTO article = articleService.findByID(id);
-            model.addAttribute("article", article);
             return "article";
         } else {
-            ArticleDTO article = articleService.findByID(id);
-            model.addAttribute("article", article);
             return "articleForSaleUser";
         }
     }
@@ -83,7 +81,7 @@ public class ArticleController {
     @PostMapping(URL_TO_DELETE_ARTICLE_PAGE)
     public String deleteAtricle(@PathVariable Long id) {
         articleService.deleteArticle(id);
-        return "articles";
+        return "redirect:/articles";
     }
 
     @GetMapping(URL_TO_ADD_NEW_ARTICLE_PAGE)

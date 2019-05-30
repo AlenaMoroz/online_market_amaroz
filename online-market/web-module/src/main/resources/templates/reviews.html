@@ -56,7 +56,7 @@
 
 <div class="row mb-2">
     <div class="col-md-12">
-        <ul class="pagination" th:if="${pages.size() > 0}">
+        <ul class="pagination" th:if="${pages.size() != 0}">
             <li class="page-item" th:if="${current} != '1'">
                 <a class="page-link" th:href="@{/reviews(page=${current - 1})}"><<</a></li>
             <div th:each="page : ${pages}">

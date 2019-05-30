@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <div th:replace="fragments/header :: header-css"></div>
 </head>
@@ -11,44 +12,43 @@
         <tr>
             <th scope="col" width="200">Product</th>
             <th scope="col" width="120">Number</th>
-            <th scope="col" width="120">Quantity</th>
             <th scope="col" width="120">Price</th>
             <th scope="col" width="200"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="item : ${items}">
-            <form action="#" th:action="@{/orders/new}">
-                <td>
-                    <figure class="media">
-                        <figcaption class="media-body">
-                            <h6 class="title text-truncate" th:text="${item.name}"></h6>
-                            <a th:href="@{/items/{id}(id=${item.id})}" name="id">More...</a>
-                        </figcaption>
-                    </figure>
-                </td>
-                <td>
-                    <p th:text="${item.number}"></p>
-                </td>
-                <td>
-                    <input type="number" name="quantity" min="1" value="1">
-                </td>
-                <td>
-                    <div class="price-wrap">
-                        <var class="price" th:text="${item.price}+' USD'"></var>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <button name="save" class="btn btn-primary">Order</button>
-                </td>
-            </form>
+            <td>
+                <figure class="media">
+                    <figcaption class="media-body">
+                        <h6 class="title text-truncate" th:text="${item.name}"></h6>
+                    </figcaption>
+                    <form th:action="@{/items/{id}/copy(id=${item.id})}" method="post">
+                        <button name="copy" class="btn btn-primary">Copy</button>
+                    </form>
+                    <form th:action="@{/items/{id}/delete(id=${item.id})}" method="post">
+                        <button name="delete" class="btn btn-danger">Delete</button>
+                    </form>
+                </figure>
+            </td>
+            <td>
+                <p th:text="${item.number}"></p>
+            </td>
+            <td>
+                <div class="price-wrap">
+                    <var class="price" th:text="${item.price}+' USD'"></var>
+                </div>
+            </td>
+            <td class="text-right">
+                <a th:href="@{/items/{id}(id=${item.id})}" name="id">More...</a>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class="row mb-2">
     <div class="col-md-12">
-        <ul class="pagination" th:if="${pages.size() != 0}">
+        <ul class="pagination" th:if="${pages.size() > 0}">
             <li class="page-item" th:if="${current} != '1'">
                 <a class="page-link" th:href="@{/items(page=${current-1})}"><<</a></li>
             <div th:each="page : ${pages}">

@@ -1,9 +1,13 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
 import com.gmail.marozalena.onlinemarket.service.ItemService;
+import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.ItemDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
+import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +19,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.CUSTOMER_USER;
+
 @Controller
 public class ItemController {
 
     private final ItemService itemService;
+    private final UserService userService;
 
     @Autowired
-    public ItemController(ItemService itemService) {
+    public ItemController(ItemService itemService,
+                          UserService userService) {
         this.itemService = itemService;
+        this.userService = userService;
     }
 
     @GetMapping("/items")
@@ -39,7 +48,14 @@ public class ItemController {
                 .boxed()
                 .collect(Collectors.toList());
         model.addAttribute("pages", pages);
-        return "items";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        UserDTO userDTO = userService.loadUserByEmail(email);
+        if (userDTO.getRole().getName().equals(CUSTOMER_USER)) {
+            return "items";
+        } else {
+            return "itemsForSaleUser";
+        }
     }
 
     @PostMapping("/items/{id}/copy")

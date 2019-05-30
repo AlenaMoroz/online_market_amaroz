@@ -18,7 +18,7 @@
             <strong>Published:</strong>
             <strong th:text="${article.date}"></strong></p>
         <div>
-            <img th:src="@{${article.picture}}" width = "300" height = "300">
+            <img th:src="@{/images/{id}(id=${article.id})}" width = "300" height = "300">
         </div>
         <p>
             <input id="body" name="body" type="text" th:value="${article.body}"

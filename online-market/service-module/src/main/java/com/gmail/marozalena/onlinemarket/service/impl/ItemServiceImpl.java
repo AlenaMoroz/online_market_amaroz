@@ -64,10 +64,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public PageDTO<ItemDTO> findItems(Integer page) {
-        List<Item> articles = itemRepository.findAll(page, "name");
+        List<Item> articles = itemRepository.findAll(page);
         List<ItemDTO> list = articles.stream()
                 .map(itemConverter::toDTO)
-              //  .sorted(Comparator.comparing(ItemDTO::getName))
                 .collect(Collectors.toList());
         PageDTO<ItemDTO> pageDTO = new PageDTO<>();
         pageDTO.setList(list);

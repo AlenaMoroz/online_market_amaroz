@@ -301,8 +301,8 @@
     <changeSet id="Set_Article1" author="marozalena@gmail.com">
         <insert tableName="articles">
             <column name="date">2019-05-11 16:13:39.541</column>
-            <column name="topic">Trump dismisses North Korean tests of 'some small weapons'</column>
-            <column name="picture">images/product14.jpg</column>
+            <column name="topic">Trump dismisses North Korean tests</column>
+            <column name="picture">product14.jpg</column>
             <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='admin@admin.com')"/>
             <column name="body">Earlier this month, the regime tested several short-range missiles, launching them from the Hodo peninsula in the east of the country. North Korean state media said Mr Kim personally oversaw a "strike drill" testing various missile components.
                 That test came after Pyongyang said it had tested what it described as a new "tactical guided weapon" in April.
@@ -318,7 +318,7 @@
             <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='cus@gmail.com')"/>
             <column name="date">2019-05-11 16:13:39.541</column>
             <column name="comment">Test Comment</column>
-            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Trump dismisses North Korean tests of 'some small weapons'')"/>
+            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Trump dismisses North Korean tests')"/>
         </insert>
     </changeSet>
 

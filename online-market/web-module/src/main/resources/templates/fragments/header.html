@@ -3,8 +3,8 @@
 <head>
     <div th:fragment="header-css">
         <!-- this is header-css -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </div>
 </head>
@@ -38,6 +38,7 @@
                     <div sec:authorize="hasAuthority('Sale User')">
                         <div class="row">
                             <li><a class="nav-item nav-link" th:href="@{/articles}">Articles</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/articles/new}">New Article</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/items}">Items</a></li>
                         </div>
                     </div>

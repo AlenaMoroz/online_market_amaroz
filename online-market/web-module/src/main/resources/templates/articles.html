@@ -14,7 +14,7 @@
     </div>
     <div class="row">
         <div class="col-md-9" th:each="article : ${articles}">
-            <form id="delete" action="#" th:action="@{/articles/delete/{id}(id=${article.id})}" method="post">
+            <form th:action="@{/articles/delete/{id}(id=${article.id})}" method="post">
                 <div class="row mb-2">
                     <div class="col-md-12">
                         <div class="card">
@@ -51,7 +51,7 @@
                                             </div>
                                             <div sec:authorize="isAuthenticated()">
                                                 <div sec:authorize="hasAuthority('Sale User')">
-                                                    <button th:form="delete" class="btn btn-danger">Delete</button>
+                                                    <button class="btn btn-danger">Delete</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,7 +66,7 @@
     </div>
     <div class="row mb-2">
         <div class="col-md-12">
-            <ul class="pagination" th:if="${pages.size() > 0}">
+            <ul class="pagination" th:if="${pages.size() != 0}">
                 <li class="page-item" th:if="${current} != '1'">
                     <a class="page-link" th:href="@{/articles(page=${current-1})}"><<</a></li>
                 <div th:each="page : ${pages}">
