@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <div th:replace="fragments/header :: header-css"></div>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <div class="card">
     <table class="table table-hover shopping-cart-wrap">
         <thead class="text-muted">
@@ -48,19 +47,17 @@
 </div>
 <div class="row mb-2">
     <div class="col-md-12">
-        <ul class="pagination" th:if="${pages.size() > 0}" th:each="page : ${pages}">
-            <li class="page-item">
-                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${current-1})}">
-                    <<</a></li>
+        <ul class="pagination" th:if="${pages.size() > 0}">
+            <li class="page-item" th:if="${current} != '1'">
+                <a class="page-link" th:href="@{/items(page=${current-1})}"><<</a></li>
+            <div th:each="page : ${pages}">
             <li class="page-item active" th:if="${page} == ${current}">
-                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}"
-                   th:text="${page}"></a></li>
+                <a class="page-link" th:href="@{/items(page=${page})}" th:text="${page}"></a></li>
             <li class="page-item " th:unless="${page} == ${current}">
-                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${page})}"
-                   th:text="${page}"></a></li>
-            <li class="page-item">
-                <a class="page-link" th:href="@{/private/users/{pageNumber}(pageNumber=${current+1})}">
-                    >></a></li>
+                <a class="page-link" th:href="@{/items(page=${page})}" th:text="${page}"></a></li>
+            </div>
+            <li class="page-item" th:if="${current} != ${pages.size()}">
+                <a class="page-link" th:href="@{/items(page=${current+1})}">>></a></li>
         </ul>
     </div>
 </div>

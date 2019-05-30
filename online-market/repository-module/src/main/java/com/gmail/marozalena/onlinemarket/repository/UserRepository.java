@@ -8,4 +8,6 @@ import java.util.List;
 public interface UserRepository extends GenericRepository<Long, User> {
 
     User findUserByEmail(String email);
+
+    List<User> findUsers(Integer page, String param);
 }

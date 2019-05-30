@@ -33,7 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public PageDTO<ReviewDTO> getReviews(Integer page) {
-        List<Review> reviews = reviewRepository.findAll(page);
+        List<Review> reviews = reviewRepository.findAll(page, "id");
         List<ReviewDTO> list = reviews.stream()
                 .map(reviewConverter::toReviewDTO)
                 .collect(Collectors.toList());

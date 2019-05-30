@@ -42,10 +42,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public PageDTO<UserDTO> getUsers(Integer page) {
-        List<User> users = userRepository.findAll(page);
+        List<User> users = userRepository.findUsers(page, "email");
         List<UserDTO> list = users.stream()
                 .map(userConverter::toUserDTO)
-                .sorted(Comparator.comparing(UserDTO::getEmail))
+               // .sorted(Comparator.comparing(UserDTO::getEmail))
                 .collect(Collectors.toList());
         PageDTO<UserDTO> listOfUsers = new PageDTO<>();
         listOfUsers.setList(list);

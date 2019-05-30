@@ -49,10 +49,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public PageDTO<ArticleDTO> getArticles(Integer page) {
-        List<Article> articles = articleRepository.findAll(page);
+        List<Article> articles = articleRepository.findAll(page, "date");
         List<ArticleDTO> list = articles.stream()
                 .map(articleConverter::toDTO)
-                .sorted(Comparator.comparing(ArticleDTO::getDate))
+               // .sorted(Comparator.comparing(ArticleDTO::getDate))
                 .collect(Collectors.toList());
         PageDTO<ArticleDTO> pageDTO = new PageDTO<>();
         pageDTO.setList(list);

@@ -35,6 +35,7 @@
             <column name="patronymic" type="varchar(80)"/>
             <column name="address" type="varchar(80)"/>
             <column name="phone" type="varchar(13)"/>
+            <column name="deleted" type="TINYINT" defaultValue="0"/>
         </createTable>
     </changeSet>
 
@@ -74,6 +75,32 @@
             <column name="date" type="DATETIME"/>
             <column name="comment" type="varchar(200)"/>
             <column name="articles_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ITEM_TABLE" author="marozalena@gmail.com">
+        <createTable tableName="items">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(30)"/>
+            <column name="number" type="varchar(60)"/>
+            <column name="price" type="decimal(10,2)"/>
+            <column name="description" type="varchar(200)"/>
+            <column name="deleted" type="TINYINT" defaultValue="0"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ORDERS_TABLE" author="marozalena@gmail.com">
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="number" type="varchar(60)"/>
+            <column name="status" type="varchar(15)"/>
+            <column name="items_id" type="BIGINT"/>
+            <column name="count" type="INT"/>
+            <column name="users_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 
@@ -137,6 +164,30 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="FOREIGNKEY_Orders_With_Items" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="items_id"
+                                 constraintName="fk_orders_items"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="items"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="FOREIGNKEY_Orders_With_Users" author="marozalena@gmail.com">
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="users_id"
+                                 constraintName="fk_orders_users"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onUpdate="RESTRICT"
+                                 onDelete="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
     <changeSet id="Set_Role_Admin" author="marozalena@gmail.com">
         <insert tableName="roles">
             <column name="role">Administrator</column>
@@ -170,11 +221,11 @@
         </insert>
     </changeSet>
 
-    <changeSet id="Set_User" author="marozalena@gmail.com">
+    <changeSet id="Set_Secure_Api_User" author="marozalena@gmail.com">
         <insert tableName="users">
-            <column name="email">test@test.com</column>
-            <column name="password">$2a$12$3IoMMOtbJSHOTPMerMgi3uGR77f20het23sW1hOBPy5pf972EjDHG</column>
-            <column name="roles_id">2</column>
+            <column name="email">rest@rest.com</column>
+            <column name="password">$2a$12$jDz08vAye4K2gwxhYsh2WOc57DjErtq/5Rle./81AR8BA6v.n1d.e</column>
+            <column name="roles_id" valueComputed="(SELECT id FROM roles WHERE role='SECURE REST API')"/>
             <column name="deleted">0</column>
         </insert>
     </changeSet>
@@ -204,16 +255,6 @@
             <column name="patronymic">Admin</column>
             <column name="address">TestAddress</column>
             <column name="phone">+37533234567</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Profile_for_User" author="marozalena@gmail.com">
-        <insert tableName="profiles">
-            <column name="name">TestUser</column>
-            <column name="surname">TestSurname</column>
-            <column name="patronymic">TestPatronymic</column>
-            <column name="address">TestAddress</column>
-            <column name="phone">+37511234567</column>
         </insert>
     </changeSet>
 
@@ -249,7 +290,7 @@
 
     <changeSet id="Set_Review1" author="marozalena@gmail.com">
         <insert tableName="reviews">
-            <column name="users_id">2</column>
+            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='cus@gmail.com')"/>
             <column name="review">Review 1</column>
             <column name="date">2019-05-11 16:13:39.541</column>
             <column name="showed">0</column>
@@ -274,23 +315,11 @@
 
     <changeSet id="Set_Comment1" author="marozalena@gmail.com">
         <insert tableName="comments">
-            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='test@test.com')"/>
+            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='cus@gmail.com')"/>
             <column name="date">2019-05-11 16:13:39.541</column>
             <column name="comment">Test Comment</column>
-            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Test Topic')"/>
+            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Trump dismisses North Korean tests of 'some small weapons'')"/>
         </insert>
-    </changeSet>
-    
-    <changeSet id="ITEM_TABLE" author="marozalena@gmail.com">
-        <createTable tableName="items">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="varchar(30)"/>
-            <column name="number" type="varchar(60)"/>
-            <column name="price" type="decimal(10,2)"/>
-            <column name="description" type="varchar(200)"/>
-        </createTable>
     </changeSet>
 
     <changeSet id="Set_Item1" author="marozalena@gmail.com">

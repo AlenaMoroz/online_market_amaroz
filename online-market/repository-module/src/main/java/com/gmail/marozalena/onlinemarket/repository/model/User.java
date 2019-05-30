@@ -1,7 +1,6 @@
 package com.gmail.marozalena.onlinemarket.repository.model;
 
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +18,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted = '0'")
 public class User {
 
     @Id
@@ -30,7 +28,7 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "roles_id")
     private Role role;
     @OneToOne(fetch = FetchType.LAZY,

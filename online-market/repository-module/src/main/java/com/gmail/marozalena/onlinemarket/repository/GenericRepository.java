@@ -15,7 +15,7 @@ public interface GenericRepository<I, T> {
 
     T findByID(I id);
 
-    List<T> findAll(Integer page);
+    List<T> findAll(Integer page, String param);
 
     List<T> findAll();
 

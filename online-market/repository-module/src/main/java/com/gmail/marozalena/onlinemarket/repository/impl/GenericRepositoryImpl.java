@@ -65,8 +65,8 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
 
     @Override
     @SuppressWarnings({"uncheked", "rawtypes"})
-    public List<T> findAll(Integer page) {
-        String query = "FROM " + entityClass.getName();
+    public List<T> findAll(Integer page, String param) {
+        String query = "FROM " + entityClass.getName() + " ORDER BY " + param;
         Query q = entityManager.createQuery(query)
                 .setFirstResult(getCountOfOffset(page))
                 .setMaxResults(LimitConstants.ENTITY_ON_PAGE);
@@ -88,7 +88,7 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
         return ((Number) q.getSingleResult()).intValue();
     }
 
-    private int getCountOfOffset(Integer page) {
+    public int getCountOfOffset(Integer page) {
         return (page - 1) * 10;
     }
 

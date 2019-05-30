@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <div th:replace="fragments/header :: header-css"></div>
     <title th:text="${item.name}"></title>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <div class="container">
     <div class="row">
         <div class="col-md-12">

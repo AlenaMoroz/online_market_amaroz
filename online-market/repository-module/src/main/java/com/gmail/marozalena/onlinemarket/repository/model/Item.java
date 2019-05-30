@@ -1,5 +1,7 @@
 package com.gmail.marozalena.onlinemarket.repository.model;
 
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "items")
+@SQLDelete(sql = "UPDATE items SET deleted = '1' WHERE id = ?")
 public class Item {
 
     @Id

@@ -81,15 +81,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority(CUSTOMER_USER)
                 .antMatchers(
                         URL_TO_ARTICLES_PAGE,
-                        URL_TO_ARTICLE_PAGE)
+                        URL_TO_ARTICLE_PAGE,
+                        URL_TO_ITEMS_PAGE,
+                        URL_TO_ITEM_PAGE)
                 .hasAnyAuthority(SALE_USER, CUSTOMER_USER)
                 .antMatchers(
                         URL_TO_ADD_NEW_ARTICLE_PAGE,
                         URL_TO_DELETE_ARTICLE_PAGE,
                         URL_TO_UPDATE_ARTICLE_PAGE,
-                        URL_TO_DELETE_COMMENT_PAGE,
-                        URL_TO_ITEMS_PAGE,
-                        URL_TO_ITEM_PAGE)
+                        URL_TO_DELETE_COMMENT_PAGE)
                 .hasAuthority(SALE_USER)
                 .antMatchers("/login", URL_TO_REVIEWS_PAGE)
                 .permitAll()

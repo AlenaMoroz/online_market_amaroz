@@ -4,6 +4,7 @@
     <div th:replace="fragments/header :: header-css"></div>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <form class="form-horizontal" th:action="@{/private/users/new}" th:object="${user}" method="post">
     <fieldset>
         <!-- Text input-->

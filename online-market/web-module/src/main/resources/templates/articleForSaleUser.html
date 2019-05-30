@@ -3,8 +3,10 @@
 <head>
     <title th:text="${article.topic}">
     </title>
+    <div th:replace="fragments/header :: header-css"></div>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <article>
     <form action="#" th:action="@{/articles/{id}/save(id=${article.id})}" method="post">
         <h1>

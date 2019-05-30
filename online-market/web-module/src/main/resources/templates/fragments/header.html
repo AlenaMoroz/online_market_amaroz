@@ -1,15 +1,52 @@
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <div th:fragment="header-css">
-            <!-- this is header-css -->
-            <link rel="stylesheet" type="text/css"
-                  href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"
-                  th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
-            <link rel="stylesheet" th:href="@{/css/main.css}"
-                  href="../../css/main.css"/>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:fragment="header-css">
+        <!-- this is header-css -->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Market</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <div sec:authorize="isAnonymous()">
+                    <li><a class="nav-item nav-link" href="#" th:href="@{/login}">Login</a></li>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasAuthority('Administrator')">
+                        <div class="row">
+                            <li><a class="nav-item nav-link" th:href="@{/private/users}">Users</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/private/users/new}">Add User</a></li>
+                        </div>
+                    </div>
+                    <div sec:authorize="hasAuthority('Customer User')">
+                        <div class="row">
+                            <li><a class="nav-item nav-link" th:href="@{/articles}">Articles</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/items}">Items</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/profile}">Profile</a></li>
+                        </div>
+                    </div>
+                    <div sec:authorize="hasAuthority('Sale User')">
+                        <div class="row">
+                            <li><a class="nav-item nav-link" th:href="@{/articles}">Articles</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/items}">Items</a></li>
+                        </div>
+                    </div>
+                </div>
+                <li><a class="nav-item nav-link" th:href="@{/reviews}">Reviews</a></li>
+            </div>
         </div>
-    </head>
-    <body>
+    </nav>
+</div>
 
-    </body>
+</body>
 </html>
