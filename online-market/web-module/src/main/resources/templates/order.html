@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"></div>
+    <title th:text="${order.number}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <h2 class="text-danger" th:text="${order.number}"></h2>
+    <form action="#" th:action="@{/private/orders/{id}/save(id=${order.id})}" method="post">
+        <table class="table table-bordered success">
+            <thead>
+            <tr>
+                <th class="info">Username</th>
+                <td th:text="${order.user.profile.name + ' ' + order.user.profile.surname}"></td>
+            </tr>
+            <tr>
+                <th class="info">Phone</th>
+                <td th:text="${order.user.profile.phone}"></td>
+            </tr>
+            <tr>
+                <th class="info">Item</th>
+                <td th:text="${order.item.name}"></td>
+            </tr>
+            <tr>
+                <th class="info">Count</th>
+                <td th:text="${order.count}"></td>
+            </tr>
+
+            <tr>
+                <th class="info">Check</th>
+                <td th:text="${order.item.price * order.count} + ' USD'"></td>
+            </tr>
+            <tr>
+                <th class="info">Status</th>
+                <td>
+                    <select id="statuses" name="status">
+                        <option th:each="status,stat:${statuses}"
+                                name="status"
+                                th:value="${statuses[__${stat.index}__]}"
+                                th:text="${statuses[__${stat.index}__]}"
+                                th:selected="${order.status == statuses[__${stat.index}__]}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th colspan="1"></th>
+                <td>
+                    <button name="update" class="btn btn-info">Update</button>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </form>
+</div>
+</body>
+</html>

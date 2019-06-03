@@ -6,54 +6,61 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<table align="center" cellpadding="7" border="1">
-    <tr>
-        <th height="50" width="150"></th>
-        <th height="50" width="150">Review</th>
-        <th height="50" width="20">
+<div class="container">
+    <div class="row pb-3">
+        <div class="col-md-12">
+            <h5>Reviews</h5>
+        </div>
+    </div>
+    <hr>
+    <div class="one-review" th:each="review,stat : ${reviews.listOfReviews}">
+        <form id="delete" action="#" th:action="@{/reviews/delete}" method="post">
+        <div class="row">
             <div sec:authorize="isAuthenticated()">
                 <div sec:authorize="hasAuthority('Administrator')">
-                    <form id="update" th:action="@{/reviews/save}" th:object="${reviews}"
-                          method="post">
-                        <input class="btn btn-success" type="submit"
-                               value="Update">
-                    </form>
+                    <label>
+                        <input class="checkbox top-left" type="checkbox" form="update"
+                               th:field="${reviews.listOfReviews[__${stat.index}__].showed}">
+                        <input hidden form="update" th:name="id" th:value="${review.id}"
+                               th:field="${reviews.listOfReviews[__${stat.index}__].id}">
+                    </label>
                 </div>
             </div>
-        </th>
-    </tr>
-    <tr th:each="review,stat : ${reviews.listOfReviews}">
-        <form id="delete" action="#" th:action="@{/reviews/delete}" method="post">
-            <th height="300" width="300">
-                <p><input id="name" name="name" th:value="${review.user.profile.name}"></p>
-                <p><input id="surname" name="surname" th:value="${review.user.profile.surname}"></p>
-                <p><input id="patronymic" name="patronymic" th:value="${review.user.profile.patronymic}"></p>
-                <p th:text="${review.date}"></p>
-            <th height="300" width="300">
-                <input id="review" name="review" th:value="${review.review}"></th>
-            <th height="300" width="20">
-                <div sec:authorize="isAuthenticated()">
-                    <div sec:authorize="hasAuthority('Administrator')">
-                        <label>
-                            <input class="checkbox top-left" type="checkbox" form="update"
-                                   th:field="${reviews.listOfReviews[__${stat.index}__].showed}">
-                            <input hidden form="update" th:name="id" th:value="${review.id}"
-                                   th:field="${reviews.listOfReviews[__${stat.index}__].id}">
-                        </label>
-                    </div>
-                </div>
-            </th>
-            <th height="300" width="50">
+            <div class="col-md-6">
+                <p th:text="${review.user.profile.name + ' ' + review.user.profile.surname + ' ' +
+                review.user.profile.patronymic}"></p>
+            </div>
+            <div class="col-md-6 text-success">
+                <small th:text="${review.date}"></small>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-md-12">
+                <p th:text="${review.review}"></p>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-md-8">
                 <div sec:authorize="isAuthenticated()">
                     <div sec:authorize="hasAuthority('Administrator')">
                         <button name="delete" th:value="${review.id}" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
-            </th>
+            </div>
+        </div>
         </form>
-    </tr>
-</table>
-
+        <hr>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <div sec:authorize="hasAuthority('Administrator')">
+            <form id="update" th:action="@{/reviews/save}" th:object="${reviews}"
+                  method="post">
+                <input class="btn btn-success" type="submit"
+                       value="Update">
+            </form>
+        </div>
+    </div>
+</div>
 <div class="row mb-2">
     <div class="col-md-12">
         <ul class="pagination" th:if="${pages.size() != 0}">

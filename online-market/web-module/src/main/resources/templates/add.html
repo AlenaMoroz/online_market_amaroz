@@ -7,7 +7,6 @@
 <div th:replace="fragments/header :: header"></div>
 <form class="form-horizontal" th:action="@{/private/users/new}" th:object="${user}" method="post">
     <fieldset>
-        <!-- Text input-->
         <div class="form-group">
             <label class="col-md-4 control-label" for="name">Name</label>
             <div class="col-md-4">
@@ -54,7 +53,6 @@
                 <button id="save" name="save" class="btn btn-primary">Save</button>
             </div>
         </div>
-
     </fieldset>
 </form>
 </body>

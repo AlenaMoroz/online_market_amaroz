@@ -8,12 +8,12 @@ import com.gmail.marozalena.onlinemarket.service.converter.ReviewConverter;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +60,15 @@ public class ReviewServiceImpl implements ReviewService {
             review.setShowed(reviewDTO.isShowed());
             reviewRepository.merge(review);
         }
+    }
+
+    @Override
+    @Transactional
+    public void createReview(ReviewDTO reviewDTO, UserDTO user) {
+        reviewDTO.setUser(user);
+        Review review = reviewConverter.fromReviewDTO(reviewDTO);
+        review.setDate(new Date());
+        reviewRepository.persist(review);
     }
 
     private int getCountOfPages(int countOfReviews) {

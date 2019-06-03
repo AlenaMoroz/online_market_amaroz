@@ -1,10 +1,13 @@
 package com.gmail.marozalena.onlinemarket.web.controller;
 
 import com.gmail.marozalena.onlinemarket.service.ReviewService;
+import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
+import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +25,13 @@ public class BasicController {
     private static final String redirectToReviewFirstPage = "redirect:/reviews";
 
     private final ReviewService reviewService;
+    private final UserService userService;
 
     @Autowired
-    public BasicController(ReviewService reviewService) {
+    public BasicController(ReviewService reviewService,
+                           UserService userService) {
         this.reviewService = reviewService;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -62,6 +68,21 @@ public class BasicController {
     public String updateReviews(@ModelAttribute("reviews") ListOfReviewsDTO reviews) {
         reviewService.updateReviews(reviews);
         return redirectToReviewFirstPage;
+    }
+
+    @GetMapping("/reviews/new")
+    public String createReiewPage(Model model){
+        model.addAttribute("review", new ReviewDTO());
+        return "newReview";
+    }
+
+    @PostMapping("/reviews/new")
+    public String createReiew(@ModelAttribute("review") ReviewDTO review,
+                              Authentication authentication){
+        String email = authentication.getName();
+        UserDTO user = userService.loadUserByEmail(email);
+        reviewService.createReview(review, user);
+        return "redirect:/reviews";
     }
 
 }

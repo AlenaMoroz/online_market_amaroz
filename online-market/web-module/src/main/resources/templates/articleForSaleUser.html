@@ -20,10 +20,10 @@
         <div>
             <img th:src="@{/images/{id}(id=${article.id})}" width = "300" height = "300">
         </div>
-        <p>
-            <input id="body" name="body" type="text" th:value="${article.body}"
-                   placeholder="" class="form-control input-md">
-        </p>
+        <div>
+            <textarea class="form-control" id="textarea" name="textarea" th:text="${article.body}"
+            maxlength="1000" rows="10" required="true"></textarea>
+        </div>
         <button id="save" name="save" class="btn btn-primary">Save</button>
     </form>
 </article>

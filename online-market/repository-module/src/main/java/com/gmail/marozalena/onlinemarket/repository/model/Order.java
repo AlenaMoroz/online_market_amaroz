@@ -1,7 +1,5 @@
 package com.gmail.marozalena.onlinemarket.repository.model;
 
-import org.springframework.stereotype.Controller;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "orders")
@@ -31,6 +30,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "users_id")
     private User user;
+    @Column(name = "date")
+    private Date date;
 
     public Order() {
     }
@@ -81,5 +82,13 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

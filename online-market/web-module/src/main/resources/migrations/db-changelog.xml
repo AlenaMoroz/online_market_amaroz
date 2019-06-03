@@ -101,6 +101,7 @@
             <column name="items_id" type="BIGINT"/>
             <column name="count" type="INT"/>
             <column name="users_id" type="BIGINT"/>
+            <column name="date" type="DATETIME"/>
         </createTable>
     </changeSet>
 

@@ -16,23 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.ADMINISTRATOR;
 import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.CUSTOMER_USER;
 import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SALE_USER;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ADD_NEW_ARTICLE_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ADD_NEW_USER_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLES_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLE_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_ARTICLE_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_COMMENT_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_REVIEW_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_DELETE_USERS_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ITEMS_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ITEM_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_REVIEWS_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_ARTICLE_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_PROFILE_PAGES;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_UPDATE_REVIEWS_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USERS_PAGE;
-import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USER_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.*;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -77,7 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority(ADMINISTRATOR)
                 .antMatchers(
                         URL_TO_PROFILE_PAGE,
-                        URL_TO_PROFILE_PAGES)
+                        URL_TO_PROFILE_PAGES,
+                        URL_TO_ORDERS_PAGE_FOR_CUSTOMER_USER,
+                        URL_TO_CREATE_ORDER,
+                        URL_TO_CREATE_REVIEW_PAGE)
                 .hasAuthority(CUSTOMER_USER)
                 .antMatchers(
                         URL_TO_ARTICLES_PAGE,
@@ -89,9 +76,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         URL_TO_ADD_NEW_ARTICLE_PAGE,
                         URL_TO_DELETE_ARTICLE_PAGE,
                         URL_TO_UPDATE_ARTICLE_PAGE,
-                        URL_TO_DELETE_COMMENT_PAGE)
+                        URL_TO_DELETE_COMMENT_PAGE,
+                        URL_TO_ORDERS_PAGE_FOR_SALE_USER,
+                        URL_TO_ORDER_PAGE,
+                        URL_TO_UPDATE_ORDER_PAGE)
                 .hasAuthority(SALE_USER)
-                .antMatchers("/login", URL_TO_REVIEWS_PAGE)
+                .antMatchers("/login", "/error")
                 .permitAll()
                 .and()
                 .formLogin()

@@ -9,39 +9,36 @@
     <table class="table table-hover shopping-cart-wrap">
         <thead class="text-muted">
         <tr>
-            <th scope="col" width="200">Product</th>
             <th scope="col" width="120">Number</th>
+            <th scope="col" width="120">Status</th>
+            <th scope="col" width="120">Item</th>
             <th scope="col" width="120">Quantity</th>
-            <th scope="col" width="120">Price</th>
-            <th scope="col" width="200"></th>
+            <th scope="col" width="120">Check</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item : ${items}">
-            <form action="#" th:action="@{/orders/new(number=${item.number})}" method="post">
-                <td>
-                    <figure class="media">
-                        <figcaption class="media-body">
-                            <h6 class="title text-truncate" th:text="${item.name}"></h6>
-                            <a th:href="@{/items/{id}(id=${item.id})}">More...</a>
-                        </figcaption>
-                    </figure>
-                </td>
-                <td>
-                    <p th:text="${item.number}"></p>
-                </td>
-                <td>
-                    <input type="number" name="quantity" min="1" value="1">
-                </td>
-                <td>
-                    <div class="price-wrap">
-                        <var class="price" th:text="${item.price}+' USD'"></var>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <button name="order" class="btn btn-primary">Order</button>
-                </td>
-            </form>
+        <tr th:each="order : ${orders}">
+            <td>
+                <figure class="media">
+                    <figcaption class="media-body">
+                        <h6 class="title text-truncate" th:text="${order.number}"></h6>
+                    </figcaption>
+                </figure>
+            </td>
+            <td>
+                <p th:text="${order.status}"></p>
+            </td>
+            <td>
+                <p th:text="${order.item.name}"></p>
+            </td>
+            <td>
+                <p th:text="${order.count}"></p>
+            </td>
+            <td>
+                <div class="price-wrap">
+                    <var class="price" th:text="${order.item.price * order.count}+' USD'"></var>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.service.impl;
 
+import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -55,5 +56,9 @@ public class AppUserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserDTO getUser() {
+        return user;
     }
 }

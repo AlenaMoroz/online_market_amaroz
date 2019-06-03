@@ -5,5 +5,4 @@ import com.gmail.marozalena.onlinemarket.repository.model.Profile;
 import java.sql.Connection;
 
 public interface ProfileRepository extends GenericRepository<Long, Profile> {
-    void addProfile(Connection connection, Profile profile);
 }

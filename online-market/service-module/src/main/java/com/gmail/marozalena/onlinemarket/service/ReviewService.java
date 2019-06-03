@@ -3,8 +3,7 @@ package com.gmail.marozalena.onlinemarket.service;
 import com.gmail.marozalena.onlinemarket.service.model.ListOfReviewsDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ReviewDTO;
-
-import java.util.List;
+import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 
 public interface ReviewService {
 
@@ -13,4 +12,6 @@ public interface ReviewService {
     void deleteReview(Long id);
 
     void updateReviews(ListOfReviewsDTO list);
+
+    void createReview(ReviewDTO reviewDTO, UserDTO user);
 }

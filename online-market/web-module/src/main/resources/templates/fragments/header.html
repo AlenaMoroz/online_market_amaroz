@@ -2,16 +2,16 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <div th:fragment="header-css">
-        <!-- this is header-css -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+              id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </div>
 </head>
 <body>
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Market</a>
+        <a class="navbar-brand" href="#">Maroz</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,6 +33,7 @@
                             <li><a class="nav-item nav-link" th:href="@{/articles}">Articles</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/items}">Items</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/profile}">Profile</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/orders}">Orders</a></li>
                         </div>
                     </div>
                     <div sec:authorize="hasAuthority('Sale User')">
@@ -40,6 +41,7 @@
                             <li><a class="nav-item nav-link" th:href="@{/articles}">Articles</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/articles/new}">New Article</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/items}">Items</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/private/orders}">Orders</a></li>
                         </div>
                     </div>
                 </div>

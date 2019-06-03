@@ -21,4 +21,12 @@ public class ItemRepositoryImpl extends GenericRepositoryImpl<Long, Item>
                 .setMaxResults(LimitConstants.ENTITY_ON_PAGE);
         return q.getResultList();
     }
+
+    @Override
+    public Item findByNumber(String number) {
+        String query = "FROM " + entityClass.getName() + " WHERE number = :numberParam";
+        Query q = entityManager.createQuery(query);
+        q.setParameter("numberParam", number);
+        return (Item) q.getSingleResult();
+    }
 }

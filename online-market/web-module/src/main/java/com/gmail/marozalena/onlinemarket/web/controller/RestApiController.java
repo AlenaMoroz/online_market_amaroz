@@ -2,9 +2,12 @@ package com.gmail.marozalena.onlinemarket.web.controller;
 
 import com.gmail.marozalena.onlinemarket.service.ArticleService;
 import com.gmail.marozalena.onlinemarket.service.ItemService;
+import com.gmail.marozalena.onlinemarket.service.OrderService;
 import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ItemDTO;
+import com.gmail.marozalena.onlinemarket.service.model.OrderDTO;
+import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,14 +29,17 @@ public class RestApiController {
     private final UserService userService;
     private final ArticleService articleService;
     private final ItemService itemService;
+    private final OrderService orderService;
 
     @Autowired
     public RestApiController(UserService userService,
                              ArticleService articleService,
-                             ItemService itemService) {
+                             ItemService itemService,
+                             OrderService orderService) {
         this.userService = userService;
         this.articleService = articleService;
         this.itemService = itemService;
+        this.orderService = orderService;
     }
 
     @PostMapping("/users")
@@ -96,6 +102,16 @@ public class RestApiController {
     ) {
         itemService.deleteItem(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/orders")
+    public List<OrderDTO> getOrders(){
+        return orderService.getOrders();
+    }
+
+    @GetMapping("/orders/{id}")
+    public OrderDTO getOrder(@PathVariable Long id){
+        return orderService.getOrder(id);
     }
 
 }
