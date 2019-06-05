@@ -83,12 +83,6 @@ public class ApiIntegrationTest {
     }
 
     @Test
-    public void shouldSucceedWith200ForArticleAPI() throws Exception {
-        mvc.perform(get("/api/articles/1"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void shouldDeleteArticle() throws Exception {
         mvc.perform(post("/api/articles/1"))
                 .andExpect(status().isOk());
@@ -110,12 +104,6 @@ public class ApiIntegrationTest {
     @Test
     public void shouldSucceedWith200ForItemsAPI() throws Exception {
         mvc.perform(get("/api/items"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void shouldSucceedWith200ForItemAPI() throws Exception {
-        mvc.perform(get("/api/items/1"))
                 .andExpect(status().isOk());
     }
 

@@ -38,11 +38,6 @@ public class BasicSecurityIntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void shouldSucceedWith200ForReviewsSavePage() throws Exception {
-        mvc.perform(get("/reviews/1"))
-                .andExpect(status().isOk());
-    }
 
     @Test
     public void shouldSucceedWith302ForReviewsSavePage() throws Exception {
