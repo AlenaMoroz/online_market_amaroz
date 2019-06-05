@@ -6,7 +6,7 @@ public class CommentDTO {
 
     private Long id;
     private UserDTO user;
-    private Date date;
+    private String date;
     private String comment;
 
     public CommentDTO() {
@@ -28,11 +28,11 @@ public class CommentDTO {
         this.user = user;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

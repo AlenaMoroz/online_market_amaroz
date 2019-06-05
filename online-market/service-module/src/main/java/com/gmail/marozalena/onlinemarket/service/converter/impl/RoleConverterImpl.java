@@ -15,7 +15,7 @@ public class RoleConverterImpl implements RoleConverter {
         }
         Role role = new Role();
         role.setId(roleDTO.getId());
-        role.setName(roleDTO.getName());
+        role.setRole(roleDTO.getRole());
         return role;
     }
 
@@ -26,7 +26,7 @@ public class RoleConverterImpl implements RoleConverter {
         }
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setId(role.getId());
-        roleDTO.setName(role.getName());
+        roleDTO.setRole(role.getRole());
         return roleDTO;
     }
 }

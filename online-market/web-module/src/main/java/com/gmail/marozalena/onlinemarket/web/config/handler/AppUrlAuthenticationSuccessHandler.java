@@ -22,6 +22,7 @@ import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SALE_
 import static com.gmail.marozalena.onlinemarket.web.constant.RoleConstants.SECURE_REST_API;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLES_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_ARTICLE_PAGE;
+import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_LOGIN_PAGE;
 import static com.gmail.marozalena.onlinemarket.web.constant.UrlConstants.URL_TO_USERS_PAGE;
 
 public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -54,12 +55,12 @@ public class AppUrlAuthenticationSuccessHandler implements AuthenticationSuccess
             switch (authority.getAuthority()) {
                 case ADMINISTRATOR:
                     return URL_TO_USERS_PAGE;
-                case SECURE_REST_API:
-                    return "/api/articles";
                 case CUSTOMER_USER:
                     return URL_TO_ARTICLES_PAGE;
                 case SALE_USER:
                     return URL_TO_ARTICLES_PAGE;
+                case SECURE_REST_API:
+                    return URL_TO_LOGIN_PAGE;
             }
         }
         throw new IllegalStateException();

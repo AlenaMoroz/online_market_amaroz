@@ -25,7 +25,7 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
 
     @Override
     @SuppressWarnings({"uncheked", "rawtypes"})
-    public List<User> findUsers(Integer page) {
+    public List<User> findAll(Integer page) {
         String query = "FROM " + entityClass.getName() + " WHERE deleted = '0' ORDER BY email";
         Query q = entityManager.createQuery(query)
                 .setFirstResult(getCountOfOffset(page))

@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface GenericRepository<I, T> {
 
-    Connection getConnection();
-
     void persist(T entity);
 
     void merge(T entity);

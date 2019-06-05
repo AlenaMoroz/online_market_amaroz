@@ -36,7 +36,7 @@ public class ArticleConverterTest {
     }
 
     @Test
-    public void shouldConvertArticleDTOWithIdToArticle() {
+    public void shouldConvertArticleDTOToArticle() {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setId(2L);
         articleDTO.setDate("2019-10-13");
@@ -51,7 +51,7 @@ public class ArticleConverterTest {
     }
 
     @Test
-    public void shouldConvertArticleWithIdToArticleDTO() {
+    public void shouldConvertArticleToArticleDTO() {
         Article article = new Article();
         article.setId(2L);
         article.setDate(new Date());

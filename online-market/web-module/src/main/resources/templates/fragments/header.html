@@ -26,6 +26,7 @@
                         <div class="row">
                             <li><a class="nav-item nav-link" th:href="@{/private/users}">Users</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/private/users/new}">Add User</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/reviews}">Reviews</a></li>
                         </div>
                     </div>
                     <div sec:authorize="hasAuthority('Customer User')">
@@ -33,7 +34,8 @@
                             <li><a class="nav-item nav-link" th:href="@{/articles}">Articles</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/items}">Items</a></li>
                             <li><a class="nav-item nav-link" th:href="@{/profile}">Profile</a></li>
-                            <li><a class="nav-item nav-link" th:href="@{/orders}">Orders</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/orders}">My Orders</a></li>
+                            <li><a class="nav-item nav-link" th:href="@{/reviews/new}">Create Review</a> </li>
                         </div>
                     </div>
                     <div sec:authorize="hasAuthority('Sale User')">
@@ -45,7 +47,6 @@
                         </div>
                     </div>
                 </div>
-                <li><a class="nav-item nav-link" th:href="@{/reviews}">Reviews</a></li>
             </div>
         </div>
     </nav>

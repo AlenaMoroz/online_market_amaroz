@@ -34,16 +34,6 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
     }
 
     @Override
-    public Connection getConnection() {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new DatabaseException("Problems with connection", e);
-        }
-    }
-
-    @Override
     public void persist(T entity) {
         entityManager.persist(entity);
     }
@@ -76,7 +66,7 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
     @Override
     @SuppressWarnings({"uncheked", "rawtypes"})
     public List<T> findAll() {
-        String query = "FROM " + entityClass.getName() + " c";
+        String query = "FROM " + entityClass.getName() + " WHERE deleted='0'";
         Query q = entityManager.createQuery(query);
         return q.getResultList();
     }

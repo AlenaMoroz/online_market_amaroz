@@ -108,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDTO> getOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream()
-                .sorted(Comparator.comparing(Order::getDate))
+                .sorted(Comparator.comparing(Order::getDate).reversed())
                 .map(orderConverter::toDTO)
                 .collect(Collectors.toList());
     }

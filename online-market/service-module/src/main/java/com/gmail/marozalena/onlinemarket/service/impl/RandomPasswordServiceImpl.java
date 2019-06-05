@@ -1,5 +1,6 @@
 package com.gmail.marozalena.onlinemarket.service.impl;
 
+import com.gmail.marozalena.onlinemarket.service.MailClientService;
 import com.gmail.marozalena.onlinemarket.service.RandomPasswordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,13 @@ public class RandomPasswordServiceImpl implements RandomPasswordService {
     private final String numbers = "1234567890";
 
     private final PasswordEncoder passwordEncoder;
+    private final MailClientService mailClientService;
 
     @Autowired
-    public RandomPasswordServiceImpl(PasswordEncoder passwordEncoder) {
+    public RandomPasswordServiceImpl(PasswordEncoder passwordEncoder,
+                                     MailClientService mailClientService) {
         this.passwordEncoder = passwordEncoder;
+        this.mailClientService = mailClientService;
     }
 
 
@@ -39,7 +43,9 @@ public class RandomPasswordServiceImpl implements RandomPasswordService {
             password.append(Character.toUpperCase(chars.charAt(random.nextInt(chars.length()))));
             password.append(numbers.charAt(random.nextInt(numbers.length())));
         }
-        logger.info("For user with email=" + email + " was generated new password"+password);
+        String message = "Your password: " + password;
+        mailClientService.prepareAndSend(email, message);
+        logger.info("For user with email = " + email + " was generated password: "+password);
         return encoder(password.toString());
     }
 

@@ -50,7 +50,7 @@ public class UserConverterTest {
         UserDTO userDTO = new UserDTO();
         userDTO.setRole(new RoleDTO(1L, "Admin"));
         User user = userConverter.fromUserDTO(userDTO);
-        Assert.assertEquals(userDTO.getRole().getName(), user.getRole().getName());
+        Assert.assertEquals(userDTO.getRole().getRole(), user.getRole().getRole());
     }
 
     @Test
@@ -82,6 +82,6 @@ public class UserConverterTest {
         User user = new User();
         user.setRole(new Role(1L, "Admin"));
         UserDTO userDTO = userConverter.toUserDTO(user);
-        Assert.assertEquals(user.getRole().getName(), userDTO.getRole().getName());
+        Assert.assertEquals(user.getRole().getRole(), userDTO.getRole().getRole());
     }
 }

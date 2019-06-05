@@ -46,7 +46,7 @@
             </column>
             <column name="users_id" type="BIGINT"/>
             <column name="review" type="varchar(80)"/>
-            <column name="date" type="DATETIME"/>
+            <column name="date" type="DATE"/>
             <column name="showed" type="TINYINT"/>
             <column name="deleted" type="TINYINT" defaultValue="0"/>
         </createTable>
@@ -57,7 +57,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="date" type="DATETIME"/>
+            <column name="date" type="DATE"/>
             <column name="topic" type="varchar(100)"/>
             <column name="picture" type="varchar(80)"/>
             <column name="users_id" type="BIGINT"/>
@@ -72,7 +72,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="users_id" type="BIGINT"/>
-            <column name="date" type="DATETIME"/>
+            <column name="date" type="DATE"/>
             <column name="comment" type="varchar(200)"/>
             <column name="articles_id" type="BIGINT"/>
         </createTable>
@@ -101,7 +101,7 @@
             <column name="items_id" type="BIGINT"/>
             <column name="count" type="INT"/>
             <column name="users_id" type="BIGINT"/>
-            <column name="date" type="DATETIME"/>
+            <column name="date" type="DATE"/>
         </createTable>
     </changeSet>
 
@@ -286,49 +286,6 @@
             <column name="patronymic">Customer</column>
             <column name="address">TestAddress</column>
             <column name="phone">+37533234567</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Review1" author="marozalena@gmail.com">
-        <insert tableName="reviews">
-            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='cus@gmail.com')"/>
-            <column name="review">Review 1</column>
-            <column name="date">2019-05-11 16:13:39.541</column>
-            <column name="showed">0</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Article1" author="marozalena@gmail.com">
-        <insert tableName="articles">
-            <column name="date">2019-05-11 16:13:39.541</column>
-            <column name="topic">Trump dismisses North Korean tests</column>
-            <column name="picture">product14.jpg</column>
-            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='admin@admin.com')"/>
-            <column name="body">Earlier this month, the regime tested several short-range missiles, launching them from the Hodo peninsula in the east of the country. North Korean state media said Mr Kim personally oversaw a "strike drill" testing various missile components.
-                That test came after Pyongyang said it had tested what it described as a new "tactical guided weapon" in April.
-                Neither violate North Korea's promise not to test long range or nuclear missiles. Yet, they are likely to cause unease in Japan.
-                Speaking in Tokyo last week, Mr Abe mirrored Mr Bolton's comments, calling North Korea's recent missile launches "a breach of UN Security Council resolutions and extremely regrettable".
-                "While cooperating closely with the US and other related countries, we are planning to tackle this appropriately by strengthening enforcement of related UN Security Council resolutions," he said.</column>
-            <column name="deleted">0</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Comment1" author="marozalena@gmail.com">
-        <insert tableName="comments">
-            <column name="users_id" valueComputed="(SELECT id FROM users WHERE email='cus@gmail.com')"/>
-            <column name="date">2019-05-11 16:13:39.541</column>
-            <column name="comment">Test Comment</column>
-            <column name="articles_id" valueComputed="(SELECT id FROM articles WHERE topic='Trump dismisses North Korean tests')"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="Set_Item1" author="marozalena@gmail.com">
-        <insert tableName="items">
-            <column name="name">Book</column>
-            <column name="number">72642352752</column>
-            <column name="price">15.35</column>
-            <column name="description">Test Description</column>
         </insert>
     </changeSet>
 </databaseChangeLog>

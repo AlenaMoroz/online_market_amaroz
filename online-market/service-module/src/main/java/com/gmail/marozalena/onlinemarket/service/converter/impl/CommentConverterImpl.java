@@ -4,14 +4,23 @@ import com.gmail.marozalena.onlinemarket.repository.model.Comment;
 import com.gmail.marozalena.onlinemarket.service.converter.CommentConverter;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.model.CommentDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.gmail.marozalena.onlinemarket.service.constant.DateConstants.PATTERN_FOR_DATE;
 
 @Component
 public class CommentConverterImpl implements CommentConverter {
+
+    private static final Logger logger = LoggerFactory.getLogger(CommentConverterImpl.class);
 
     private final UserConverter userConverter;
 
@@ -26,7 +35,14 @@ public class CommentConverterImpl implements CommentConverter {
         for (CommentDTO commentDTO : comments) {
             Comment comment = new Comment();
             comment.setId(commentDTO.getId());
-            comment.setDate(commentDTO.getDate());
+            if (comment.getDate() != null) {
+                try {
+                    comment.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).parse(commentDTO.getDate()));
+                } catch (ParseException e) {
+                    logger.error(e.getMessage(), e);
+                    comment.setDate(new Date());
+                }
+            }
             comment.setUser(userConverter.fromUserDTO(commentDTO.getUser()));
             comment.setComment(commentDTO.getComment());
             list.add(comment);
@@ -42,7 +58,9 @@ public class CommentConverterImpl implements CommentConverter {
             commentDTO.setId(comment.getId());
             commentDTO.setComment(comment.getComment());
             commentDTO.setUser(userConverter.toUserDTO(comment.getUser()));
-            commentDTO.setDate(comment.getDate());
+            if (comment.getDate() != null) {
+                commentDTO.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).format(comment.getDate()));
+            }
             list.add(commentDTO);
         }
         return list;

@@ -25,6 +25,7 @@ public class UrlConstants {
     public static final String URL_TO_UPDATE_ORDER_PAGE = "/private/orders/{id}/save";
     public static final String URL_TO_ORDERS_PAGE_FOR_CUSTOMER_USER = "/orders";
     public static final String URL_TO_CREATE_ORDER = "/orders/new";
+    public static final String URL_TO_LOGIN_PAGE = "/login";
 
     private UrlConstants() {
     }

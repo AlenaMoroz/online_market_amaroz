@@ -1,22 +1,17 @@
 package com.gmail.marozalena.onlinemarket.service.model;
 
-import java.util.Date;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class ReviewDTO {
 
     private Long id;
     private UserDTO user;
+    @NotNull
+    @Size(max = 200)
     private String review;
-    private Date date;
+    private String date;
     private boolean showed;
-
-    public ReviewDTO(UserDTO user, String review,
-                     Date date, boolean showed) {
-        this.user = user;
-        this.review = review;
-        this.date = date;
-        this.showed = showed;
-    }
 
     public ReviewDTO() {
     }
@@ -45,11 +40,11 @@ public class ReviewDTO {
         this.review = review;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

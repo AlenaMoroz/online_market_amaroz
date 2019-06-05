@@ -3,11 +3,11 @@ package com.gmail.marozalena.onlinemarket.service.model;
 public class RoleDTO {
 
     private Long id;
-    private String name;
+    private String role;
 
     public RoleDTO(Long id, String name) {
         this.id = id;
-        this.name = name;
+        this.role = name;
     }
 
     public RoleDTO() {
@@ -21,11 +21,11 @@ public class RoleDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
     }
 }

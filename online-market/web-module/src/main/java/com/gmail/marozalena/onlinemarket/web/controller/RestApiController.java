@@ -7,17 +7,19 @@ import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.ItemDTO;
 import com.gmail.marozalena.onlinemarket.service.model.OrderDTO;
-import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -50,7 +52,7 @@ public class RestApiController {
 
     @GetMapping("/articles")
     public List<ArticleDTO> getArticles() {
-        return articleService.getAllArticles();
+        return articleService.getArticles();
     }
 
     @GetMapping("/articles/{id}")
@@ -62,7 +64,7 @@ public class RestApiController {
 
     @PostMapping("/articles")
     public ResponseEntity addArticle(
-            @RequestBody ArticleDTO articleDTO
+            @RequestBody @Valid ArticleDTO articleDTO
     ) {
         articleService.addArticle(articleDTO);
         return new ResponseEntity(HttpStatus.OK);
@@ -90,7 +92,7 @@ public class RestApiController {
 
     @PostMapping("/items")
     public ResponseEntity addItem(
-            @RequestBody ItemDTO itemDTO
+            @RequestBody @Valid ItemDTO itemDTO
     ) {
         itemService.addItem(itemDTO);
         return new ResponseEntity(HttpStatus.OK);
@@ -105,13 +107,19 @@ public class RestApiController {
     }
 
     @GetMapping("/orders")
-    public List<OrderDTO> getOrders(){
+    public List<OrderDTO> getOrders() {
         return orderService.getOrders();
     }
 
     @GetMapping("/orders/{id}")
-    public OrderDTO getOrder(@PathVariable Long id){
+    public OrderDTO getOrder(@PathVariable Long id) {
         return orderService.getOrder(id);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity handleCustomException(NullPointerException ex) {
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
     }
 
 }

@@ -51,7 +51,7 @@ public class ItemController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         UserDTO userDTO = userService.loadUserByEmail(email);
-        if (userDTO.getRole().getName().equals(CUSTOMER_USER)) {
+        if (userDTO.getRole().getRole().equals(CUSTOMER_USER)) {
             return "items";
         } else {
             return "itemsForSaleUser";

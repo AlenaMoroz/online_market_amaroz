@@ -37,12 +37,12 @@
                         <td id="patronymic" th:text="${user.profile.patronymic}"></td>
                         <td id="email" th:text="${user.email}" th:field="*{email}"></td>
                         <td>
-                            <select id="role.name" name="role.id" th:if="${user.id!=1}">
+                            <select id="role.role" name="role.id" th:if="${user.id!=1}">
                                 <option th:each="role,stat:${roles}"
                                         name="user.id"
                                         th:value="${roles[__${stat.index}__].id}"
-                                        th:text="${roles[__${stat.index}__].name}"
-                                        th:selected="${user.role.name == roles[__${stat.index}__].name}">
+                                        th:text="${roles[__${stat.index}__].role}"
+                                        th:selected="${user.role.role == roles[__${stat.index}__].role}">
                                 </option>
                             </select>
                         </td>

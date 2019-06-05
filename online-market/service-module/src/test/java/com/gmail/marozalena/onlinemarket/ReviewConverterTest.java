@@ -16,7 +16,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.gmail.marozalena.onlinemarket.service.constant.DateConstants.PATTERN_FOR_DATE;
 
 public class ReviewConverterTest {
 
@@ -60,9 +63,9 @@ public class ReviewConverterTest {
     @Test
     public void shouldConvertReviewDTOWithDateToReview() {
         ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setDate(new Timestamp(new Date().getTime()));
+        reviewDTO.setDate("2019-06-05");
         Review review = reviewConverter.fromReviewDTO(reviewDTO);
-        Assert.assertEquals(reviewDTO.getDate(), review.getDate());
+        Assert.assertEquals(reviewDTO.getDate(), new SimpleDateFormat(PATTERN_FOR_DATE).format(review.getDate()));
     }
 
     @Test
@@ -107,7 +110,7 @@ public class ReviewConverterTest {
         Review review = new Review();
         review.setDate(new Timestamp(new Date().getTime()));
         ReviewDTO reviewDTO = reviewConverter.toReviewDTO(review);
-        Assert.assertEquals(review.getDate(), reviewDTO.getDate());
+        Assert.assertEquals(new SimpleDateFormat(PATTERN_FOR_DATE).format(review.getDate()), reviewDTO.getDate());
     }
 
     @Test

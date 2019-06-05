@@ -82,7 +82,7 @@ public class BasicController {
         String email = authentication.getName();
         UserDTO user = userService.loadUserByEmail(email);
         reviewService.createReview(review, user);
-        return "redirect:/reviews";
+        return "redirect:/reviews/new?created";
     }
 
 }

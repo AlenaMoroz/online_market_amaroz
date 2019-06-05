@@ -21,7 +21,7 @@
             <img th:src="@{/images/{id}(id=${article.id})}" width = "300" height = "300">
         </div>
         <div>
-            <textarea class="form-control" id="textarea" name="textarea" th:text="${article.body}"
+            <textarea class="form-control" id="textarea" name="body" th:text="${article.body}"
             maxlength="1000" rows="10" required="true"></textarea>
         </div>
         <button id="save" name="save" class="btn btn-primary">Save</button>

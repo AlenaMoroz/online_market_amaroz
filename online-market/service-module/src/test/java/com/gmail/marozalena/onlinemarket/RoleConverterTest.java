@@ -28,9 +28,9 @@ public class RoleConverterTest {
     @Test
     public  void shouldConvertRoleDTOWithNameToRole(){
         RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setName("Name");
+        roleDTO.setRole("Name");
         Role role = roleConverter.fromRoleDTO(roleDTO);
-        Assert.assertEquals(roleDTO.getName(), role.getName());
+        Assert.assertEquals(roleDTO.getRole(), role.getRole());
     }
 
     @Test
@@ -44,8 +44,8 @@ public class RoleConverterTest {
     @Test
     public  void shouldConvertRoleWithNameToRoleDTO(){
         Role role = new Role();
-        role.setName("Name");
+        role.setRole("Name");
         RoleDTO roleDTO = roleConverter.toRoleDTO(role);
-        Assert.assertEquals(role.getName(), roleDTO.getName());
+        Assert.assertEquals(role.getRole(), roleDTO.getRole());
     }
 }

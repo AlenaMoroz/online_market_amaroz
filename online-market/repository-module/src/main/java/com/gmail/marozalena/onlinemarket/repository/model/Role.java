@@ -17,11 +17,11 @@ public class Role {
     @Column(name = "id")
     private Long id;
     @Column(name = "role")
-    private String name;
+    private String role;
 
     public Role(Long id, String name) {
         this.id = id;
-        this.name = name;
+        this.role = name;
     }
 
     public Role() {
@@ -35,12 +35,12 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class Role {
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
         return Objects.equals(id, role.id) &&
-                Objects.equals(name, role.name);
+                Objects.equals(this.role, role.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, role);
     }
 }

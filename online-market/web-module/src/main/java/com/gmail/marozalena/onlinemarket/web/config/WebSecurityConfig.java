@@ -81,11 +81,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         URL_TO_ORDER_PAGE,
                         URL_TO_UPDATE_ORDER_PAGE)
                 .hasAuthority(SALE_USER)
-                .antMatchers("/login", "/error")
+                .antMatchers(URL_TO_LOGIN_PAGE, "/error")
                 .permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage(URL_TO_LOGIN_PAGE)
                 .successHandler(authenticationSuccessHandler())
                 .permitAll()
                 .and()

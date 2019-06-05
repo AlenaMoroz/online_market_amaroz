@@ -9,7 +9,11 @@
     <div class="row">
 
         <div class="col-md-8 col-md-offset-2">
-
+            <div th:if="${param.created}">
+                <div class="alert alert-success">
+                    Your review posted!
+                </div>
+            </div>
             <h1>Create Review</h1>
 
             <form action="#" th:action="@{/reviews/new}" th:object="${review}" method="post">

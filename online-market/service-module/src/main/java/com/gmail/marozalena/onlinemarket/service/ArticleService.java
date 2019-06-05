@@ -11,7 +11,7 @@ public interface ArticleService {
 
     ArticleDTO findByID(Long id);
 
-    List<ArticleDTO> getAllArticles();
+    List<ArticleDTO> getArticles();
 
     void addArticle(ArticleDTO articleDTO);
 
@@ -22,4 +22,6 @@ public interface ArticleService {
     void updateArticle(ArticleDTO articleDTO);
 
     String getNameOfPicture(Long id);
+
+    void uploadImage(MultipartFile file);
 }

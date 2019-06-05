@@ -10,13 +10,10 @@ import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public PageDTO<UserDTO> getUsers(Integer page) {
-        List<User> users = userRepository.findUsers(page);
+        List<User> users = userRepository.findAll(page);
         List<UserDTO> list = users.stream()
                 .map(userConverter::toUserDTO)
                 .collect(Collectors.toList());
@@ -62,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addUser(UserDTO userDTO) {
-        Role role = roleRepository.findByID(userDTO.getRole().getId());
+        Role role = roleRepository.findRoleByRoleName(userDTO.getRole().getRole());
         User user = userConverter.fromUserDTO(userDTO);
         user.setRole(role);
         user.setPassword(randomPasswordService.getRandomPassword(userDTO.getEmail()));

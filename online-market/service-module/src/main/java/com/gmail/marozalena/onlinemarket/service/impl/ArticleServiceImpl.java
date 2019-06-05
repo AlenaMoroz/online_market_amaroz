@@ -69,11 +69,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public List<ArticleDTO> getAllArticles() {
+    public List<ArticleDTO> getArticles() {
         List<Article> articles = articleRepository.findAll();
         return articles.stream()
                 .map(articleConverter::toDTO)
-                .sorted(Comparator.comparing(ArticleDTO::getDate))
+                .sorted(Comparator.comparing(ArticleDTO::getDate).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -125,7 +125,8 @@ public class ArticleServiceImpl implements ArticleService {
         return article.getPicture();
     }
 
-    private void uploadImage(MultipartFile file) {
+    @Override
+    public void uploadImage(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(System.getProperty("java.io.tmpdir")

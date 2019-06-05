@@ -71,7 +71,7 @@ public class ArticleController {
         UserDTO userDTO = userService.loadUserByEmail(email);
         ArticleDTO article = articleService.findByID(id);
         model.addAttribute("article", article);
-        if (userDTO.getRole().getName().equals(CUSTOMER_USER)) {
+        if (userDTO.getRole().getRole().equals(CUSTOMER_USER)) {
             return "article";
         } else {
             return "articleForSaleUser";

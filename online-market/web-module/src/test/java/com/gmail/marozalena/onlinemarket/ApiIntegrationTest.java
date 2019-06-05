@@ -48,13 +48,13 @@ public class ApiIntegrationTest {
         userDTO.setEmail("test@gmail.com");
         userDTO.setPassword("test");
         RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(2L);
+        roleDTO.setRole("Customer User");
         userDTO.setRole(roleDTO);
         ProfileDTO profileDTO = new ProfileDTO();
         userDTO.setProfile(profileDTO);
-        restTemplate.withBasicAuth("secure@secure.com", "secureapi");
+        restTemplate.withBasicAuth("rest@test.com", "rest");
         ResponseEntity responseEntity = restTemplate
-                .withBasicAuth("secure@secure.com", "secureapi")
+                .withBasicAuth("rest@rest.com", "rest")
                 .postForEntity("http://localhost:8080/api/users", userDTO, ResponseEntity.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -63,15 +63,15 @@ public class ApiIntegrationTest {
     public void shouldSaveArticle() throws Exception {
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setTopic("TTTTTTTTTeeeeeeeeeeeeeesssssssst");
-        articleDTO.setPicture("image/test.jpg");
+        articleDTO.setPicture("test.jpg");
         articleDTO.setDate("2019-06-02");
         articleDTO.setBody("Earlier this month, the regime tested several short-range missiles, launching them from the Hodo peninsula in the east of the country. North Korean state media said Mr Kim personally oversaw a \"strike drill\" testing various missile components.\n" +
                 "That test came after Pyongyang said it had tested what it described as a new \"tactical guided weapon\" in April.\n" +
                 "Neither violate North Korea's promise not to test long range or nuclear missiles. Yet, they are likely to cause unease in Japan.\n" +
                 "Speaking in Tokyo last week, Mr Abe mirrored Mr Bolton's comments, calling North Korea's recent missile launches \"a breach of UN Security Council resolutions and extremely regrettable\".\n");
-        restTemplate.withBasicAuth("secure@secure.com", "secureapi");
+        restTemplate.withBasicAuth("rest@rest.com", "rest");
         ResponseEntity responseEntity = restTemplate
-                .withBasicAuth("secure@secure.com", "secureapi")
+                .withBasicAuth("rest@rest.com", "rest")
                 .postForEntity("http://localhost:8080/api/articles", articleDTO, ResponseEntity.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -84,13 +84,13 @@ public class ApiIntegrationTest {
 
     @Test
     public void shouldSucceedWith200ForArticleAPI() throws Exception {
-        mvc.perform(get("/api/articles/2"))
+        mvc.perform(get("/api/articles/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void shouldDeleteArticle() throws Exception {
-        mvc.perform(post("/api/articles/2"))
+        mvc.perform(post("/api/articles/1"))
                 .andExpect(status().isOk());
     }
 
@@ -102,7 +102,7 @@ public class ApiIntegrationTest {
         itemDTO.setDescription("Description");
         restTemplate.withBasicAuth("secure@secure.com", "secureapi");
         ResponseEntity responseEntity = restTemplate
-                .withBasicAuth("secure@secure.com", "secureapi")
+                .withBasicAuth("rest@rest.com", "rest")
                 .postForEntity("http://localhost:8080/api/items", itemDTO, ResponseEntity.class);
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -115,13 +115,13 @@ public class ApiIntegrationTest {
 
     @Test
     public void shouldSucceedWith200ForItemAPI() throws Exception {
-        mvc.perform(get("/api/items/2"))
+        mvc.perform(get("/api/items/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void shouldDeleteItem() throws Exception {
-        mvc.perform(post("/api/items/2"))
+        mvc.perform(post("/api/items/1"))
                 .andExpect(status().isOk());
     }
 }

@@ -32,7 +32,7 @@ public class CommentConverterTest {
     public void shouldConvertCommentDTOWithIdToComment() {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(2L);
-        commentDTO.setDate(new Date());
+        commentDTO.setDate("2019-08-14");
         commentDTO.setComment("comment");
         commentDTO.setUser(new UserDTO());
         List<CommentDTO> list = Collections.singletonList(commentDTO);

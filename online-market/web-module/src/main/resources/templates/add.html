@@ -42,8 +42,8 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="role">Role</label>
             <div class="col-md-4">
-                <select id="role" name="role" th:field="*{role.id}" class="form-control">
-                    <option th:each="role:${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+                <select id="role" name="role" th:field="*{role.role}" class="form-control">
+                    <option th:each="role:${roles}" th:value="${role.role}" th:text="${role.role}"></option>
                 </select>
             </div>
         </div>
