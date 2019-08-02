@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class BasicSecurityIntegrationTest {
+public class  BasicSecurityIntegrationTest {
 
     @Autowired
     private WebApplicationContext context;

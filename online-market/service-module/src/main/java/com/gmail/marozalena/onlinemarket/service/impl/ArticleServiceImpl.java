@@ -7,14 +7,14 @@ import com.gmail.marozalena.onlinemarket.repository.model.Article;
 import com.gmail.marozalena.onlinemarket.repository.model.User;
 import com.gmail.marozalena.onlinemarket.service.ArticleService;
 import com.gmail.marozalena.onlinemarket.service.converter.ArticleConverter;
+import com.gmail.marozalena.onlinemarket.service.converter.UserConverter;
 import com.gmail.marozalena.onlinemarket.service.exception.ServiceException;
 import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
+import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,15 +35,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleConverter articleConverter;
-    private final UserRepository userRepository;
+    private final UserConverter userConverter;
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
                               ArticleConverter articleConverter,
-                              UserRepository userRepository) {
+                              UserConverter userConverter) {
         this.articleRepository = articleRepository;
         this.articleConverter = articleConverter;
-        this.userRepository = userRepository;
+        this.userConverter = userConverter;
     }
 
     @Override
@@ -79,12 +79,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void addArticle(ArticleDTO articleDTO) {
+    public void addArticle(ArticleDTO articleDTO, UserDTO userDTO) {
         Article article = articleConverter.fromDTO(articleDTO);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = userRepository.findUserByEmail(email);
-        article.setUser(user);
+        article.setUser(userConverter.fromUserDTO(userDTO));
         articleRepository.persist(article);
     }
 
@@ -97,14 +94,11 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void createArticle(ArticleDTO articleDTO, MultipartFile file) {
+    public void createArticle(ArticleDTO articleDTO, MultipartFile file, UserDTO userDTO) {
         uploadImage(file);
         articleDTO.setPicture(file.getOriginalFilename());
         Article article = articleConverter.fromDTO(articleDTO);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = userRepository.findUserByEmail(email);
-        article.setUser(user);
+        article.setUser(userConverter.fromUserDTO(userDTO));
         articleRepository.persist(article);
     }
 

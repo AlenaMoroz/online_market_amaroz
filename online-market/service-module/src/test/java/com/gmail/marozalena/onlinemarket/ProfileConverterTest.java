@@ -24,6 +24,7 @@ public class ProfileConverterTest {
         Profile profile = profileConverter.fromDTO(profileDTO);
         Assert.assertEquals(profileDTO.getId(), profile.getId());
     }
+
     @Test
     public void shouldConvertProfileDTOWithNameToProfile() {
         ProfileDTO profileDTO = new ProfileDTO();
@@ -31,6 +32,7 @@ public class ProfileConverterTest {
         Profile profile = profileConverter.fromDTO(profileDTO);
         Assert.assertEquals(profileDTO.getName(), profile.getName());
     }
+
     @Test
     public void shouldConvertProfileDTOWithSurnameToProfile() {
         ProfileDTO profileDTO = new ProfileDTO();
@@ -38,6 +40,7 @@ public class ProfileConverterTest {
         Profile profile = profileConverter.fromDTO(profileDTO);
         Assert.assertEquals(profileDTO.getSurname(), profile.getSurname());
     }
+
     @Test
     public void shouldConvertProfileDTOWithPatronymicToProfile() {
         ProfileDTO profileDTO = new ProfileDTO();
@@ -52,6 +55,7 @@ public class ProfileConverterTest {
         Profile profile = profileConverter.fromDTO(profileDTO);
         Assert.assertEquals(profileDTO.getAddress(), profile.getAddress());
     }
+
     @Test
     public void shouldConvertProfileDTOWithPhoneToProfile() {
         ProfileDTO profileDTO = new ProfileDTO();
@@ -67,6 +71,7 @@ public class ProfileConverterTest {
         ProfileDTO profileDTO = profileConverter.toDTO(profile);
         Assert.assertEquals(profile.getId(), profileDTO.getId());
     }
+
     @Test
     public void shouldConvertProfileWithNameToProfileDTO() {
         Profile profile = new Profile();
@@ -74,6 +79,7 @@ public class ProfileConverterTest {
         ProfileDTO profileDTO = profileConverter.toDTO(profile);
         Assert.assertEquals(profile.getName(), profileDTO.getName());
     }
+
     @Test
     public void shouldConvertProfileWithSurnameToProfileDTO() {
         Profile profile = new Profile();
@@ -81,6 +87,7 @@ public class ProfileConverterTest {
         ProfileDTO profileDTO = profileConverter.toDTO(profile);
         Assert.assertEquals(profile.getSurname(), profileDTO.getSurname());
     }
+
     @Test
     public void shouldConvertProfileWithPatronymicToProfileDTO() {
         Profile profile = new Profile();
@@ -88,6 +95,7 @@ public class ProfileConverterTest {
         ProfileDTO profileDTO = profileConverter.toDTO(profile);
         Assert.assertEquals(profile.getPatronymic(), profileDTO.getPatronymic());
     }
+
     @Test
     public void shouldConvertProfileWithAddressToProfileDTO() {
         Profile profile = new Profile();
@@ -95,6 +103,7 @@ public class ProfileConverterTest {
         ProfileDTO profileDTO = profileConverter.toDTO(profile);
         Assert.assertEquals(profile.getAddress(), profileDTO.getAddress());
     }
+
     @Test
     public void shouldConvertProfileWithPhoneToProfileDTO() {
         Profile profile = new Profile();

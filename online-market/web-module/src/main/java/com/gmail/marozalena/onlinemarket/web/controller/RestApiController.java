@@ -11,15 +11,15 @@ import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -47,7 +47,7 @@ public class RestApiController {
     @PostMapping("/users")
     public ResponseEntity addUser(@RequestBody @Valid UserDTO user) {
         userService.addUser(user);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @GetMapping("/articles")
@@ -66,8 +66,11 @@ public class RestApiController {
     public ResponseEntity addArticle(
             @RequestBody @Valid ArticleDTO articleDTO
     ) {
-        articleService.addArticle(articleDTO);
-        return new ResponseEntity(HttpStatus.OK);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        UserDTO userDTO = userService.loadUserByEmail(email);
+        articleService.addArticle(articleDTO, userDTO);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PostMapping("/articles/{id}")
@@ -95,7 +98,7 @@ public class RestApiController {
             @RequestBody @Valid ItemDTO itemDTO
     ) {
         itemService.addItem(itemDTO);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PostMapping("/items/{id}")

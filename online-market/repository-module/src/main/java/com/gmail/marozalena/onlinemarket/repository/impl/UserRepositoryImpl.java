@@ -13,11 +13,9 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implements UserRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
-
     @Override
     public User findUserByEmail(String email) {
-        String query = "FROM " + entityClass.getName() + " WHERE email = :emailParam";
+        String query = "FROM " + entityClass.getName() + " WHERE email = :emailParam AND deleted = '0'";
         Query q = entityManager.createQuery(query);
         q.setParameter("emailParam", email);
         return (User) q.getSingleResult();

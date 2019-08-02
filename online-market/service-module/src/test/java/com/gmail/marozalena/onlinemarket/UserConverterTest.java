@@ -18,7 +18,9 @@ public class UserConverterTest {
 
     @Before
     public void init() {
-        userConverter = new UserConverterImpl(new RoleConverterImpl(), new ProfileConverterImpl());
+        userConverter = new UserConverterImpl(
+                new RoleConverterImpl(),
+                new ProfileConverterImpl());
     }
 
     @Test

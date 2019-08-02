@@ -96,7 +96,10 @@ public class ArticleController {
         if (file.isEmpty()) {
             return "redirect:/articles/new";
         }
-        articleService.createArticle(articleDTO, file);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        UserDTO userDTO = userService.loadUserByEmail(email);
+        articleService.createArticle(articleDTO, file, userDTO);
         return "redirect:/articles";
     }
 

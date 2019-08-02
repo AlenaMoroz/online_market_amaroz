@@ -102,6 +102,7 @@
             <column name="count" type="INT"/>
             <column name="users_id" type="BIGINT"/>
             <column name="date" type="DATE"/>
+            <column name="deleted" type="TINYINT" defaultValue="0"/>
         </createTable>
     </changeSet>
 

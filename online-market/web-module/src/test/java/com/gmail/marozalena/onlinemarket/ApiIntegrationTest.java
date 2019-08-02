@@ -1,38 +1,33 @@
 package com.gmail.marozalena.onlinemarket;
 
-import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
-import com.gmail.marozalena.onlinemarket.service.model.ItemDTO;
-import com.gmail.marozalena.onlinemarket.service.model.ProfileDTO;
-import com.gmail.marozalena.onlinemarket.service.model.RoleDTO;
+import com.gmail.marozalena.onlinemarket.service.UserService;
 import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApiIntegrationTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
-    @Autowired
     private WebApplicationContext context;
-
+    @Mock
+    private UserService userService;
     private MockMvc mvc;
 
     @Before
@@ -40,40 +35,31 @@ public class ApiIntegrationTest {
         mvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .build();
+        when(userService.loadUserByEmail(any())).thenReturn(new UserDTO());
     }
 
     @Test
     public void shouldSaveUser() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("test@gmail.com");
-        userDTO.setPassword("test");
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setRole("Customer User");
-        userDTO.setRole(roleDTO);
-        ProfileDTO profileDTO = new ProfileDTO();
-        userDTO.setProfile(profileDTO);
-        restTemplate.withBasicAuth("rest@test.com", "rest");
-        ResponseEntity responseEntity = restTemplate
-                .withBasicAuth("rest@rest.com", "rest")
-                .postForEntity("http://localhost:8080/api/users", userDTO, ResponseEntity.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        mvc.perform(post("/api/users")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"email\": \"test@gmail.com\", " +
+                        "\"password\": \"test\", " +
+                        "\"role\": {" +
+                        "\"role\": \"Customer User\"" +
+                        "}}"))
+                .andExpect(status().isCreated());
     }
 
     @Test
     public void shouldSaveArticle() throws Exception {
-        ArticleDTO articleDTO = new ArticleDTO();
-        articleDTO.setTopic("TTTTTTTTTeeeeeeeeeeeeeesssssssst");
-        articleDTO.setPicture("test.jpg");
-        articleDTO.setDate("2019-06-02");
-        articleDTO.setBody("Earlier this month, the regime tested several short-range missiles, launching them from the Hodo peninsula in the east of the country. North Korean state media said Mr Kim personally oversaw a \"strike drill\" testing various missile components.\n" +
-                "That test came after Pyongyang said it had tested what it described as a new \"tactical guided weapon\" in April.\n" +
-                "Neither violate North Korea's promise not to test long range or nuclear missiles. Yet, they are likely to cause unease in Japan.\n" +
-                "Speaking in Tokyo last week, Mr Abe mirrored Mr Bolton's comments, calling North Korea's recent missile launches \"a breach of UN Security Council resolutions and extremely regrettable\".\n");
-        restTemplate.withBasicAuth("rest@rest.com", "rest");
-        ResponseEntity responseEntity = restTemplate
-                .withBasicAuth("rest@rest.com", "rest")
-                .postForEntity("http://localhost:8080/api/articles", articleDTO, ResponseEntity.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        mvc.perform(post("/api/articles")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"topic\": \"Test\", " +
+                        "\"picture\": \"test.jpg\", " +
+                        "\"date\": \"2019-06-02\", " +
+                        "\"body\": \"Attention! Something happened!\"" +
+                        "}"))
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -89,16 +75,14 @@ public class ApiIntegrationTest {
     }
 
     @Test
-    public void shouldAddItem() {
-        ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setName("Test");
-        itemDTO.setPrice(45.13);
-        itemDTO.setDescription("Description");
-        restTemplate.withBasicAuth("secure@secure.com", "secureapi");
-        ResponseEntity responseEntity = restTemplate
-                .withBasicAuth("rest@rest.com", "rest")
-                .postForEntity("http://localhost:8080/api/items", itemDTO, ResponseEntity.class);
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    public void shouldAddItem() throws Exception {
+        mvc.perform(post("/api/items")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"name\": \"Test\", " +
+                        "\"price\": \"45.13\", " +
+                        "\"description\": \"Description\" " +
+                        "}"))
+                .andExpect(status().isCreated());
     }
 
     @Test

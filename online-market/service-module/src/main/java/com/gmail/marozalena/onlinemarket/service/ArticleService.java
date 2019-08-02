@@ -2,6 +2,7 @@ package com.gmail.marozalena.onlinemarket.service;
 
 import com.gmail.marozalena.onlinemarket.service.model.ArticleDTO;
 import com.gmail.marozalena.onlinemarket.service.model.PageDTO;
+import com.gmail.marozalena.onlinemarket.service.model.UserDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -13,11 +14,11 @@ public interface ArticleService {
 
     List<ArticleDTO> getArticles();
 
-    void addArticle(ArticleDTO articleDTO);
+    void addArticle(ArticleDTO articleDTO, UserDTO userDTO);
 
     void deleteArticle(Long id);
 
-    void createArticle(ArticleDTO articleDTO, MultipartFile file);
+    void createArticle(ArticleDTO articleDTO, MultipartFile file, UserDTO userDTO);
 
     void updateArticle(ArticleDTO articleDTO);
 

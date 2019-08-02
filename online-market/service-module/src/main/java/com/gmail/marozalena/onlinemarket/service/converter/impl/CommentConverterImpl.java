@@ -35,13 +35,15 @@ public class CommentConverterImpl implements CommentConverter {
         for (CommentDTO commentDTO : comments) {
             Comment comment = new Comment();
             comment.setId(commentDTO.getId());
-            if (comment.getDate() != null) {
-                try {
+            try {
+                if (commentDTO.getDate() != null) {
                     comment.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).parse(commentDTO.getDate()));
-                } catch (ParseException e) {
-                    logger.error(e.getMessage(), e);
+                } else {
                     comment.setDate(new Date());
                 }
+            } catch (ParseException e) {
+                logger.error(e.getMessage(), e);
+                comment.setDate(new Date());
             }
             comment.setUser(userConverter.fromUserDTO(commentDTO.getUser()));
             comment.setComment(commentDTO.getComment());

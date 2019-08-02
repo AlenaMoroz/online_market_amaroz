@@ -42,7 +42,11 @@ public class ArticleConverterImpl implements ArticleConverter {
         article.setTopic(articleDTO.getTopic());
         article.setUser(userConverter.fromUserDTO(articleDTO.getUser()));
         try {
-            article.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).parse(articleDTO.getDate()));
+            if (articleDTO.getDate() != null) {
+                article.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).parse(articleDTO.getDate()));
+            } else {
+                article.setDate(new Date());
+            }
         } catch (ParseException e) {
             logger.error(e.getMessage(), e);
             article.setDate(new Date());
@@ -60,7 +64,12 @@ public class ArticleConverterImpl implements ArticleConverter {
         articleDTO.setUser(userConverter.toUserDTO(article.getUser()));
         articleDTO.setTopic(article.getTopic());
         articleDTO.setPicture(article.getPicture());
-        articleDTO.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).format(article.getDate()));
+        try {
+            articleDTO.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).format(article.getDate()));
+        } catch (NullPointerException e){
+            logger.error(e.getMessage(), e);
+            articleDTO.setDate(new SimpleDateFormat(PATTERN_FOR_DATE).format(new Date()));
+        }
         if (article.getBody() != null) {
             if (article.getBody().length() > FULL_LENGTH_OF_SUMMARY) {
                 articleDTO.setSummary(article.getBody().substring(
